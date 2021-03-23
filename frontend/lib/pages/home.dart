@@ -14,9 +14,6 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: backgroundColor,
-      ),
       home: Scaffold(
         body: BodyWidget(),
       ),
@@ -53,24 +50,22 @@ class BodyWidgetState extends State<BodyWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.blue[300],
         body: Container(
-          child: Row(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    ' Hello $nickname !',
-                    style: TextStyle(
-                        color: Colors.white, fontFamily: 'Mont', fontSize: 25),
-                  )
-                ],
+              Text(
+                ' Hello $nickname !',
+                style: TextStyle(color: kohl, fontFamily: 'Mont', fontSize: 25),
               )
             ],
-          ),
-        ));
+          )
+        ],
+      ),
+    ));
   }
 }

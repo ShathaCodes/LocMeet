@@ -1,8 +1,5 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
-import './pages/login.dart';
+import './pages/index.dart';
 import './colors/colors.dart';
 
 void main() => runApp(MyApp());
@@ -13,9 +10,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'Node server demo',
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primarySwatch: accentColor,
-        ),
-        home: Login());
+        home: Index());
   }
 }

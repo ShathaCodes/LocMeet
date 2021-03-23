@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'dart:async';
 
 class ApiProvider {
-  static const addr = "192.168.1.19";
+  static const addr = "your ip address";
 
   ApiProvider();
 
