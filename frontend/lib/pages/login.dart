@@ -46,26 +46,23 @@ class BodyWidgetState extends State<BodyWidget> {
     final prefs = await SharedPreferences.getInstance();
 
 // Try reading data from the counter key. If it does not exist, return 0.
-    final ind = ApiProvider.addr;
     if (_formKey.currentState.validate()) {
-      if (ind != "") {
-        try {
-          var res = await apiProvider.doLogin(
-              _crtlNickname.text, _crtlPassword.text, ind);
-          if (res.statusCode == 200) {
-            var jsonRes = json.decode(res.body);
-            var token = jsonRes['token'];
-            prefs.setString("token", token);
+      try {
+        var res =
+            await apiProvider.doLogin(_crtlNickname.text, _crtlPassword.text);
+        if (res.statusCode == 200) {
+          var jsonRes = json.decode(res.body);
+          var token = jsonRes['token'];
+          prefs.setString("token", token);
 
-            Navigator.of(context).push(//pushReplacement
-                MaterialPageRoute(builder: (context) => HomePage()));
-          } else {
-            Scaffold.of(context).showSnackBar(error);
-          }
-        } catch (err) {
-          print(err);
-          Scaffold.of(context).showSnackBar(serverError);
+          Navigator.of(context).push(//pushReplacement
+              MaterialPageRoute(builder: (context) => HomePage()));
+        } else {
+          Scaffold.of(context).showSnackBar(error);
         }
+      } catch (err) {
+        print(err);
+        Scaffold.of(context).showSnackBar(serverError);
       }
     }
   }

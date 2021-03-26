@@ -46,28 +46,35 @@ class BodyWidgetState extends State<BodyWidget> {
     final prefs = await SharedPreferences.getInstance();
 
 // Try reading data from the counter key. If it does not exist, return 0.
-    final ind = ApiProvider.addr;
     if (_formKey.currentState.validate()) {
-      if (ind != "") {
-        try {
-          var res = await apiProvider.doRegistration(
-              _crtlNickname.text, _crtlPassword.text, ind);
-          if (res.statusCode == 200) {
-            Scaffold.of(context).showSnackBar(success);
-            Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => Login()));
-          } else {
-            print(res.statusCode);
-            Scaffold.of(context).showSnackBar(error);
-          }
-        } catch (err) {
-          print(err);
-          Scaffold.of(context).showSnackBar(serverError);
+      try {
+        var res = await apiProvider.doRegistration(
+            _crtlNickname.text, _crtlPassword.text);
+        if (res.statusCode == 200) {
+          Scaffold.of(context).showSnackBar(success);
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => Login()));
+        } else {
+          print(res.statusCode);
+          Scaffold.of(context).showSnackBar(error);
         }
+      } catch (err) {
+        print(err);
+        Scaffold.of(context).showSnackBar(serverError);
       }
-    } else {
-      Scaffold.of(context).showSnackBar(ipError);
     }
+  }
+
+  int interestsCount;
+  List interests;
+  ApiProvider provider;
+  Future initialize() async {
+    interests = List();
+    interests = await provider.getInterests();
+    setState(() {
+      interestsCount = interests.length;
+      interests = interests;
+    });
   }
 
   @override

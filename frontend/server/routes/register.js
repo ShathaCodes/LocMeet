@@ -1,12 +1,19 @@
 const _ = require('lodash');
+const Interest = require('../models/Interest');
 
 const User = require('../models/User');
 
 const register = async (req, res) => {
-    const user = req.body;
+    const user = req.body.user;
+    const interests = req.body.interests;
     try {
+        
         const dbInstance = await User.create(user);
-
+        for (const item of interests) {  
+            var id = item.id;
+            const inter = await Interest.findOne({ where: { id } });
+            await dbInstance.addInterest(inter);
+          }
         const responseDbInstance = _.omit(dbInstance.dataValues, ['password', 'createdAt', 'updatedAt']);
         res.send(responseDbInstance);
     } catch (err) {
