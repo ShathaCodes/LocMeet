@@ -5,6 +5,7 @@ import '../pages/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 import 'dart:convert';
+import 'filterChip.dart';
 
 class Register extends StatelessWidget {
   const Register({Key key}) : super(key: key);
@@ -46,35 +47,45 @@ class BodyWidgetState extends State<BodyWidget> {
     final prefs = await SharedPreferences.getInstance();
 
 // Try reading data from the counter key. If it does not exist, return 0.
+    final ind = ApiProvider.addr;
     if (_formKey.currentState.validate()) {
-      try {
-        var res = await apiProvider.doRegistration(
-            _crtlNickname.text, _crtlPassword.text);
-        if (res.statusCode == 200) {
-          Scaffold.of(context).showSnackBar(success);
-          Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => Login()));
-        } else {
-          print(res.statusCode);
-          Scaffold.of(context).showSnackBar(error);
+      if (ind != "") {
+        try {
+          var res = await apiProvider.doRegistration(
+              _crtlNickname.text, _crtlPassword.text, ind);
+          if (res.statusCode == 200) {
+            Scaffold.of(context).showSnackBar(success);
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => Login()));
+          } else {
+            print(res.statusCode);
+            Scaffold.of(context).showSnackBar(error);
+          }
+        } catch (err) {
+          print(err);
+          Scaffold.of(context).showSnackBar(serverError);
         }
-      } catch (err) {
-        print(err);
-        Scaffold.of(context).showSnackBar(serverError);
       }
+    } else {
+      Scaffold.of(context).showSnackBar(ipError);
     }
   }
 
-  int interestsCount;
+  List chosenInterests;
   List interests;
-  ApiProvider provider;
+
   Future initialize() async {
     interests = List();
-    interests = await provider.getInterests();
+    interests = await apiProvider.getInterests(ApiProvider.addr);
     setState(() {
-      interestsCount = interests.length;
       interests = interests;
     });
+  }
+
+  @override
+  initState() {
+    initialize();
+    super.initState();
   }
 
   @override
@@ -195,6 +206,24 @@ class BodyWidgetState extends State<BodyWidget> {
                                         borderSide: new BorderSide(
                                             color: Colors.white))),
                               ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0, top: 20),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Container(
+                                  child: Wrap(
+                                spacing: 5.0,
+                                runSpacing: 3.0,
+                                children: <Widget>[
+                                  for (int i = 0; i < interests.length; i++)
+                                    filterChipWidget(
+                                      chipName: interests[i].name,
+                                      id: interests[i].id,
+                                    )
+                                ],
+                              )),
                             ),
                           ),
                           Padding(

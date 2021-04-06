@@ -2,21 +2,20 @@ import 'package:http/http.dart' as http;
 import 'dart:io';
 import 'dart:convert';
 import 'dart:async';
-
 import 'models/Interest.dart';
 
 class ApiProvider {
-  static const ip = "192.168.1.4";
+  static const addr = "192.168.1.4";
 
   ApiProvider();
-
-  Future<List> getInterests() async {
+  Future<List> getInterests(ip) async {
     String _url = 'http://$ip:3000/interests';
 
     http.Response result = await http.get(_url);
     if (result.statusCode == HttpStatus.ok) {
       final jsonResponse = json.decode(result.body);
-      final interestsMap = jsonResponse['results'];
+      final interestsMap = jsonResponse;
+      print(result.body);
       List interests = interestsMap.map((i) => Interest.fromJson(i)).toList();
       return interests;
     } else {
@@ -24,7 +23,8 @@ class ApiProvider {
     }
   }
 
-  Future<http.Response> doLogin(String nickname, String password) async {
+  Future<http.Response> doLogin(
+      String nickname, String password, String ip) async {
     String _url = 'http://$ip:3000/login';
 
     var body = {"nickname": nickname, "password": password};
@@ -33,23 +33,30 @@ class ApiProvider {
   }
 
   Future<http.Response> doRegistration(
-    String nickname,
-    String password,
-  ) async {
-    var interests = [1, 0, 2];
-
-    Map<String, dynamic> toJson(i) => {"id": interests[i]};
-    var json = toJson(0);
-
+      String nickname, String password, String ip) async {
     String _url = 'http://$ip:3000/register';
+    const interests = [1, 2];
+    List<Map<String, dynamic>> toJson() => [
+          for (var item in interests) {"id": item}
+        ];
     var body = {
+      "nickname": nickname,
+      "password": password,
+      'location': "",
+      "isAdmin": "false"
+    };
+
+    /*var body = {
       "user": {
         "nickname": nickname,
         "password": password,
         "location": "",
         "isAdmin": "false"
       },
-    };
+      "interests": 
+        toJson()
+      
+    };*/
 
     return http.post(_url, body: body);
   }
