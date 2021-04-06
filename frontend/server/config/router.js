@@ -1,5 +1,6 @@
 const login = require('../routes/login');
 const register = require('../routes/register');
+const interests = require('../routes/interests');
 
 const router = {
     initialize: (app, passport) => {
@@ -7,6 +8,7 @@ const router = {
         
         app.post('/login', login );
         app.post('/register', register);
+        app.get('/interests', interests);
     }
 };
 

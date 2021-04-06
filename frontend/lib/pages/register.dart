@@ -5,6 +5,7 @@ import '../pages/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 import 'dart:convert';
+import 'filterChip.dart';
 
 class Register extends StatelessWidget {
   const Register({Key key}) : super(key: key);
@@ -68,6 +69,23 @@ class BodyWidgetState extends State<BodyWidget> {
     } else {
       Scaffold.of(context).showSnackBar(ipError);
     }
+  }
+
+  List chosenInterests;
+  List interests;
+
+  Future initialize() async {
+    interests = List();
+    interests = await apiProvider.getInterests(ApiProvider.addr);
+    setState(() {
+      interests = interests;
+    });
+  }
+
+  @override
+  initState() {
+    initialize();
+    super.initState();
   }
 
   @override
@@ -188,6 +206,24 @@ class BodyWidgetState extends State<BodyWidget> {
                                         borderSide: new BorderSide(
                                             color: Colors.white))),
                               ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0, top: 20),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Container(
+                                  child: Wrap(
+                                spacing: 5.0,
+                                runSpacing: 3.0,
+                                children: <Widget>[
+                                  for (int i = 0; i < interests.length; i++)
+                                    filterChipWidget(
+                                      chipName: interests[i].name,
+                                      id: interests[i].id,
+                                    )
+                                ],
+                              )),
                             ),
                           ),
                           Padding(
