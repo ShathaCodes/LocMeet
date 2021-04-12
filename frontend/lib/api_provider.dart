@@ -5,7 +5,7 @@ import 'dart:async';
 import 'models/Interest.dart';
 
 class ApiProvider {
-  static const addr = "192.168.137.1";
+  static const addr = "192.168.1.22";
 
   ApiProvider();
   Future<List> getInterests(ip) async {

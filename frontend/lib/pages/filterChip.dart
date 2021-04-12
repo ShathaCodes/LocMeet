@@ -120,7 +120,7 @@ class _filterChipWidgetState extends State<filterChipWidget> {
     return FilterChip(
       label: Text(widget.chipName),
       labelStyle:
-          TextStyle(color: kohl, fontSize: 16.0, fontWeight: FontWeight.bold),
+          TextStyle(color: dark, fontSize: 16.0, fontWeight: FontWeight.bold),
       selected: _isSelected,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(30.0),
@@ -133,7 +133,7 @@ class _filterChipWidgetState extends State<filterChipWidget> {
           if (_isSelected == false) print('fuck yh');
         });
       },
-      selectedColor: blue,
+      selectedColor: blue_base,
     );
   }
 }

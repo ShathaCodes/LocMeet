@@ -33,14 +33,14 @@ class BodyWidgetState extends State<BodyWidget> {
         child: Column(
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.only(top: heigth / 28, left: width / 24),
+              padding: EdgeInsets.only(top: heigth / 32, left: width / 12 + 30),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   Image.asset(
                     'assets/images/logoPalette.png',
-                    scale: 5,
+                    scale: 3,
                   ),
                 ],
               ),
@@ -55,7 +55,7 @@ class BodyWidgetState extends State<BodyWidget> {
                   Text(
                     "LocMeet",
                     style: new TextStyle(
-                        fontFamily: 'Mont', fontSize: 25, color: kohl),
+                        fontFamily: 'Mont', fontSize: 25, color: blue_dark),
                   ),
                 ],
               ),
@@ -69,7 +69,7 @@ class BodyWidgetState extends State<BodyWidget> {
                   Text(
                     "I'll meet you in real life.",
                     style: new TextStyle(
-                        fontFamily: 'Mont', fontSize: 15, color: kohl),
+                        fontFamily: 'Mont', fontSize: 15, color: yellow_base),
                   ),
                 ],
               ),
@@ -87,7 +87,7 @@ class BodyWidgetState extends State<BodyWidget> {
                     height: heigth / 3 + 38.5,
                     width: width,
                     decoration: BoxDecoration(
-                      color: yellow,
+                      color: blue_base,
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(23),
                           topRight: Radius.circular(23)),
@@ -100,16 +100,16 @@ class BodyWidgetState extends State<BodyWidget> {
                   children: <Widget>[
                     Center(
                       child: Image.asset(
-                        'assets/images/friends.png',
-                        scale: 2.3,
+                        'assets/images/friendsN.png',
+                        scale: 1,
                       ),
                     ),
                     Padding(
                       padding: EdgeInsets.fromLTRB(width / 7, 20, width / 7, 0),
                       child: Theme(
                         data: new ThemeData(
-                          primaryColor: kohl,
-                          primaryColorDark: darkred,
+                          primaryColor: dark,
+                          primaryColorDark: blue_dark,
                         ),
                         child: ButtonTheme(
                           minWidth: width,
@@ -138,8 +138,8 @@ class BodyWidgetState extends State<BodyWidget> {
                       padding: EdgeInsets.fromLTRB(width / 7, 20, width / 7, 0),
                       child: Theme(
                         data: new ThemeData(
-                          primaryColor: kohl,
-                          primaryColorDark: darkred,
+                          primaryColor: dark,
+                          primaryColorDark: blue_light,
                         ),
                         child: ButtonTheme(
                           minWidth: width,
@@ -152,7 +152,7 @@ class BodyWidgetState extends State<BodyWidget> {
                             child: const Text('LOGIN',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                    color: kohl,
+                                    color: dark,
                                     fontFamily: 'calibre',
                                     letterSpacing: 1.5,
                                     fontSize: 20)),
