@@ -33,13 +33,13 @@ class BodyWidgetState extends State<BodyWidget> {
         child: Column(
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.only(top: heigth / 14, left: width / 20),
+              padding: EdgeInsets.only(top: heigth / 28, left: width / 24),
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   Image.asset(
-                    'assets/images/faza.png',
+                    'assets/images/logoPalette.png',
                     scale: 5,
                   ),
                 ],
@@ -114,22 +114,23 @@ class BodyWidgetState extends State<BodyWidget> {
                         child: ButtonTheme(
                           minWidth: width,
                           height: 50.0,
-                          child: RaisedButton(
-                              onPressed: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Register())),
-                              child: const Text('REGISTER',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: 'calibre',
-                                      letterSpacing: 1.5,
-                                      fontSize: 20)),
-                              color: blue,
+                          child: TextButton(
+                            onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Register())),
+                            child: const Text('REGISTER',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: 'calibre',
+                                    letterSpacing: 1.5,
+                                    fontSize: 20)),
+                            /* color: blue,
                               shape: new RoundedRectangleBorder(
                                   borderRadius:
-                                      new BorderRadius.circular(10.0))),
+                                      new BorderRadius.circular(10.0))*/
+                          ),
                         ),
                       ),
                     ),
@@ -143,22 +144,23 @@ class BodyWidgetState extends State<BodyWidget> {
                         child: ButtonTheme(
                           minWidth: width,
                           height: 50.0,
-                          child: RaisedButton(
-                              onPressed: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Login())),
-                              child: const Text('LOGIN',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: kohl,
-                                      fontFamily: 'calibre',
-                                      letterSpacing: 1.5,
-                                      fontSize: 20)),
-                              color: Colors.white,
+                          child: TextButton(
+                            onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Login())),
+                            child: const Text('LOGIN',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: kohl,
+                                    fontFamily: 'calibre',
+                                    letterSpacing: 1.5,
+                                    fontSize: 20)),
+                            /* color: Colors.white,
                               shape: new RoundedRectangleBorder(
                                   borderRadius:
-                                      new BorderRadius.circular(10.0))),
+                                      new BorderRadius.circular(10.0))*/
+                          ),
                         ),
                       ),
                     ),

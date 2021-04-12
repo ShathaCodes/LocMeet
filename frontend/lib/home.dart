@@ -1,20 +1,4 @@
 import 'package:flutter/material.dart';
-import './pages/index.dart';
-//import './colors/colors.dart';
-
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'Node server demo',
-        debugShowCheckedModeBanner: false,
-        home: Index());
-  }
-}
-
-/*import 'package:flutter/material.dart';
 /*import 'package:tab_bar/ViewMap/ViewMapPage.dart';*/
 import 'ViewMap/HomePageMap.dart';
 import 'TabBar/MotionTabBarView.dart';
@@ -23,38 +7,24 @@ import 'TabBar/motiontabbar.dart';
 import './Calender/HomeCalendarPage.dart';
 import './Profil/ProfilPage.dart';
 
-void main() => runApp(MyApp());
+class Home extends StatefulWidget {
+  @override
+  _HomeState createState() => _HomeState();
+}
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class _HomeState extends State<Home> {
+  //CalendarController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    //_controller = CalendarController();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Motion Tab Bar Sample',
-      theme: ThemeData(
-        // Define the default brightness and colors.
-        brightness: Brightness.light,
-        primaryColor: Colors.cyan.shade200,
-        accentColor: Colors.cyan[200],
-
-        // Define the default font family.
-        //fontFamily: 'Georgia',
-
-        // Define the default TextTheme. Use this to specify the default
-        // text styling for headlines, titles, bodies of text, and more.
-        textTheme: TextTheme(
-          headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-          headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-          bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
-        ),
-      ),
-      /*color: Colors.yellow.shade200,
-      theme: new ThemeData(
-          primarySwatch: Colors.blueGrey,
-          primaryTextTheme:
-              TextTheme(headline6: TextStyle(color: Colors.white))),
-      */
-      home: MyHomePage(title: 'Motion Tab Bar Sample'),
+    return Scaffold(
+      body: Center(child: MyHomePage()),
     );
   }
 }
@@ -86,9 +56,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-        ),
+        appBar: AppBar(title: Text(widget.title != null ? widget.title : '')
+            //Text(widget.title),
+            ),
         bottomNavigationBar: MotionTabBar(
           labels: ["Account", "Home", "Dashboard"],
           initialSelectedTab: "Home",
@@ -118,4 +88,4 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           ],
         ));
   }
-}*/
+}

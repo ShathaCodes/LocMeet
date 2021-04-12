@@ -5,7 +5,7 @@ import 'dart:async';
 import 'models/Interest.dart';
 
 class ApiProvider {
-  static const addr = "192.168.1.4";
+  static const addr = "192.168.137.1";
 
   ApiProvider();
   Future<List> getInterests(ip) async {
@@ -35,10 +35,10 @@ class ApiProvider {
   Future<http.Response> doRegistration(
       String nickname, String password, String ip) async {
     String _url = 'http://$ip:3000/register';
-    const interests = [1, 2];
-    List<Map<String, dynamic>> toJson() => [
+    //const interests = [1, 2];
+    /*List<Map<String, dynamic>> toJson() => [
           for (var item in interests) {"id": item}
-        ];
+        ];*/
     var body = {
       "nickname": nickname,
       "password": password,

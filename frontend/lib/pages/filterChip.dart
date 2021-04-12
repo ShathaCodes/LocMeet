@@ -9,21 +9,21 @@ class FilterChipDisplay extends StatefulWidget {
 class _FilterChipDisplayState extends State<FilterChipDisplay> {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return new Scaffold(
       appBar: AppBar(
-        leading: IconButton(onPressed: () {}),
+        //leading: IconButton(onPressed: () {}),
         title: Text(
           "Filter Result",
           style: TextStyle(
             color: Colors.white,
           ),
         ),
-        actions: <Widget>[
-          IconButton(onPressed: () {
-            //
-          }),
-        ],
+        /*actions: <Widget>[
+         //IconButton(onPressed: () {
+            
+          //}
+          //),
+        ],*/
       ),
       body: Column(
         children: <Widget>[
