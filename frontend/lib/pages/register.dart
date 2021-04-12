@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import './../colors/colors.dart';
 import './../api_provider.dart';
 import '../pages/login.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+//import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
-import 'dart:convert';
+//import 'dart:convert';
 import 'filterChip.dart';
 
 class Register extends StatelessWidget {
@@ -32,7 +32,7 @@ class BodyWidget extends StatefulWidget {
 class BodyWidgetState extends State<BodyWidget> {
   TextEditingController _crtlNickname = TextEditingController();
   TextEditingController _crtlPassword = TextEditingController();
-  TextEditingController _ctrlIp = TextEditingController();
+  //TextEditingController _ctrlIp = TextEditingController();
   final success = SnackBar(content: Text('Login succeded!'));
   final error = SnackBar(content: Text('Wrong credentials!'));
   final serverError = SnackBar(content: Text('Can\'t connect to the server!'));
@@ -44,7 +44,7 @@ class BodyWidgetState extends State<BodyWidget> {
   ApiProvider apiProvider = ApiProvider();
 
   Future doRegistration() async {
-    final prefs = await SharedPreferences.getInstance();
+    //final prefs = await SharedPreferences.getInstance();
 
 // Try reading data from the counter key. If it does not exist, return 0.
     final ind = ApiProvider.addr;
@@ -54,20 +54,24 @@ class BodyWidgetState extends State<BodyWidget> {
           var res = await apiProvider.doRegistration(
               _crtlNickname.text, _crtlPassword.text, ind);
           if (res.statusCode == 200) {
-            Scaffold.of(context).showSnackBar(success);
+            ScaffoldMessenger.of(context).showSnackBar(success);
+            //Scaffold.of(context).showSnackBar(success);
             Navigator.of(context).pushReplacement(
                 MaterialPageRoute(builder: (context) => Login()));
           } else {
             print(res.statusCode);
-            Scaffold.of(context).showSnackBar(error);
+            ScaffoldMessenger.of(context).showSnackBar(error);
+            //Scaffold.of(context).showSnackBar(error);
           }
         } catch (err) {
           print(err);
-          Scaffold.of(context).showSnackBar(serverError);
+          ScaffoldMessenger.of(context).showSnackBar(serverError);
+          //Scaffold.of(context).showSnackBar(serverError);
         }
       }
     } else {
-      Scaffold.of(context).showSnackBar(ipError);
+      ScaffoldMessenger.of(context).showSnackBar(ipError);
+      // Scaffold.of(context).showSnackBar(ipError);
     }
   }
 
@@ -75,7 +79,8 @@ class BodyWidgetState extends State<BodyWidget> {
   List interests;
 
   Future initialize() async {
-    interests = List();
+    interests = [];
+    //List();
     interests = await apiProvider.getInterests(ApiProvider.addr);
     setState(() {
       interests = interests;
@@ -158,6 +163,7 @@ class BodyWidgetState extends State<BodyWidget> {
                                   if (value.isEmpty) {
                                     return 'Insert a Nickname!';
                                   }
+                                  return null;
                                 },
                                 controller: _crtlNickname,
                                 style: TextStyle(fontSize: 20.0, color: kohl),
@@ -189,6 +195,7 @@ class BodyWidgetState extends State<BodyWidget> {
                                   if (value.isEmpty) {
                                     return 'Insert a password!';
                                   }
+                                  return null;
                                 },
                                 controller: _crtlPassword,
                                 obscureText: true,
@@ -237,26 +244,27 @@ class BodyWidgetState extends State<BodyWidget> {
                               child: ButtonTheme(
                                 minWidth: width,
                                 height: 50.0,
-                                child: RaisedButton(
-                                    onPressed: () => doRegistration(),
-                                    child: const Text('SIGN UP',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontFamily: 'calibre',
-                                            letterSpacing: 1.5,
-                                            fontSize: 20)),
-                                    color: blue,
+                                child: ElevatedButton(
+                                  onPressed: () => doRegistration(),
+                                  child: const Text('SIGN UP',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: 'calibre',
+                                          letterSpacing: 1.5,
+                                          fontSize: 20)),
+                                  /* color: blue,
                                     shape: new RoundedRectangleBorder(
                                         borderRadius:
-                                            new BorderRadius.circular(10.0))),
+                                            new BorderRadius.circular(10.0))*/
+                                ),
                               ),
                             ),
                           ),
                           Center(
                             child: Padding(
                                 padding: const EdgeInsets.only(top: 16.0),
-                                child: new FlatButton(
+                                child: new TextButton(
                                   onPressed: () => Navigator.push(
                                       context,
                                       MaterialPageRoute(

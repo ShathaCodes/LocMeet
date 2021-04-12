@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 
+//import 'package:LoginFlutter/Calender/HomeCalendarPage.dart';
 import 'package:flutter/material.dart';
 import './../colors/colors.dart';
 import './../api_provider.dart';
 import './../pages/home.dart';
-import '../pages/register.dart';
+//import '../pages/register.dart';
+import '../home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatelessWidget {
@@ -60,11 +62,13 @@ class BodyWidgetState extends State<BodyWidget> {
             Navigator.of(context).push(//pushReplacement
                 MaterialPageRoute(builder: (context) => HomePage()));
           } else {
-            Scaffold.of(context).showSnackBar(error);
+            ScaffoldMessenger.of(context).showSnackBar(error);
+            // Scaffold.of(context).showSnackBar(error);
           }
         } catch (err) {
           print(err);
-          Scaffold.of(context).showSnackBar(serverError);
+          ScaffoldMessenger.of(context).showSnackBar(serverError);
+          //Scaffold.of(context).showSnackBar(serverError);
         }
       }
     }
@@ -140,6 +144,7 @@ class BodyWidgetState extends State<BodyWidget> {
                                   if (value.isEmpty) {
                                     return 'Insert your nickname!';
                                   }
+                                  return null;
                                 },
                                 controller: _crtlNickname,
                                 style: TextStyle(fontSize: 20.0, color: kohl),
@@ -171,6 +176,7 @@ class BodyWidgetState extends State<BodyWidget> {
                                   if (value.isEmpty) {
                                     return 'Insert a Password!';
                                   }
+                                  return null;
                                 },
                                 controller: _crtlPassword,
                                 obscureText: true,
@@ -201,31 +207,37 @@ class BodyWidgetState extends State<BodyWidget> {
                               child: ButtonTheme(
                                 minWidth: width,
                                 height: 50.0,
-                                child: RaisedButton(
-                                    onPressed: () => doLogin(),
-                                    child: const Text('LOGIN',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontFamily: 'calibre',
-                                            letterSpacing: 1.5,
-                                            fontSize: 20)),
-                                    color: blue,
+                                child: ElevatedButton(
+                                  //onPressed: () => Home(),
+                                  // context,
+                                  //MaterialPageRoute(
+                                  //  builder: (context) => Home())),
+
+                                  onPressed: () => doLogin(),
+                                  child: const Text('LOGIN',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: 'calibre',
+                                          letterSpacing: 1.5,
+                                          fontSize: 20)),
+                                  /* color: blue,
                                     shape: new RoundedRectangleBorder(
                                         borderRadius:
-                                            new BorderRadius.circular(10.0))),
+                                            new BorderRadius.circular(10.0))*/
+                                ),
                               ),
                             ),
                           ),
                           Center(
                             child: Padding(
                                 padding: const EdgeInsets.only(top: 16.0),
-                                child: new FlatButton(
+                                child: new TextButton(
                                   onPressed: () => Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => Register())),
-                                  child: Text("Are you not register? Sign up",
+                                          builder: (context) => Home())),
+                                  child: Text("home page atla3",
                                       textAlign: TextAlign.center,
                                       style: new TextStyle(
                                         fontSize: 13,
