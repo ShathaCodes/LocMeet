@@ -84,12 +84,12 @@ class BodyWidgetState extends State<BodyWidget> {
         child: SingleChildScrollView(
             child: Stack(
           children: [
-            Container(
+            /*Container(
               child: Image.asset(
                 'assets/images/edge.PNG',
                 scale: 0.5,
               ),
-            ),
+            ),*/
             Container(
               child: Column(
                 children: <Widget>[
@@ -103,7 +103,9 @@ class BodyWidgetState extends State<BodyWidget> {
                         Text(
                           "Login",
                           style: new TextStyle(
-                              fontFamily: 'Mont', fontSize: 20, color: kohl),
+                              fontFamily: 'Mont',
+                              fontSize: 20,
+                              color: blue_dark),
                         ),
                       ],
                     ),
@@ -117,8 +119,8 @@ class BodyWidgetState extends State<BodyWidget> {
                       children: <Widget>[
                         Center(
                           child: Image.asset(
-                            'assets/images/logo.png',
-                            scale: 2.5,
+                            'assets/images/logoPalette.png',
+                            scale: 1.5,
                           ),
                         ),
                       ],
@@ -136,8 +138,8 @@ class BodyWidgetState extends State<BodyWidget> {
                                 EdgeInsets.only(left: 10, right: 10, top: 10),
                             child: Theme(
                               data: new ThemeData(
-                                primaryColor: blue,
-                                primaryColorDark: darkred,
+                                primaryColor: blue_base,
+                                primaryColorDark: dark,
                               ),
                               child: TextFormField(
                                 validator: (value) {
@@ -147,13 +149,13 @@ class BodyWidgetState extends State<BodyWidget> {
                                   return null;
                                 },
                                 controller: _crtlNickname,
-                                style: TextStyle(fontSize: 20.0, color: kohl),
+                                style: TextStyle(fontSize: 20.0, color: dark),
                                 decoration: new InputDecoration(
                                     labelText: "Nickname",
-                                    fillColor: kohl,
+                                    fillColor: dark,
                                     prefixIcon: const Icon(
                                       Icons.verified_user,
-                                      color: blue,
+                                      color: yellow_base,
                                     ),
                                     border: new OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
@@ -168,8 +170,8 @@ class BodyWidgetState extends State<BodyWidget> {
                                 EdgeInsets.only(left: 10, right: 10, top: 20),
                             child: Theme(
                               data: new ThemeData(
-                                primaryColor: blue,
-                                primaryColorDark: darkred,
+                                primaryColor: blue_base,
+                                primaryColorDark: blue_dark,
                               ),
                               child: TextFormField(
                                 validator: (value) {
@@ -180,13 +182,13 @@ class BodyWidgetState extends State<BodyWidget> {
                                 },
                                 controller: _crtlPassword,
                                 obscureText: true,
-                                style: TextStyle(fontSize: 20.0, color: kohl),
+                                style: TextStyle(fontSize: 20.0, color: dark),
                                 decoration: new InputDecoration(
                                     labelText: "Password",
-                                    fillColor: kohl,
+                                    fillColor: dark,
                                     prefixIcon: const Icon(
                                       Icons.lock,
-                                      color: blue,
+                                      color: yellow_base,
                                     ),
                                     border: new OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
@@ -201,13 +203,18 @@ class BodyWidgetState extends State<BodyWidget> {
                                 EdgeInsets.only(left: 10, right: 10, top: 20),
                             child: Theme(
                               data: new ThemeData(
-                                primaryColor: blue,
-                                primaryColorDark: darkred,
+                                primaryColor: blue_base,
+                                primaryColorDark: blue_dark,
                               ),
                               child: ButtonTheme(
                                 minWidth: width,
                                 height: 50.0,
                                 child: ElevatedButton(
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            yellow_base),
+                                  ),
                                   //onPressed: () => Home(),
                                   // context,
                                   //MaterialPageRoute(
@@ -241,10 +248,12 @@ class BodyWidgetState extends State<BodyWidget> {
                                       textAlign: TextAlign.center,
                                       style: new TextStyle(
                                         fontSize: 13,
-                                        color: blue,
+                                        color: blue_dark,
                                         fontFamily: 'calibre',
                                         decoration: TextDecoration.underline,
                                       )),
+
+                                  //new Text(cart_prod_qty!=null?cart_prod_qty:'Default Value'),
                                 )),
                           ),
                         ],

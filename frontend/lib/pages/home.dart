@@ -60,7 +60,7 @@ class BodyWidgetState extends State<BodyWidget> {
             children: <Widget>[
               Text(
                 ' Hello $nickname !',
-                style: TextStyle(color: kohl, fontFamily: 'Mont', fontSize: 25),
+                style: TextStyle(color: dark, fontFamily: 'Mont', fontSize: 25),
               )
             ],
           )

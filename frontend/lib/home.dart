@@ -1,3 +1,4 @@
+import 'package:LoginFlutter/colors/colors.dart';
 import 'package:flutter/material.dart';
 /*import 'package:tab_bar/ViewMap/ViewMapPage.dart';*/
 import 'ViewMap/HomePageMap.dart';
@@ -62,8 +63,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         bottomNavigationBar: MotionTabBar(
           labels: ["Account", "Home", "Dashboard"],
           initialSelectedTab: "Home",
-          tabIconColor: Colors.yellow[200],
-          tabSelectedColor: Colors.yellow[600],
+          tabIconColor: blue_light,
+          tabSelectedColor: blue_light,
           onTabItemSelected: (int value) {
             print(value);
             setState(() {
@@ -71,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             });
           },
           icons: [Icons.account_box, Icons.home, Icons.menu],
-          textStyle: TextStyle(color: Colors.yellowAccent),
+          textStyle: TextStyle(color: yellow_base),
         ),
         body: MotionTabBarView(
           controller: _tabController,

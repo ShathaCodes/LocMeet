@@ -1,3 +1,4 @@
+import 'package:LoginFlutter/colors/colors.dart';
 import "package:flutter/material.dart";
 import "package:flutter_map/flutter_map.dart";
 import "package:latlong/latlong.dart";
@@ -53,32 +54,20 @@ class _ViewMapPageState extends State<ViewMapPage> {
                       builder: (BuildContext context) => const Icon(
                           Icons.location_on,
                           size: 40.0,
-                          color: Colors.red),
+                          color: danger),
                     ),
                   ],
                 ),
               ],
             ),
-            TextButton.icon(
-              icon: Icon(
-                Icons.location_on,
-              ),
-              label: Text('Current Location'),
-              //textColor: Theme.of(context).primaryColor,
-              onPressed: _getCurrentUserLocation,
-            ),
             Container(
                 padding: EdgeInsets.all(20),
                 alignment: Alignment.bottomLeft,
                 width: 1000,
-                height: 100,
-                child: Image.asset("images/logo.jpeg"))
+                height: 120,
+                child: Image.asset("assets/images/logoPalette.png"))
           ],
         )),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.copyright),
-          onPressed: _getCurrentUserLocation,
-        ),
       ),
     );
   }

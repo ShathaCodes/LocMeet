@@ -1,3 +1,4 @@
+import 'package:LoginFlutter/colors/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -25,9 +26,8 @@ class _HomeCalendarPageState extends State<HomeCalendarPage> {
             TableCalendar(
               initialCalendarFormat: CalendarFormat.month,
               calendarStyle: CalendarStyle(
-                  todayColor: Colors.blue,
-                  selectedColor: Colors.yellow,
-                  /*Theme.of(context).primaryColor,*/
+                  todayColor: blue_light,
+                  selectedColor: blue_light,
                   todayStyle: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 22.0,
@@ -35,7 +35,7 @@ class _HomeCalendarPageState extends State<HomeCalendarPage> {
               headerStyle: HeaderStyle(
                 centerHeaderTitle: true,
                 formatButtonDecoration: BoxDecoration(
-                  color: Colors.blueGrey,
+                  color: blue_dark,
                   borderRadius: BorderRadius.circular(22.0),
                 ),
                 formatButtonTextStyle: TextStyle(color: Colors.white),
@@ -50,7 +50,7 @@ class _HomeCalendarPageState extends State<HomeCalendarPage> {
                     margin: const EdgeInsets.all(5.0),
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                        color: Colors.yellowAccent.shade200,
+                        color: yellow_base,
                         borderRadius: BorderRadius.circular(8.0)),
                     child: Text(
                       date.day.toString(),
@@ -60,7 +60,7 @@ class _HomeCalendarPageState extends State<HomeCalendarPage> {
                     margin: const EdgeInsets.all(5.0),
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                        color: Colors.cyan.shade400,
+                        color: blue_light,
                         borderRadius: BorderRadius.circular(8.0)),
                     child: Text(
                       date.day.toString(),

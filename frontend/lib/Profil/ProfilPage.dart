@@ -1,3 +1,4 @@
+import 'package:LoginFlutter/colors/colors.dart';
 import 'package:flutter/material.dart';
 
 class ProfilPage extends StatefulWidget {
@@ -35,7 +36,8 @@ class _ProfilPageState extends State<ProfilPage> {
                       ),
                       CircleAvatar(
                         radius: 50.0,
-                        backgroundImage: AssetImage('assets/erza.jpg'),
+                        backgroundImage:
+                            AssetImage('assets/images/logoPalette.png'),
                         backgroundColor: Colors.white,
                       ),
                     ]),
@@ -59,6 +61,7 @@ class _ProfilPageState extends State<ProfilPage> {
                                       Text(
                                         "Information",
                                         style: TextStyle(
+                                          color: dark,
                                           fontSize: 17.0,
                                           fontWeight: FontWeight.w800,
                                         ),
@@ -205,6 +208,7 @@ class _ProfilPageState extends State<ProfilPage> {
                       Text(
                         'April 7th',
                         style: TextStyle(
+                          color: dark,
                           fontSize: 20.0,
                         ),
                       )
