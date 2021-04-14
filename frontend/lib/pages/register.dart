@@ -52,7 +52,7 @@ class BodyWidgetState extends State<BodyWidget> {
       if (ind != "") {
         try {
           var res = await apiProvider.doRegistration(
-              _crtlNickname.text, _crtlPassword.text, ind);
+              _crtlNickname.text, _crtlPassword.text, ind, sth);
           if (res.statusCode == 200) {
             ScaffoldMessenger.of(context).showSnackBar(success);
             //Scaffold.of(context).showSnackBar(success);
@@ -75,11 +75,12 @@ class BodyWidgetState extends State<BodyWidget> {
     }
   }
 
-  List chosenInterests;
+  List sth;
   List interests;
 
   Future initialize() async {
     interests = [];
+    sth = List();
     //List();
     interests = await apiProvider.getInterests(ApiProvider.addr);
     setState(() {
@@ -228,6 +229,7 @@ class BodyWidgetState extends State<BodyWidget> {
                                     filterChipWidget(
                                       chipName: interests[i].name,
                                       id: interests[i].id,
+                                      sth: sth,
                                     )
                                 ],
                               )),

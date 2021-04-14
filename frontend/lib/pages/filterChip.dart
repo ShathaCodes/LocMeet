@@ -9,21 +9,21 @@ class FilterChipDisplay extends StatefulWidget {
 class _FilterChipDisplayState extends State<FilterChipDisplay> {
   @override
   Widget build(BuildContext context) {
+    // TODO: implement build
     return new Scaffold(
       appBar: AppBar(
-        //leading: IconButton(onPressed: () {}),
+        leading: IconButton(onPressed: () {}),
         title: Text(
           "Filter Result",
           style: TextStyle(
             color: Colors.white,
           ),
         ),
-        /*actions: <Widget>[
-         //IconButton(onPressed: () {
-            
-          //}
-          //),
-        ],*/
+        actions: <Widget>[
+          IconButton(onPressed: () {
+            //
+          }),
+        ],
       ),
       body: Column(
         children: <Widget>[
@@ -105,8 +105,10 @@ Widget _titleContainer(String myTitle) {
 class filterChipWidget extends StatefulWidget {
   final String chipName;
   final int id;
+  List sth = [];
 
-  filterChipWidget({Key key, this.chipName, this.id}) : super(key: key);
+  filterChipWidget({Key key, this.chipName, this.id, this.sth})
+      : super(key: key);
 
   @override
   _filterChipWidgetState createState() => _filterChipWidgetState();
@@ -129,8 +131,8 @@ class _filterChipWidgetState extends State<filterChipWidget> {
       onSelected: (isSelected) {
         setState(() {
           _isSelected = isSelected;
-          if (_isSelected == true) print(widget.id);
-          if (_isSelected == false) print('fuck yh');
+          if (_isSelected == true) widget.sth.add(widget.id);
+          if (_isSelected == false) widget.sth.remove(widget.id);
         });
       },
       selectedColor: blue_base,
