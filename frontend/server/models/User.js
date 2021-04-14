@@ -29,9 +29,9 @@ User.beforeUpdate((user, options) => {
 });
 
 User.generateAuthToken = async (nickname, clearTextPassword) => {
-    const user = await User.findOne({ where: { nickname } });
+    const user = await User.findOne({ where: { nickname }, include: Interest });
 
-    const jwtPayload = _.pick(user, ['id', 'nickname','location', 'isAdmin','interests']);
+    const jwtPayload = _.pick(user, ['id', 'nickname','location', 'isAdmin','Interests']);
 
     if (!user || !bcrypt.compareSync(clearTextPassword, user.password))
         throw new Error();

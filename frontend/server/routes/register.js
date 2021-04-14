@@ -5,18 +5,14 @@ const User = require('../models/User');
 
 const register = async (req, res) => {
     const user = req.body;
-    //const user = req.body;
     const interests = req.body.interests;
     delete user.interests;
-    console.log(interests);
-    console.log(user);
     try {
         
         const dbInstance = await User.create(user);
         for (const item of interests) { 
             if(Number.isInteger(parseInt(item))) {
             var id = item;
-            console.log(id);
             const inter = await Interest.findOne({ where: { id } });
             await dbInstance.addInterest(inter);
             }
