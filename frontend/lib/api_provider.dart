@@ -3,10 +3,11 @@ import 'dart:io';
 import 'dart:convert';
 import 'dart:async';
 import 'models/Interest.dart';
+import 'models/therapist.dart';
 import 'models/user.dart';
 
 class ApiProvider {
-  static const addr = "192.168.43.247";
+  static const addr = "172.21.32.1";
 
   ApiProvider();
   Future<List> getInterests(ip) async {
@@ -24,14 +25,26 @@ class ApiProvider {
     }
   }
 
-  Future<List> getUsers(ip) async {
-    String _url = 'http://$ip:3000/interests';
+  Future<List> getTherapists(ip) async {
+    String _url = 'http://$ip:3000/therapists';
 
     http.Response result = await http.get(_url);
     if (result.statusCode == HttpStatus.ok) {
       final jsonResponse = json.decode(result.body);
-      print(result.body);
-      List users = jsonResponse.map((i) => Interest.fromJson(i)).toList();
+      List therapists = jsonResponse.map((i) => Therapist.fromJson(i)).toList();
+      return therapists;
+    } else {
+      return [];
+    }
+  }
+
+  Future<List> getUsers(ip) async {
+    String _url = 'http://$ip:3000/users';
+
+    http.Response result = await http.get(_url);
+    if (result.statusCode == HttpStatus.ok) {
+      final jsonResponse = json.decode(result.body);
+      List users = jsonResponse.map((i) => User.fromJson(i)).toList();
       return users;
     } else {
       return null;
@@ -62,7 +75,7 @@ class ApiProvider {
   }
 
   Future<http.Response> editUser(User u, String ip, var interests) async {
-    String _url = 'http://$ip:3000/register';
+    String _url = 'http://$ip:3000/edit_user';
     List i = new List();
     for (var interest in u.interests) i.add(interest.id);
     var body = {
@@ -78,7 +91,7 @@ class ApiProvider {
   }
 
   Future<http.Response> deleteUser(int id, String ip) async {
-    String _url = 'http://$ip:3000/register';
+    String _url = 'http://$ip:3000/delete_user';
     var body = {
       "id": id,
     };
