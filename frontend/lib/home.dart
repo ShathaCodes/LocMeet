@@ -1,92 +1,114 @@
-import 'package:LoginFlutter/colors/colors.dart';
+import 'package:LoginFlutter/Calender/HomeCalendarPage.dart';
+import 'package:LoginFlutter/Therapist/therapist_list.dart';
+import 'package:LoginFlutter/ViewMap/HomePageMap.dart';
+import 'package:LoginFlutter/models/therapist.dart';
+import 'package:LoginFlutter/profil.dart';
 import 'package:flutter/material.dart';
-/*import 'package:tab_bar/ViewMap/ViewMapPage.dart';*/
-import 'ViewMap/HomePageMap.dart';
-import 'TabBar/MotionTabBarView.dart';
-import 'TabBar/MotionTabController.dart';
-import 'TabBar/motiontabbar.dart';
-import './Calender/HomeCalendarPage.dart';
-import './Profil/ProfilPage.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:line_icons/line_icons.dart';
+import './colors/colors.dart';
 
 class Home extends StatefulWidget {
-  @override
-  _HomeState createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  //CalendarController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    //_controller = CalendarController();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(child: MyHomePage()),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  Home({Key key, this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _HomeState createState() => _HomeState();
 }
 
-class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
-  MotionTabController _tabController;
+var tstyle = TextStyle(color: Colors.blue.withOpacity(0.6), fontSize: 50);
 
-  @override
-  void initState() {
-    super.initState();
-    _tabController = MotionTabController(initialIndex: 1, vsync: this);
-  }
+class _HomeState extends State<Home> {
+  int _index = 0;
+  var padding = EdgeInsets.symmetric(horizontal: 12, vertical: 5);
+  double gap = 5;
+  List<GButton> buttons = [];
+  List<String> list = ["Calendar", "Meeting", "Call", "Profile"];
+  List<Widget> text = [
+    HomeCalendarPage(),
+    HomePageMap(),
+    TherapistList(),
+    Profile(),
+  ];
 
-  @override
-  void dispose() {
-    super.dispose();
-    _tabController.dispose();
-  }
+  List<Color> colors = [
+    Color(0xFF3788BE),
+    Colors.teal,
+    Colors.grey[600],
+    Colors.teal
+  ];
+  List icons = [
+    LineIcons.calendar,
+    LineIcons.alternateMapMarker,
+    LineIcons.phone,
+    LineIcons.user
+  ];
 
+  PageController controller = PageController(initialPage: 0);
   @override
   Widget build(BuildContext context) {
+    buttons = [
+      for (int i = 0; i < text.length; i++)
+        GButton(
+          gap: gap,
+          icon: icons[i],
+          iconColor: blue_base,
+          iconActiveColor: blue_dark,
+          text: list[i],
+          textColor: blue_dark,
+          backgroundColor: blue_dark.withOpacity(0.2),
+          iconSize: 30,
+          padding: padding,
+        )
+    ];
+
     return Scaffold(
-        appBar: AppBar(title: Text(widget.title != null ? widget.title : '')
-            //Text(widget.title),
-            ),
-        bottomNavigationBar: MotionTabBar(
-          labels: ["Account", "Home", "Dashboard"],
-          initialSelectedTab: "Home",
-          tabIconColor: blue_light,
-          tabSelectedColor: blue_light,
-          onTabItemSelected: (int value) {
-            print(value);
-            setState(() {
-              _tabController.index = value;
-            });
-          },
-          icons: [Icons.account_box, Icons.home, Icons.menu],
-          textStyle: TextStyle(color: yellow_base),
+      extendBody: true,
+      appBar: AppBar(
+        title: Text("haja"),
+      ),
+      body: PageView(
+        controller: controller,
+        children: <Widget>[
+          for (int i = 0; i < text.length; i++) Center(child: text[i]),
+        ],
+        onPageChanged: (page) {
+          setState(() {
+            _index = page;
+          });
+        },
+      ),
+      bottomNavigationBar: SafeArea(
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(100)),
+              boxShadow: [
+                BoxShadow(
+                  spreadRadius: -10,
+                  blurRadius: 60,
+                  color: Colors.black.withOpacity(0.4),
+                  offset: Offset(0, 40),
+                )
+              ]),
+          padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 3),
+          child: GNav(
+            curve: Curves.fastOutSlowIn,
+            //tabShadow: [BoxShadow(blurRadius: 8, color: colors[_index])],
+            duration: Duration(microseconds: 900),
+            tabs: buttons,
+            selectedIndex: _index,
+            onTabChange: (index) {
+              setState(() {
+                _index = index;
+              });
+              controller.jumpToPage(index);
+            },
+          ),
         ),
-        body: MotionTabBarView(
-          controller: _tabController,
-          children: <Widget>[
-            Container(
-              child: ProfilPage(),
-            ),
-            Container(
-              child: HomePageMap(),
-            ),
-            Container(
-              child: HomeCalendarPage(),
-            ),
-          ],
-        ));
+      ),
+    );
   }
 }

@@ -2,7 +2,7 @@ import 'package:http/http.dart' as http;
 import 'dart:io';
 import 'dart:convert';
 import 'dart:async';
-import 'models/Interest.dart';
+import 'models/interest.dart';
 import 'models/therapist.dart';
 import 'models/user.dart';
 
