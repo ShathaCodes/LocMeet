@@ -1,7 +1,7 @@
 import 'package:LoginFlutter/colors/colors.dart';
 import 'package:flutter/material.dart';
-import '/ViewMap/ViewMapPage.dart';
-import '/Calender/HomeCalendarPage.dart';
+import '../ViewMap/ViewMapPage.dart';
+import '../Calender/HomeCalendarPage.dart';
 
 class HomePageMap extends StatefulWidget {
   @override
