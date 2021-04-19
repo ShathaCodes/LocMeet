@@ -6,6 +6,7 @@ import 'package:LoginFlutter/profil.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
+import './colors/colors.dart';
 
 class Home extends StatefulWidget {
   Home({Key key, this.title}) : super(key: key);
@@ -22,7 +23,7 @@ class _HomeState extends State<Home> {
   int _index = 0;
   var padding = EdgeInsets.symmetric(horizontal: 12, vertical: 5);
   double gap = 5;
-  List<GButton> faza = [];
+  List<GButton> buttons = [];
   List<String> list = ["Calendar", "Meeting", "Call", "Profile"];
   List<Widget> text = [
     HomeCalendarPage(),
@@ -47,16 +48,16 @@ class _HomeState extends State<Home> {
   PageController controller = PageController(initialPage: 0);
   @override
   Widget build(BuildContext context) {
-    faza = [
+    buttons = [
       for (int i = 0; i < text.length; i++)
         GButton(
           gap: gap,
           icon: icons[i],
-          iconColor: Color(0xFF3788BE),
-          iconActiveColor: Color(0xFF163E69),
+          iconColor: blue_base,
+          iconActiveColor: blue_dark,
           text: list[i],
-          textColor: Color(0xFF163E69),
-          backgroundColor: Color(0xFF163E69).withOpacity(0.2),
+          textColor: blue_dark,
+          backgroundColor: blue_dark.withOpacity(0.2),
           iconSize: 30,
           padding: padding,
         )
@@ -97,7 +98,7 @@ class _HomeState extends State<Home> {
             curve: Curves.fastOutSlowIn,
             //tabShadow: [BoxShadow(blurRadius: 8, color: colors[_index])],
             duration: Duration(microseconds: 900),
-            tabs: faza,
+            tabs: buttons,
             selectedIndex: _index,
             onTabChange: (index) {
               setState(() {
