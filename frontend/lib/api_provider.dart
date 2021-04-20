@@ -1,14 +1,14 @@
+import 'package:LoginFlutter/models/location.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io';
 import 'dart:convert';
 import 'dart:async';
-import 'models/interest.dart';
+import 'models/Interest.dart';
 import 'models/therapist.dart';
 import 'models/user.dart';
 
 class ApiProvider {
-  //static const addr = "172.21.32.1";
-  static const addr ="192.168.1.14";
+  static const addr = "172.29.80.1";
 
   ApiProvider();
   Future<List> getInterests(ip) async {
@@ -52,6 +52,34 @@ class ApiProvider {
     }
   }
 
+  Future<List> nearby(ip, lat, lng, dist) async {
+    var queryParameters = {'lat': '100', 'lng': '100', 'distance': '100'};
+
+    final uri = Uri.http("$ip:3000", "/nearby", queryParameters);
+    print(uri);
+    http.Response result = await http.get(uri);
+    print(result);
+    if (result.statusCode == HttpStatus.ok) {
+      final jsonResponse = json.decode(result.body);
+      List users = jsonResponse.map((i) => User.fromJson(i)).toList();
+      return users;
+    } else {
+      return null;
+    }
+  }
+
+  Future<http.Response> updateLocation(Location location, String ip) async {
+    String _url = 'http://$ip:3000/update_location';
+    var body = {
+      "id": location.id,
+      "lat": location.lat,
+      "lng": location.lng,
+      "show": location.show
+    };
+
+    return http.post(_url, body: body);
+  }
+
   Future<http.Response> doLogin(
       String nickname, String password, String ip) async {
     String _url = 'http://$ip:3000/login';
@@ -67,7 +95,6 @@ class ApiProvider {
     var body = {
       "nickname": nickname,
       "password": password,
-      'location': "",
       "isAdmin": "false",
       "interests": interests.toString()
     };
@@ -75,15 +102,14 @@ class ApiProvider {
     return http.post(_url, body: body);
   }
 
-  Future<http.Response> editUser(User u, String ip, var interests) async {
-    String _url = 'http://$ip:3000/edit_user';
+  Future<http.Response> updateUser(User u, String ip, var interests) async {
+    String _url = 'http://$ip:3000/update_user';
     List i = new List();
     for (var interest in u.interests) i.add(interest.id);
     var body = {
       "id": u.id,
       "nickname": u.nickname,
       "password": u.password,
-      'location': u.location,
       "isAdmin": u.isAdmin.toString(),
       "interests": i
     };

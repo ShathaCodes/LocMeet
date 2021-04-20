@@ -7,6 +7,8 @@ const users = require('../routes/users');
 const therapists = require('../routes/therapists');
 const add_therapist = require('../routes/add_therapist');
 const add_interest = require('../routes/add_interest');
+const nearby = require('../routes/nearby');
+const update_location = require('../routes/update_location');
 
 const router = {
     initialize: (app, passport) => {
@@ -21,6 +23,8 @@ const router = {
         app.get('/therapists', therapists);
         app.post('/add_interest', add_interest);
         app.post('/add_therapist', add_therapist);
+        app.get('/nearby', nearby);
+        app.post('/update_location', update_location);
 
     }
 };
