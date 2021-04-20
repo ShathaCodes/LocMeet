@@ -8,9 +8,7 @@ import 'package:LoginFlutter/components/rounded_input_field.dart';
 import 'package:LoginFlutter/components/rounded_password_field.dart';
 import 'package:LoginFlutter/constants.dart';
 
-import '/home.dart';
 import '/api_provider.dart';
-import '/pages/login.dart';
 import 'dart:async';
 import '/pages/filterChip.dart';
 
@@ -22,9 +20,6 @@ class Body extends StatefulWidget {
 }
 
 class BodyState extends State<Body> {
-  TextEditingController _crtlNickname = TextEditingController();
-  TextEditingController _crtlPassword = TextEditingController();
-  //TextEditingController _ctrlIp = TextEditingController();
   final success = SnackBar(content: Text('Login succeded!'));
   final error = SnackBar(content: Text('Wrong credentials!'));
   final serverError = SnackBar(content: Text('Can\'t connect to the server!'));
@@ -43,12 +38,12 @@ class BodyState extends State<Body> {
     if (_formKey.currentState.validate()) {
       if (ind != "") {
         try {
-          var res = await apiProvider.doRegistration(
-              _crtlNickname.text, _crtlPassword.text, ind, sth);
+          var res =
+              await apiProvider.doRegistration(nickname, password, ind, sth);
           if (res.statusCode == 200) {
             ScaffoldMessenger.of(context).showSnackBar(success);
             Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => Login()));
+                MaterialPageRoute(builder: (context) => LoginScreen()));
           } else {
             print(res.statusCode);
             ScaffoldMessenger.of(context).showSnackBar(error);
@@ -65,6 +60,8 @@ class BodyState extends State<Body> {
 
   List sth; //choosenInterest
   List interests;
+  String nickname = "";
+  String password = "";
 
   Future initialize() async {
     interests = [];
@@ -86,86 +83,97 @@ class BodyState extends State<Body> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Background(
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              "SIGNUP",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold, color: blue_dark, fontSize: 18),
-            ),
-            SizedBox(height: size.height * 0.03),
-            Stack(
-              alignment: Alignment.center,
-              children: <Widget>[
-                Positioned(
-                  child: Image.asset(
-                    "assets/images/logoPalette.png",
-                    width: size.width * 0.3,
-                  ),
-                ),
-              ],
-            ),
-            RoundedInputField(
-              hintText: "Your Email",
-              onChanged: (value) {},
-            ),
-            RoundedPasswordField(
-              onChanged: (value) {},
-            ),
-            SizedBox(height: size.height * 0.03),
-            Center(
-              child: Text(
-                "Your interestes",
-                textAlign: TextAlign.left,
-                style: TextStyle(color: blue_base, fontSize: 18),
+      child: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                "SIGNUP",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: blue_dark,
+                    fontSize: 18),
               ),
-            ),
-            SizedBox(height: size.height * 0.01),
-            Center(
-                child: Align(
-                    alignment: Alignment.center,
-                    child: Container(
-                      margin: const EdgeInsets.all(5.0),
-                      padding: const EdgeInsets.all(10.0),
-                      decoration:
-                          myBoxDecoration(), //             <--- BoxDecoration here
-                      child: Container(
-                          child: Wrap(
-                        spacing: 16.0,
-                        runSpacing: 4.0,
-                        children: <Widget>[
-                          for (int i = 0; i < interests.length; i++)
-                            filterChipWidget(
-                              chipName: interests[i].name,
-                              id: interests[i].id,
-                              sth: sth,
-                            )
-                        ],
-                      )),
-                    ))),
-            RoundedButton(
-              text: "SIGNUP",
-              press: () {},
-            ),
-            // SizedBox(height: size.height * 0.03),
-            AlreadyHaveAnAccountCheck(
-              login: false,
-              press: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return LoginScreen();
-                    },
+              SizedBox(height: size.height * 0.03),
+              Stack(
+                alignment: Alignment.center,
+                children: <Widget>[
+                  Positioned(
+                    child: Image.asset(
+                      "assets/images/logoPalette.png",
+                      width: size.width * 0.3,
+                    ),
                   ),
-                );
-              },
-            ),
-            OrDivider(),
+                ],
+              ),
+              RoundedInputField(
+                  hintText: "Your nickname",
+                  onChanged: (value) {
+                    setState(() {
+                      nickname = value;
+                    });
+                  }),
+              RoundedPasswordField(
+                onChanged: (value) {
+                  setState(() {
+                    password = value;
+                  });
+                },
+              ),
+              SizedBox(height: size.height * 0.03),
+              Center(
+                child: Text(
+                  "Your interestes",
+                  textAlign: TextAlign.left,
+                  style: TextStyle(color: blue_base, fontSize: 18),
+                ),
+              ),
+              SizedBox(height: size.height * 0.01),
+              Center(
+                  child: Align(
+                      alignment: Alignment.center,
+                      child: Container(
+                        margin: const EdgeInsets.all(5.0),
+                        padding: const EdgeInsets.all(10.0),
+                        decoration:
+                            myBoxDecoration(), //             <--- BoxDecoration here
+                        child: Container(
+                            child: Wrap(
+                          spacing: 16.0,
+                          runSpacing: 4.0,
+                          children: <Widget>[
+                            for (int i = 0; i < interests.length; i++)
+                              filterChipWidget(
+                                chipName: interests[i].name,
+                                id: interests[i].id,
+                                sth: sth,
+                              )
+                          ],
+                        )),
+                      ))),
+              RoundedButton(
+                text: "SIGNUP",
+                press: () => doRegistration(),
+              ),
+              // SizedBox(height: size.height * 0.03),
+              AlreadyHaveAnAccountCheck(
+                login: false,
+                press: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return LoginScreen();
+                      },
+                    ),
+                  );
+                },
+              ),
+              OrDivider(),
 
-            /*Row(
+              /*Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 SocalIcon(
@@ -187,7 +195,8 @@ class BodyState extends State<Body> {
                 ),
               ],
             )*/
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -197,7 +206,7 @@ class BodyState extends State<Body> {
     return BoxDecoration(
       border: Border.all(width: 3.0, color: jaunepastel.withOpacity(0.5)),
       borderRadius: BorderRadius.all(
-          Radius.circular(6.0) //                 <--- border radius here
+          Radius.circular(10.0) //                 <--- border radius here
           ),
     );
   }
