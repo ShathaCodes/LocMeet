@@ -1,3 +1,5 @@
+import 'package:LoginFlutter/api_provider.dart';
+import 'package:LoginFlutter/models/user.dart';
 import 'package:flutter/material.dart';
 import './../colors/colors.dart';
 import '../token_service.dart';
@@ -29,26 +31,31 @@ class BodyWidget extends StatefulWidget {
 }
 
 class BodyWidgetState extends State<BodyWidget> {
-  var nickname;
-  var intrest;
+  User user = new User();
+  List u;
 
   @override
   void initState() {
-    getTokenData();
+    testtt();
     super.initState();
   }
 
-  getTokenData() async {
+  testtt() async {
+    user.getTokenData();
+    ApiProvider apiProvider = ApiProvider();
+    final ind = ApiProvider.addr;
+    //u = await apiProvider.nearby(ind, 15, 20, 100);
+    u = await apiProvider.getUsers(ind);
     setState(() {
-      TokenService tokenService = new TokenService();
-      tokenService.getDecodedToken().then((decodedToken) => {
-            this.nickname = decodedToken["nickname"],
-          });
+      user = user;
+      u = u;
     });
+    print(u);
   }
 
   @override
   Widget build(BuildContext context) {
+    var nickname = user.nickname;
     return Scaffold(
         body: Container(
       child: Row(
@@ -57,12 +64,7 @@ class BodyWidgetState extends State<BodyWidget> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                ' Hello $nickname !',
-                style: TextStyle(color: dark, fontFamily: 'Mont', fontSize: 25),
-              )
-            ],
+            children: <Widget>[],
           )
         ],
       ),
