@@ -71,7 +71,7 @@ class _HomeState extends State<Home> {
         backgroundColor: blue_base,
         shadowColor: jaunepastel,
         foregroundColor: jaunepastel,
-        title: Text("haja", style: TextStyle(color: jaunepastel)),
+        // title: Text("haja", style: TextStyle(color: jaunepastel)),
       ),
       body: PageView(
         controller: controller,

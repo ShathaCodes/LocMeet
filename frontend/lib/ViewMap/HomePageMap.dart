@@ -23,8 +23,8 @@ class _HomePageMapState extends State<HomePageMap> {
     return Scaffold(
         body: ViewMapPage(),
         floatingActionButton:
-            Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-          FloatingActionButton(
+            Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+          /*FloatingActionButton(
             onPressed: () => Navigator.push(context,
                 MaterialPageRoute(builder: (context) => HomeCalendarPage())),
             /* onPressed: () {
@@ -44,9 +44,9 @@ class _HomePageMapState extends State<HomePageMap> {
                   )),
             ),
             heroTag: null,
-          ),
+          ),*/
           SizedBox(
-            height: 10,
+            height: 500,
           ),
           FloatingActionButton(
             onPressed: () {
@@ -61,33 +61,11 @@ class _HomePageMapState extends State<HomePageMap> {
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   gradient: LinearGradient(
-                    colors: [jaunepastel, jaunepastel],
+                    colors: [blue_base],
                   )),
             ),
             heroTag: null,
           )
-        ])
-
-        /*floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          setState(() {
-            //counter = counter + 1;
-          });
-        },
-        child: Container(
-          width: 60,
-          height: 60,
-          child: Icon(Icons.search),
-          decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              gradient: LinearGradient(
-                colors: [yellow_base, yellow_base, Colors.grey[200]],
-              )
-              ),
-        
-        ),
-      ),*/
-
-        );
+        ]));
   }
 }
