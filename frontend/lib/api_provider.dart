@@ -7,7 +7,8 @@ import 'models/therapist.dart';
 import 'models/user.dart';
 
 class ApiProvider {
-  static const addr = "172.21.32.1";
+  //static const addr = "172.21.32.1";
+  static const addr ="192.168.1.14";
 
   ApiProvider();
   Future<List> getInterests(ip) async {

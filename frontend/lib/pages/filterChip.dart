@@ -1,5 +1,7 @@
+import 'package:LoginFlutter/constants.dart';
 import 'package:flutter/material.dart';
-import './../colors/colors.dart';
+//import './../colors/colors.dart';
+import 'package:LoginFlutter/constants.dart';
 
 class FilterChipDisplay extends StatefulWidget {
   @override
@@ -121,13 +123,13 @@ class _filterChipWidgetState extends State<filterChipWidget> {
   Widget build(BuildContext context) {
     return FilterChip(
       label: Text(widget.chipName),
-      labelStyle:
-          TextStyle(color: dark, fontSize: 16.0, fontWeight: FontWeight.bold),
+      labelStyle: TextStyle(
+          color: blue_base, fontSize: 16.0, fontWeight: FontWeight.bold),
       selected: _isSelected,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(30.0),
       ),
-      backgroundColor: Color(0xFF448AFF),
+      backgroundColor: jaunepastel.withOpacity(0.3),
       onSelected: (isSelected) {
         setState(() {
           _isSelected = isSelected;
@@ -135,7 +137,7 @@ class _filterChipWidgetState extends State<filterChipWidget> {
           if (_isSelected == false) widget.sth.remove(widget.id);
         });
       },
-      selectedColor: blue_base,
+      selectedColor: jaunepastel,
     );
   }
 }
