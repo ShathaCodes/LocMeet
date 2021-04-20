@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import './pages/index.dart';
 //import './colors/colors.dart';
+//import '/Screens/Welcome/welcome_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -11,6 +12,7 @@ class MyApp extends StatelessWidget {
         title: 'Node server demo',
         debugShowCheckedModeBanner: false,
         home: Index());
+    //home: WelcomeScreen());
   }
 }
 
@@ -21,7 +23,7 @@ import 'TabBar/MotionTabBarView.dart';
 import 'TabBar/MotionTabController.dart';
 import 'TabBar/motiontabbar.dart';
 import './Calender/HomeCalendarPage.dart';
-import './Profil/ProfilPage.dart';
+import './Profil/ProfilPage.dart';//
 
 void main() => runApp(MyApp());
 

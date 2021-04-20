@@ -1,4 +1,5 @@
-import 'package:LoginFlutter/colors/colors.dart';
+//import 'package:LoginFlutter/colors/colors.dart';
+import 'package:LoginFlutter/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -35,7 +36,7 @@ class _HomeCalendarPageState extends State<HomeCalendarPage> {
               headerStyle: HeaderStyle(
                 centerHeaderTitle: true,
                 formatButtonDecoration: BoxDecoration(
-                  color: blue_dark,
+                  color: jaunepastel,
                   borderRadius: BorderRadius.circular(22.0),
                 ),
                 formatButtonTextStyle: TextStyle(color: Colors.white),
@@ -50,7 +51,7 @@ class _HomeCalendarPageState extends State<HomeCalendarPage> {
                     margin: const EdgeInsets.all(5.0),
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                        color: yellow_base,
+                        color: blue_base,
                         borderRadius: BorderRadius.circular(8.0)),
                     child: Text(
                       date.day.toString(),

@@ -1,4 +1,5 @@
-import 'package:LoginFlutter/colors/colors.dart';
+//import 'package:LoginFlutter/colors/colors.dart';
+import 'package:LoginFlutter/constants.dart';
 import 'package:flutter/material.dart';
 import '../ViewMap/ViewMapPage.dart';
 import '../Calender/HomeCalendarPage.dart';
@@ -39,7 +40,7 @@ class _HomePageMapState extends State<HomePageMap> {
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   gradient: LinearGradient(
-                    colors: [yellow_base, yellow_base, Colors.grey[200]],
+                    colors: [jaunepastel, jaunepastel],
                   )),
             ),
             heroTag: null,
@@ -60,7 +61,7 @@ class _HomePageMapState extends State<HomePageMap> {
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   gradient: LinearGradient(
-                    colors: [yellow_base, yellow_base, Colors.grey[200]],
+                    colors: [jaunepastel, jaunepastel],
                   )),
             ),
             heroTag: null,

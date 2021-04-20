@@ -1,5 +1,28 @@
 import 'package:flutter/material.dart';
-import './../colors/colors.dart';
+
+import 'package:LoginFlutter/Screens/Welcome/components/body.dart';
+
+class Index extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'LoginFlutter',
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        body: Body(),
+      ),
+    );
+  }
+
+  /*
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Body(),
+    );
+  }*/
+}
+/*import './../colors/colors.dart';
 import '../pages/register.dart';
 import '../pages/login.dart';
 
@@ -173,4 +196,4 @@ class BodyWidgetState extends State<BodyWidget> {
       ),
     );
   }
-}
+}*/
