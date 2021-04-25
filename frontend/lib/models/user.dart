@@ -21,19 +21,22 @@ class User {
     this.isAdmin = parsedJson['isAdmin'];
     this.interests =
         parsedJson['Interests'].map((i) => Interest.fromJson(i)).toList();
-    this.location = parsedJson['Location'].fromJson();
+    if (parsedJson['Location'] != null)
+      this.location = Location.fromJson(parsedJson['Location']);
   }
 
-  void getTokenData() async {
+  Future<User> getTokenData() async {
     TokenService tokenService = new TokenService();
+    User u = new User();
     tokenService.getDecodedToken().then((decodedToken) => {
-          this.nickname = decodedToken["nickname"],
-          this.id = decodedToken["id"],
-          this.isAdmin = decodedToken["isAdmin"],
-          this.location = Location.fromJson(decodedToken["Location"]),
-          this.interests = decodedToken['Interests']
+          u.nickname = decodedToken["nickname"],
+          u.id = decodedToken["id"],
+          u.isAdmin = decodedToken["isAdmin"],
+          u.location = Location.fromJson(decodedToken["Location"]),
+          u.interests = decodedToken['Interests']
               .map((i) => Interest.fromJson(i))
               .toList()
         });
+    return u;
   }
 }
