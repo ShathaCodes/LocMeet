@@ -8,7 +8,7 @@ import 'models/therapist.dart';
 import 'models/user.dart';
 
 class ApiProvider {
-  static const addr = "172.29.80.1";
+  static const addr = "198.168.10.9";
 
   ApiProvider();
   Future<List> getInterests(ip) async {
@@ -45,6 +45,7 @@ class ApiProvider {
     http.Response result = await http.get(_url);
     if (result.statusCode == HttpStatus.ok) {
       final jsonResponse = json.decode(result.body);
+      print(jsonResponse);
       List users = jsonResponse.map((i) => User.fromJson(i)).toList();
       return users;
     } else {
@@ -53,14 +54,20 @@ class ApiProvider {
   }
 
   Future<List> nearby(ip, lat, lng, dist) async {
-    var queryParameters = {'lat': '100', 'lng': '100', 'distance': '100'};
+    var queryParameters = {
+      'lat': lat.toString(),
+      'lng': lng.toString(),
+      'distance': dist.toString()
+    };
 
     final uri = Uri.http("$ip:3000", "/nearby", queryParameters);
     print(uri);
     http.Response result = await http.get(uri);
-    print(result);
+
+    print("what");
     if (result.statusCode == HttpStatus.ok) {
-      final jsonResponse = json.decode(result.body);
+      List<dynamic> jsonResponse = json.decode(result.body);
+      print(jsonResponse);
       List users = jsonResponse.map((i) => User.fromJson(i)).toList();
       return users;
     } else {
@@ -71,10 +78,10 @@ class ApiProvider {
   Future<http.Response> updateLocation(Location location, String ip) async {
     String _url = 'http://$ip:3000/update_location';
     var body = {
-      "id": location.id,
-      "lat": location.lat,
-      "lng": location.lng,
-      "show": location.show
+      "id": location.id.toString(),
+      "lat": location.lat.toString(),
+      "lng": location.lng.toString(),
+      "show": location.show.toString(),
     };
 
     return http.post(_url, body: body);
