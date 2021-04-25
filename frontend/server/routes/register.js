@@ -5,18 +5,20 @@ const Location = require('../models/Location');
 
 const register = async (req, res) => {
     const user = req.body;
-    const interests = req.body.interests;
+    const interests = JSON.parse(req.body.interests);
     delete user.interests;
     try {
         
         const dbInstance = await User.create(user);
         for (const item of interests) { 
-            if(Number.isInteger(parseInt(item))) {
-            var id = item;
-            const inter = await Interest.findOne({ where: { id } });
+            //if(Number.isInteger(parseInt(item))) {
+            console.log(item);
+            const inter = await Interest.findOne({ where: { name:item } });
+            console.log(inter);
             await dbInstance.addInterest(inter);
-            }
+            //}
           }
+          
           var loc = await  Location.create({
             lat:0.5,
             lng:0.7,

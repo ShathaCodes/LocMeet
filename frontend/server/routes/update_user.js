@@ -19,11 +19,10 @@ const update_user = async (req, res) => {
           await user.removeInterest(inter);
         }
         for (const item of interests) { 
-          if(Number.isInteger(parseInt(item))) {
           console.log(item);
-          const inter = await Interest.findOne({ where: { id:item } });
+          const inter = await Interest.findOne({ where: { name:item } });
+          console.log(inter);
           await user.addInterest(inter);
-          }
         }
 
         await user.save();     

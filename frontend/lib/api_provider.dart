@@ -8,7 +8,7 @@ import 'models/therapist.dart';
 import 'models/user.dart';
 
 class ApiProvider {
-  static const addr = "198.168.10.9";
+  static const addr = "192.168.1.9";
 
   ApiProvider();
   Future<List> getInterests(ip) async {
@@ -103,25 +103,33 @@ class ApiProvider {
       "nickname": nickname,
       "password": password,
       "isAdmin": "false",
-      "interests": interests.toString()
+      "interests": json.encode(interests)
     };
 
-    return http.post(_url, body: body);
+    return http.post(
+      _url,
+      body: body,
+      headers: {"Accept": "application/json"},
+    );
   }
 
-  Future<http.Response> updateUser(User u, String ip, var interests) async {
+  Future<http.Response> updateUser(User u, String ip) async {
     String _url = 'http://$ip:3000/update_user';
     List i = new List();
-    for (var interest in u.interests) i.add(interest.id);
+    for (var interest in u.interests) i.add(interest.name);
     var body = {
-      "id": u.id,
+      "id": u.id.toString(),
       "nickname": u.nickname,
       "password": u.password,
       "isAdmin": u.isAdmin.toString(),
-      "interests": i
+      "interests": json.encode(i)
     };
 
-    return http.post(_url, body: body);
+    return http.post(
+      _url,
+      body: body,
+      headers: {"Accept": "application/json"},
+    );
   }
 
   Future<http.Response> deleteUser(int id, String ip) async {
