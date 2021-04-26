@@ -10,7 +10,7 @@ class User {
   String password;
   bool isAdmin;
   List interests = new List();
-  Location location;
+  LocationUser location;
   User();
 
   //User(this.id, this.nickname, this.password, this.isAdmin);
@@ -22,7 +22,7 @@ class User {
     this.interests =
         parsedJson['Interests'].map((i) => Interest.fromJson(i)).toList();
     if (parsedJson['Location'] != null)
-      this.location = Location.fromJson(parsedJson['Location']);
+      this.location = LocationUser.fromJson(parsedJson['Location']);
   }
 
   Future<User> getTokenData() async {
@@ -32,7 +32,7 @@ class User {
           u.nickname = decodedToken["nickname"],
           u.id = decodedToken["id"],
           u.isAdmin = decodedToken["isAdmin"],
-          u.location = Location.fromJson(decodedToken["Location"]),
+          u.location = LocationUser.fromJson(decodedToken["Location"]),
           u.interests = decodedToken['Interests']
               .map((i) => Interest.fromJson(i))
               .toList()

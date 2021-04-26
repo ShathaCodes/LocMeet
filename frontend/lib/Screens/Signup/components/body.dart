@@ -1,3 +1,6 @@
+import 'package:LoginFlutter/Screens/Signup/components/multi_select_dialog.dart';
+import 'package:LoginFlutter/models/interest.dart';
+
 import 'package:flutter/material.dart';
 import 'package:LoginFlutter/Screens/Login/login_screen.dart';
 import 'package:LoginFlutter/Screens/Signup/components/background.dart';
@@ -62,14 +65,22 @@ class BodyState extends State<Body> {
   List interests;
   String nickname = "";
   String password = "";
+  List<String> interest;
+
+  MultiSelectDialog multi;
 
   Future initialize() async {
     interests = [];
     sth = List();
-    //List();
     interests = await apiProvider.getInterests(ApiProvider.addr);
+    interest = [];
+    for (int i = 0; i < interests.length; i++) interest.add(interests[i].name);
+    multi = new MultiSelectDialog(
+        question: Text('Select Your Flavours'), answers: interest);
+
     setState(() {
       interests = interests;
+      interest = interest;
     });
   }
 
@@ -80,6 +91,7 @@ class BodyState extends State<Body> {
   }
 
   @override
+  List<String> flavours = [];
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Background(
@@ -123,40 +135,28 @@ class BodyState extends State<Body> {
                 },
               ),
               SizedBox(height: size.height * 0.03),
-              Center(
-                child: Text(
-                  "Your interestes",
-                  textAlign: TextAlign.left,
-                  style: TextStyle(color: blue_base, fontSize: 18),
-                ),
-              ),
-              SizedBox(height: size.height * 0.01),
-              Center(
-                  child: Align(
-                      alignment: Alignment.center,
-                      child: Container(
-                        margin: const EdgeInsets.all(5.0),
-                        padding: const EdgeInsets.all(10.0),
-                        decoration:
-                            myBoxDecoration(), //             <--- BoxDecoration here
-                        child: Container(
-                            child: Wrap(
-                          spacing: 16.0,
-                          runSpacing: 4.0,
-                          children: <Widget>[
-                            for (int i = 0; i < interests.length; i++)
-                              filterChipWidget(
-                                chipName: interests[i].name,
-                                id: interests[i].id,
-                                sth: sth,
-                              )
-                          ],
-                        )),
-                      ))),
+
+//******************************Box
+
               RoundedButton(
-                text: "SIGNUP",
-                press: () => doRegistration(),
-              ),
+                  text: "SIGNUP",
+                  //press: () => doRegistration(),
+                  press: () async {
+                    flavours = await showDialog<List<String>>(
+                            context: context,
+                            builder: (_) => MultiSelectDialog(
+                                question: Text('Select Your Interests',
+                                    style: TextStyle(color: blue_dark)),
+                                answers: interest)) ??
+                        [];
+                    print(flavours);
+                    setState(() {
+                      sth = flavours;
+                    });
+                    doRegistration();
+                    // Logic to save selected flavours in the database
+                  }),
+
               // SizedBox(height: size.height * 0.03),
               AlreadyHaveAnAccountCheck(
                 login: false,
@@ -172,29 +172,6 @@ class BodyState extends State<Body> {
                 },
               ),
               OrDivider(),
-
-              /*Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SocalIcon(
-                  iconSrc: "assets/icons/facebook.svg",
-
-                  // press: () {},
-                  press: () => Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => Home())),
-                ),
-                SocalIcon(
-                  iconSrc: "assets/icons/twitter.svg",
-                  press: () => Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => Home())),
-                ),
-                SocalIcon(
-                  iconSrc: "assets/icons/google-plus.svg",
-                  press: () => Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => Home())),
-                ),
-              ],
-            )*/
             ],
           ),
         ),
