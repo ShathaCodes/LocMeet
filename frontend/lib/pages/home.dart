@@ -37,7 +37,7 @@ class BodyWidget extends StatefulWidget {
 class BodyWidgetState extends State<BodyWidget> {
   User user = new User();
   Future<User> ur;
-  Location loc;
+  LocationUser loc;
   List u;
   Timer timer1;
   Timer timer2;

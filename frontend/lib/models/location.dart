@@ -1,10 +1,11 @@
-class Location {
+class LocationUser {
   int id;
   double lat;
   double lng;
   bool show;
+  LocationUser();
 
-  Location.fromJson(Map<String, dynamic> parsedJson) {
+  LocationUser.fromJson(Map<String, dynamic> parsedJson) {
     this.id = parsedJson['id'];
     this.lat = parsedJson['lat'].toDouble();
     this.lng = parsedJson['lng'].toDouble();
