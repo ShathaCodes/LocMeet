@@ -8,7 +8,6 @@ import 'package:location/location.dart';
 import "package:latlong/latlong.dart";
 import 'package:LoginFlutter/models/user.dart';
 
-import 'package:LoginFlutter/models/location.dart';
 import 'package:LoginFlutter/api_provider.dart';
 
 class HomePageMap extends StatefulWidget {
@@ -21,40 +20,33 @@ class HomePageMap extends StatefulWidget {
 class _HomePageMapState extends State<HomePageMap> {
   User user = new User();
   ApiProvider apiProvider;
-  //LocationUser location = new LocationUser();
   LocationUser location;
 
   static var latitudepos;
   static var longitudepos;
-
-  /*testtt() async {
-    print("test tekhdem");
-    user = await user.getTokenData();
-    apiProvider = ApiProvider();
-    location.lat = latitudepos;
-    location.lng = longitudepos;
-    print("hethom location updated");
-    print(location.lng);
-    print(location.lat);
-    apiProvider.updateLocation(location, "localhost");
-    user.location = location;
-    apiProvider.updateUser(user, "localhost");
+  List liste;
+  Future _getNearby() async {
+    liste = await apiProvider.nearby(
+        ApiProvider.addr, latitudepos, longitudepos, 2);
     setState(() {
-      user = user;
+      liste = liste;
     });
-  }*/
+  }
 
   Future<void> _getCurrentUserLocation() async {
     final locData = await Location().getLocation();
+    print("rcuperation des donnees ");
     /*print(locData.latitude);
     print(locData.longitude);*/
-    print("afffichhiiii");
+    //print("afffichhiiii");
     latitudepos = locData.latitude;
     longitudepos = locData.longitude;
-    print("hethom location updated");
+    // print("hethom location updated");
     print(latitudepos);
     print(longitudepos);
-
+    //liste.toString();
+    //print(liste.);
+    print("update location");
     user = await user.getTokenData();
     location = user.location;
     apiProvider = ApiProvider();
@@ -62,6 +54,15 @@ class _HomePageMapState extends State<HomePageMap> {
     location.lng = longitudepos;
 
     apiProvider.updateLocation(location, ApiProvider.addr);
+    print("rcuperation de la liste ");
+    _getNearby();
+    print(liste);
+    var user1 = liste.first;
+    var location1 = user.location;
+    print(user1.id);
+    print(location1.lat);
+    print(location1.lng);
+    print(liste.length);
 
     //user.location = location;
     //apiProvider.updateUser(user, ApiProvider.addr);
@@ -71,13 +72,16 @@ class _HomePageMapState extends State<HomePageMap> {
       latitudepos = locData.latitude;
       longitudepos = locData.longitude;
       user = user;
+      liste = liste;
     });
   }
 
   @override
   void initState() {
-    super.initState();
     _getCurrentUserLocation();
+    //_getNearby();
+    super.initState();
+
     //testtt();
   }
 

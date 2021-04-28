@@ -1,4 +1,5 @@
-import 'package:LoginFlutter/colors/colors.dart';
+//import 'package:LoginFlutter/colors/colors.dart';
+import 'package:LoginFlutter/constants.dart';
 import 'package:LoginFlutter/models/therapist.dart';
 import 'package:flutter/material.dart';
 
@@ -19,9 +20,6 @@ class _TherapistListState extends State<TherapistList> {
     therapists = await apiProvider.getTherapists(ApiProvider.addr);
     setState(() {
       therapists = therapists;
-      showemail = new List(therapists.length);
-      showloc = new List(therapists.length);
-      shownum = new List(therapists.length);
     });
   }
 
@@ -31,59 +29,12 @@ class _TherapistListState extends State<TherapistList> {
     super.initState();
   }
 
-  Widget showdetails(String details, int i) {
-    return Row(
-        mainAxisAlignment: (i == 0)
-            ? MainAxisAlignment.start
-            : (i == 1)
-                ? MainAxisAlignment.center
-                : MainAxisAlignment.end,
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.fromLTRB(5, 10, 5, 5),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(25),
-              color: blue_base,
-            ),
-            child: Center(
-              child: Text(
-                details,
-                style: new TextStyle(
-                    fontFamily: 'calibre',
-                    letterSpacing: 1.5,
-                    fontSize: 20,
-                    color: Colors.white),
-              ),
-            ),
-          )
-        ]);
-  }
-
-  List<bool> shownum;
-  List<bool> showloc;
-  List<bool> showemail;
-
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final heigth = MediaQuery.of(context).size.height;
     return new Scaffold(
       body: Column(children: <Widget>[
-        Padding(
-          padding:
-              EdgeInsets.only(top: heigth / 14, left: width / 20, bottom: 15),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                "Call one of our trusty therapists!",
-                style: new TextStyle(
-                    fontFamily: 'Mont', fontSize: 20, color: blue_dark),
-              ),
-            ],
-          ),
-        ),
         if (therapists != null)
           Expanded(
             child: ListView.builder(
@@ -91,161 +42,305 @@ class _TherapistListState extends State<TherapistList> {
                 itemCount: therapists.length,
                 itemBuilder: (context, index) {
                   return Container(
-                      padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                      height: double.maxFinite,
-                      width: width,
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                        child: Column(
-                            //crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
+                    height: heigth,
+                    width: width,
+                    padding: EdgeInsets.fromLTRB(
+                        heigth / 80, heigth / 80, heigth / 80, heigth / 80),
+                    child: Stack(
+                      children: [
+                        Column(
+                          children: [
+                            Expanded(
+                              flex: (heigth / 30).round(),
+                              child: Container(
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                  begin: Alignment.bottomLeft,
+                                  end: Alignment.topLeft,
+                                  colors: [
+                                    jaunepastel,
+                                    blue_base,
+                                  ],
+                                )),
+                                child: Column(children: [
+                                  SizedBox(
+                                    height: heigth / 50,
+                                  ),
+                                  CircleAvatar(
+                                    radius: heigth / 12,
+                                    backgroundImage:
+                                        AssetImage('assets/images/girl.png'),
+                                    backgroundColor: Colors.white,
+                                  ),
+                                  SizedBox(
+                                    height: heigth / 100,
+                                  ),
+                                  SizedBox(
+                                    width: heigth / 100,
+                                  ),
+                                  Text(
+                                    therapists[index].name,
+                                  ),
+                                  SizedBox(
+                                    height: heigth / 250,
+                                  ),
                                   Center(
-                                    child: Image.asset(
-                                      'assets/images/girl.png',
-                                      scale: 4,
+                                      child: Text(
+                                    "gratuadet in france Paris",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12.0,
                                     ),
-                                  ),
-                                ],
+                                  )),
+                                  /*Center(
+                                      child: Text(
+                                    therapists[index].description,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12.0,
+                                    ),
+                                  )),*/
+                                ]),
                               ),
-                              SizedBox(
-                                height: 15,
+                            ),
+                            Expanded(
+                              flex: (heigth / 25).round(),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                  begin: Alignment.bottomLeft,
+                                  end: Alignment.topLeft,
+                                  colors: [
+                                    jaunepastel,
+                                    jaunepastel,
+                                  ],
+                                )),
+                                //color: Colors.grey[200],
+                                child: Center(
+                                    child: Card(
+                                        //color: Colors.grey[100],
+                                        //margin: EdgeInsets.fromLTRB( 0.0, 45.0, 0.0, 0.0),
+                                        child: Container(
+                                            width: width / 1.5,
+                                            height: heigth / 2,
+                                            child: Padding(
+                                              padding:
+                                                  EdgeInsets.all(heigth / 40),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Divider(
+                                                    color: Colors.grey[300],
+                                                  ),
+                                                  SizedBox(
+                                                    height: heigth / 50, //10.0,
+                                                  ),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: [
+                                                      Icon(
+                                                        Icons.phone,
+                                                        color: blue_base,
+                                                        size: heigth / 22,
+                                                      ),
+                                                      SizedBox(
+                                                        width: 20.0,
+                                                      ),
+                                                      SizedBox(
+                                                        height: heigth / 50,
+                                                      ),
+                                                      Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Text(
+                                                            "Phone",
+                                                            style: TextStyle(
+                                                              fontSize: 15.0,
+                                                              //color: blue_dark,
+                                                            ),
+                                                          ),
+                                                          Text(
+                                                            therapists[index]
+                                                                .number
+                                                                .toString(),
+                                                            style: TextStyle(
+                                                              fontSize: 12.0,
+                                                              color: Colors
+                                                                  .grey[400],
+                                                            ),
+                                                          )
+                                                        ],
+                                                      )
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    height: heigth / 20,
+                                                  ),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: [
+                                                      Icon(
+                                                        Icons.home,
+                                                        color: blue_base,
+                                                        size: heigth / 22,
+                                                      ),
+                                                      SizedBox(
+                                                        width: 20.0,
+                                                      ),
+                                                      SizedBox(
+                                                        height: heigth / 50,
+                                                      ),
+                                                      Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Text(
+                                                            "Adresse",
+                                                            style: TextStyle(
+                                                              fontSize: 15.0,
+                                                            ),
+                                                          ),
+                                                          Text(
+                                                            therapists[index]
+                                                                .location,
+                                                            style: TextStyle(
+                                                              fontSize: 12.0,
+                                                              color: Colors
+                                                                  .grey[400],
+                                                            ),
+                                                          )
+                                                        ],
+                                                      )
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    height: heigth / 20,
+                                                  ),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: [
+                                                      Icon(
+                                                        Icons.mail,
+                                                        color: blue_base,
+                                                        size: heigth / 22,
+                                                      ),
+                                                      SizedBox(
+                                                        width: 20.0,
+                                                      ),
+                                                      SizedBox(
+                                                        height: heigth / 50,
+                                                      ),
+                                                      Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Text(
+                                                            "Email",
+                                                            style: TextStyle(
+                                                              fontSize: 15.0,
+                                                            ),
+                                                          ),
+                                                          Text(
+                                                            therapists[index]
+                                                                .email,
+                                                            style: TextStyle(
+                                                              fontSize: 12.0,
+                                                              color: Colors
+                                                                  .grey[400],
+                                                            ),
+                                                          )
+                                                        ],
+                                                      )
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            )))),
                               ),
-                              Text(
-                                therapists[index].name,
-                                style: new TextStyle(
-                                    fontFamily: 'calibre',
-                                    letterSpacing: 1.5,
-                                    fontSize: 15,
-                                    color: dark),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Row(
+                            ),
+                          ],
+                        ),
+                        Positioned(
+                            top: heigth * 0.28,
+                            left: width / 20,
+                            right: width / 20,
+                            child: Card(
+                                child: Padding(
+                              padding: EdgeInsets.all(heigth / 100),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        showemail[index] = false;
-                                        showloc[index] = false;
-                                        if (shownum[index] == true)
-                                          shownum[index] = false;
-                                        else
-                                          shownum[index] = true;
-                                      });
-                                    },
-                                    child: new Align(
-                                        child: Container(
-                                      margin: EdgeInsets.only(left: 30),
-                                      padding: EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(100),
-                                        color: blue_base,
-                                      ),
-                                      child: Icon(Icons.call,
-                                          color: Colors.white, size: 35),
-                                    )),
-                                  ),
-                                  SizedBox(
-                                    width: (width - 170) / 3 - 30,
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        showemail[index] = false;
-                                        shownum[index] = false;
-                                        if (showloc[index] == true)
-                                          showloc[index] = false;
-                                        else
-                                          showloc[index] = true;
-                                      });
-                                    },
-                                    child: new Align(
-                                        child: Container(
-                                      padding: EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(100),
-                                        color: blue_base,
-                                      ),
-                                      child: Icon(Icons.place,
-                                          color: Colors.white, size: 35),
-                                    )),
-                                  ),
-                                  SizedBox(
-                                    width: (width - 170) / 3 - 30,
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        shownum[index] = false;
-                                        showloc[index] = false;
-                                        if (showemail[index] == true)
-                                          showemail[index] = false;
-                                        else
-                                          showemail[index] = true;
-                                      });
-                                    },
-                                    child: new Align(
-                                        alignment: Alignment.center,
-                                        child: Container(
-                                          padding: EdgeInsets.all(10),
-                                          margin: EdgeInsets.only(right: 30),
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(100),
-                                            color: blue_base,
-                                          ),
-                                          child: Icon(Icons.email,
-                                              color: Colors.white, size: 35),
-                                        )),
-                                  ),
-                                ],
-                              ),
-                              Stack(
-                                children: [
-                                  Column(
+                                  Container(
+                                      child: Column(
                                     children: [
-                                      SizedBox(
-                                        height: 25,
+                                      Text(
+                                        'Battles',
+                                        style: TextStyle(
+                                            color: Colors.grey[400],
+                                            fontSize: 14.0),
                                       ),
-                                      Container(
-                                        height: heigth / 5,
-                                        padding:
-                                            EdgeInsets.fromLTRB(10, 10, 10, 10),
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                          color: blue_dark,
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            therapists[index].description,
-                                            style: new TextStyle(
-                                                fontFamily: 'calibre',
-                                                letterSpacing: 1.5,
-                                                fontSize: 15,
-                                                color: Colors.white),
+                                      SizedBox(
+                                        height: heigth / 200,
+                                      ),
+                                      FloatingActionButton(
+                                        backgroundColor: jaunepastel,
+                                        onPressed: () {
+                                          // _getCurrentUserLocation();
+                                        },
+                                        child: Container(
+                                          child: Icon(Icons.search,
+                                              color: blue_base,
+                                              size: heigth / 22),
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
                                           ),
                                         ),
-                                      ),
+                                      )
                                     ],
+                                  )),
+                                  Container(
+                                    child: Column(children: [
+                                      Text(
+                                        'Birthday',
+                                        style: TextStyle(
+                                            color: Colors.grey[400],
+                                            fontSize: 14.0),
+                                      ),
+                                      SizedBox(
+                                        height: heigth / 200,
+                                      ),
+                                      FloatingActionButton(
+                                        backgroundColor: jaunepastel,
+                                        onPressed: () {
+                                          // _getCurrentUserLocation();
+                                        },
+                                        child: Container(
+                                          child: Icon(Icons.phone,
+                                              color: blue_base,
+                                              size: heigth / 22),
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                          ),
+                                        ),
+                                      )
+                                    ]),
                                   ),
-                                  if (shownum[index] == true)
-                                    showdetails(
-                                        therapists[index].number.toString(), 0),
-                                  if (showloc[index] == true)
-                                    showdetails(therapists[index].location, 1),
-                                  if (showemail[index] == true)
-                                    showdetails(therapists[index].email, 2),
                                 ],
                               ),
-                            ]),
-                      ));
+                            )))
+                      ],
+                    ),
+                  );
                 }),
           ),
       ]),
