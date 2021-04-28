@@ -16,15 +16,14 @@ class ViewMapPage extends StatefulWidget {
 }
 
 class _ViewMapPageState extends State<ViewMapPage> {
+  User user = new User();
   final String apiKey = "WdAPCVBEOA5pUAPJ549Tb6L8hud8nNxK";
 
   double latitudepos;
   double longitudepos;
   bool _isGettingLocation;
-
-  User user = new User();
-  ApiProvider apiProvider;
-  LocationUser location = new LocationUser();
+  ApiProvider apiProvider; //= ApiProvider();
+  LocationUser location;
 
   /*var latitudepos = 35.6852;
   var longitudepos = 10.5343;*/
@@ -37,6 +36,15 @@ class _ViewMapPageState extends State<ViewMapPage> {
     ["jar 2", 35.6852, 10.5343],
   ];
 
+  List liste;
+  Future _getNearby() async {
+    liste = await apiProvider.nearby(
+        ApiProvider.addr, latitudepos, longitudepos, 2);
+    setState(() {
+      liste = liste;
+    });
+  }
+
   List<Marker> barchaMarkers = [];
 
   Future<void> _addMarkes() async {
@@ -44,8 +52,8 @@ class _ViewMapPageState extends State<ViewMapPage> {
     print(locData.latitude);
     print(locData.longitude);
     setState(() {
-      latitudepos = locData.latitude;
-      longitudepos = locData.longitude;
+      /*latitudepos = locData.latitude;
+      longitudepos = locData.longitude;*/
       _isGettingLocation = false;
 
       barchaMarkers.add(new Marker(
@@ -57,6 +65,7 @@ class _ViewMapPageState extends State<ViewMapPage> {
       ));
       for (int i = 0; i < myItems.length; i++) {
         var item = myItems[i];
+        //var user = liste[i];
         barchaMarkers.add(new Marker(
           width: 70.0,
           height: 70.0,
@@ -68,42 +77,53 @@ class _ViewMapPageState extends State<ViewMapPage> {
     });
   }
 
-  Future<void> _getCurrentUserLocation() async {
-    final locData = await Location().getLocation();
-    print(locData.latitude);
-    print(locData.longitude);
+  Future<void> _getCurrentUserLocationMap() async {
+    print("fnct tekhdem");
+    user = await user.getTokenData();
+    location = user.location;
+    apiProvider = ApiProvider();
+    latitudepos = location.lat;
+    longitudepos = location.lng;
+
+    //final locData = await Location().getLocation();
+    print("rcuperation de la liste ");
+    print(location.lat);
+    print(location.lng);
     setState(() {
-      latitudepos = locData.latitude;
-      longitudepos = locData.longitude;
+      latitudepos = location.lat;
+      longitudepos = location.lng;
+      user = user;
+    });
+    await _getNearby();
+
+    var user1 = liste.first;
+    //var location1 = user.location;
+    print(user1.id);
+    //print(location1);
+    //print(locData.longitude);
+    //print("rcuperation de la liste ");
+    //var liste = _getNearby();
+    //print(liste);
+    setState(() {
+      latitudepos = latitudepos;
+      longitudepos = longitudepos;
+      user = user; 
+      liste = liste;
+      //latitudepos = locData.latitude;
+      //longitudepos = locData.longitude;
       _isGettingLocation = false;
+      //listeNerrby = liste;
     });
   }
 
-  /* testtt() async {
-    print("test tekhdem");
-    user = await user.getTokenData();
-    apiProvider = ApiProvider();
-    location.lat = latitudepos;
-    location.lng = longitudepos;
-    print("hethom location updated");
-    print(location.lng);
-    print(location.lat);
-    //apiProvider.updateLocation(location, "localhost");
-    user.location = location;
-    //apiProvider.updateUser(user, "localhost");
-    setState(() {
-      user = user;
-    });
-  }*/
-
   @override
   void initState() {
-    super.initState();
     _isGettingLocation = true;
-    _getCurrentUserLocation();
+    _getCurrentUserLocationMap();
     //testtt();
     _addMarkes();
-    setState(() {});
+    super.initState();
+    //setState(() {});
   }
 
   @override
