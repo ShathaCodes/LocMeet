@@ -11,6 +11,9 @@ import 'package:LoginFlutter/models/location.dart';
 import 'package:LoginFlutter/api_provider.dart';
 
 class ViewMapPage extends StatefulWidget {
+  final List<User> listeNearby;
+
+  ViewMapPage({Key key, this.listeNearby}) : super(key: key);
   @override
   _ViewMapPageState createState() => _ViewMapPageState();
 }
@@ -52,8 +55,8 @@ class _ViewMapPageState extends State<ViewMapPage> {
     print(locData.latitude);
     print(locData.longitude);
     setState(() {
-      /*latitudepos = locData.latitude;
-      longitudepos = locData.longitude;*/
+      latitudepos = locData.latitude;
+      longitudepos = locData.longitude;
       _isGettingLocation = false;
 
       barchaMarkers.add(new Marker(
@@ -74,6 +77,9 @@ class _ViewMapPageState extends State<ViewMapPage> {
               const Icon(Icons.location_on, size: 35.0, color: blue_base),
         ));
       }
+
+      print("afffichi mbaed markers ");
+      print(widget.listeNearby);
     });
   }
 
@@ -84,45 +90,41 @@ class _ViewMapPageState extends State<ViewMapPage> {
     apiProvider = ApiProvider();
     latitudepos = location.lat;
     longitudepos = location.lng;
-
-    //final locData = await Location().getLocation();
-    print("rcuperation de la liste ");
-    print(location.lat);
-    print(location.lng);
     setState(() {
       latitudepos = location.lat;
       longitudepos = location.lng;
       user = user;
     });
-    await _getNearby();
+
+    //final locData = await Location().getLocation();
+    print("rcuperation de la liste ");
+    print(latitudepos);
+    print(longitudepos);
+
+    //await _getNearby();
 
     var user1 = liste.first;
-    //var location1 = user.location;
     print(user1.id);
-    //print(location1);
-    //print(locData.longitude);
-    //print("rcuperation de la liste ");
-    //var liste = _getNearby();
-    //print(liste);
     setState(() {
-      latitudepos = latitudepos;
-      longitudepos = longitudepos;
-      user = user; 
-      liste = liste;
+      user = user;
+      //liste = liste;
       //latitudepos = locData.latitude;
       //longitudepos = locData.longitude;
       _isGettingLocation = false;
-      //listeNerrby = liste;
+      //listeNearby = liste;
     });
+
+    print("afffichi ya zaah getLocation MAp ");
   }
 
   @override
   void initState() {
+    super.initState();
+    print("afffichi plz ");
     _isGettingLocation = true;
     _getCurrentUserLocationMap();
-    //testtt();
     _addMarkes();
-    super.initState();
+
     //setState(() {});
   }
 

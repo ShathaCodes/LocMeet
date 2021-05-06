@@ -31,6 +31,8 @@ class _HomePageMapState extends State<HomePageMap> {
     setState(() {
       liste = liste;
     });
+
+    print(liste.length);
   }
 
   Future<void> _getCurrentUserLocation() async {
@@ -79,7 +81,7 @@ class _HomePageMapState extends State<HomePageMap> {
   @override
   void initState() {
     _getCurrentUserLocation();
-    //_getNearby();
+    _getNearby();
     super.initState();
 
     //testtt();
@@ -88,7 +90,7 @@ class _HomePageMapState extends State<HomePageMap> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: ViewMapPage(),
+        body: ViewMapPage(listeNearby: liste),
         floatingActionButton:
             Column(mainAxisAlignment: MainAxisAlignment.start, children: [
           SizedBox(

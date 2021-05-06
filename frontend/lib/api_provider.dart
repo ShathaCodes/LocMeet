@@ -9,7 +9,8 @@ import 'models/user.dart';
 
 class ApiProvider {
   //static const addr = "192.168.1.9"; shatha
-  static const addr = "192.168.1.14";
+  //static const addr = "192.168.1.14"; missa
+  static const addr = "192.168.1.18";
 
   ApiProvider();
   Future<List> getInterests(ip) async {

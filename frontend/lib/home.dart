@@ -2,6 +2,7 @@ import 'package:LoginFlutter/Calender/HomeCalendarPage.dart';
 import 'package:LoginFlutter/Therapist/therapist_list.dart';
 import 'package:LoginFlutter/Therapist/therapistSwipe.dart';
 import 'package:LoginFlutter/ViewMap/HomePageMap.dart';
+import 'package:LoginFlutter/ViewMap/ViewMapGoogle.dart';
 import 'package:LoginFlutter/constants.dart';
 import 'package:LoginFlutter/models/therapist.dart';
 import 'package:LoginFlutter/Profil/profilPage.dart';
@@ -31,7 +32,8 @@ class _HomeState extends State<Home> {
   List<String> list = ["Calendar", "Meeting", "Call", "Profile"];
   List<Widget> text = [
     HomeCalendarPage(),
-    HomePageMap(),
+    //HomePageMap(),
+    ViewMapGoogle(),
     TherapistList(),
     //TherapistSwipe(),
     Profile(),

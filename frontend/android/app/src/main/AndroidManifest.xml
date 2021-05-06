@@ -10,6 +10,7 @@
         android:label="frontend"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true">
+        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyDqgFkLfa6pzdVAuqZUpAVLJCATOzPG9w8"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -44,6 +45,7 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
     </application>
 </manifest>
 

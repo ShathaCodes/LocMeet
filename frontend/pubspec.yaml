@@ -35,6 +35,11 @@ dependencies:
 
 
 
+
+  google_maps_flutter: ^2.0.3
+  #geolocator: ^7.0.3
+
+
   flutter_map: 0.10.1+1
   location: ^2.3.5
   motion_tab_bar: ^0.0.1
