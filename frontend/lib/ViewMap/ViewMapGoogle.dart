@@ -15,100 +15,58 @@ class ViewMapGoogle extends StatefulWidget {
 
 class _ViewMapGoogleState extends State<ViewMapGoogle> {
   User user = new User();
-  ApiProvider apiProvider = ApiProvider();
+  ApiProvider apiProvider;
 
-  ///apiProvider
   LocationUser location;
 
   static var latitudepos;
   static var longitudepos;
   List<User> liste;
-  Future _getNearby() async {
-    final locData = await Location().getLocation();
-    latitudepos = locData.latitude;
-    longitudepos = locData.longitude;
-    print("fucccckkkkkkkkk");
-    print(latitudepos);
-    print(longitudepos);
-    liste = await apiProvider.nearby(ApiProvider.addr, 10, 10, 30);
-    print("fucccckkkkkkkkk222222222222222");
-    print(liste.length);
 
+  Future _getNearby() async {
+    print("nearby------" + latitudepos);
+    print("nearby------" + longitudepos);
+    liste = await apiProvider.nearby(ApiProvider.addr, 36.7438, 10.3098, 5);
+    print("nearby------" + liste.length.toString());
     setState(() {
       liste = liste;
+      if (liste != null)
+        for (int i = 0; i < liste.length; i++) {
+          var item = liste[i];
+          print("nearby------" + item.location.lat.toString());
+          _markers.add(new Marker(
+            markerId: MarkerId('id-' + (i + 2).toString()),
+            position: LatLng(item.location.lat, item.location.lng),
+            //icon: Icons.home,
+            infoWindow: InfoWindow(
+              title: 'JArMaissa' + i.toString(),
+              snippet: 'A historical fvejdsbj ',
+            ),
+          ));
+        }
     });
-    print("fucccckkkkkkkkk33333333333333333");
-    print(liste.length);
+    
   }
 
   Future<void> _getCurrentUserLocation() async {
-    final locData = await Location().getLocation();
-    print("rcuperation des donnees ");
-    latitudepos = locData.latitude;
-    longitudepos = locData.longitude;
-    print(latitudepos);
-    print(longitudepos);
-    print("update location");
+    print("CurrentUserLocation-------localization");
+    var locdata = await Location().getLocation();
+    print("CurrentUserLocation-------recuperation des donnees ");
+    latitudepos = locdata.latitude;
+    longitudepos = locdata.longitude;
+    print("CurrentUserLocation-------" + latitudepos.toString());
+    print("CurrentUserLocation-------" + longitudepos.toString());
+    print("CurrentUserLocation-------update location");
     user = await user.getTokenData();
     location = user.location;
     location.lat = latitudepos;
     location.lng = longitudepos;
-
     apiProvider.updateLocation(location, ApiProvider.addr);
 
-    print("jirenek ya zaaah othehrou plz ");
-    //_getNearby();
-    print("apres la fnct getNeraby");
-    /*print(liste.length);
-    var user1 = liste.first;
-    var location1 = user1.location;
-    print(user1.id);
-    print(location1.lat);
-    print(location1.lng);
-    print(liste.length);*/
     setState(() {
-      latitudepos = locData.latitude;
-      longitudepos = locData.longitude;
+      latitudepos = latitudepos;
+      longitudepos = longitudepos;
       user = user;
-      //liste = liste;
-    });
-  }
-
-  void _initialiser() async {
-    await _getCurrentUserLocation();
-    await _getNearby();
-    setCustomMarker();
-  }
-
-  @override
-  void initState() {
-    _initialiser();
-    super.initState();
-  }
-
-  Completer<GoogleMapController> _controller = Completer();
-  //static const LatLng _center = const LatLng(36.7438, 10.3099);
-
-  Set<Marker> _markers = {};
-  BitmapDescriptor mapMarker;
-  var myItems = [
-    ["jar 1", 35.6830, 10.5618],
-    ["jar 2", 35.6852, 10.5343],
-  ];
-
-  /*@override
-  void initState() {
-    super.initState();
-    setCustomMarker();
-  }*/
-
-  void setCustomMarker() async {
-    mapMarker = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(), 'assets/jfdn.png');
-  }
-
-  void _onMapCreated(GoogleMapController controller) {
-    setState(() {
       _markers.add(Marker(
         markerId: MarkerId('id-1'),
         position: LatLng(latitudepos, longitudepos), //_center,
@@ -118,25 +76,33 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
           snippet: 'A historical fvejdsbj ',
         ),
       ));
-      for (int i = 0; i < liste.length; i++) {
-        var item = liste[i];
-        //var user1 = liste.first;
-        var location1 = item.location;
-        print(item.nickname);
-        print(location1.id);
-
-        _markers.add(new Marker(
-          markerId: MarkerId('id-' + (i + 2).toString()),
-          position:
-              LatLng(location1.lat, location1.lng), //LatLng(item[1], item[2]),
-          //icon: Icons.home,
-          infoWindow: InfoWindow(
-            title: 'JArMaissa',
-            snippet: 'A historical fvejdsbj ',
-          ),
-        ));
-      }
     });
+  
+    _getNearby();
+  }
+
+  @override
+  void initState() {
+    apiProvider = new ApiProvider();
+    liste = [];
+    _getCurrentUserLocation();
+    //_getNearby();
+    print("doooooooooneeee");
+    super.initState();
+  }
+
+  Completer<GoogleMapController> _controller = Completer();
+  //static const LatLng _center = const LatLng(36.7438, 10.3099);
+
+  Set<Marker> _markers = {};
+  BitmapDescriptor mapMarker;
+
+  void setCustomMarker() async {
+    mapMarker = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(), 'assets/jfdn.png');
+  }
+
+  void _onMapCreated(GoogleMapController controller) {
     _controller.complete(controller);
   }
 
@@ -157,7 +123,7 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
               onMapCreated: _onMapCreated,
               markers: _markers,
               initialCameraPosition: CameraPosition(
-                target: LatLng(latitudepos, longitudepos), //_center,
+                target: LatLng(latitudepos,longitudepos), //_center,
                 zoom: 12,
               ),
             ),
@@ -168,8 +134,8 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
                 height: 120,
                 child: Image.asset("assets/images/logoPalette.png")),
             FloatingActionButton(
-              onPressed: () {
-                _getNearby();
+              onPressed: () async {
+                var test = await Location().getLocation();
               },
               child: Container(
                 width: 60,
