@@ -5,19 +5,21 @@ const { Op } = require("sequelize");
 
 const nearby = async (req, res) => {
 
-    const lat = req.query.lat;
+    const lat = parseFloat(req.query.lat);
     console.log(req.query);
-    const lng = req.query.lng;
-    const dist = req.query.distance;
+    const lng = parseFloat(req.query.lng);
+    const dist = parseFloat(req.query.distance);
     const t1 = lat-dist;
-    const t2 = lat + dist;
+    const t2 = lat+dist;
     const l1=lng-dist;
     const l2=lng+dist;
+	console.log(t1 + "-" + t2);
+	console.log(l1 + "-" + l2);
     try {
         const users = await User.findAll(
             {   
                 
-                attributes: { exclude: ['password', 'createdAt', 'updatedAt'] },
+                attributes: { exclude: [ 'createdAt', 'updatedAt'] },
                 include: [{
                     model: Location,
                     where: {
@@ -30,8 +32,9 @@ const nearby = async (req, res) => {
                     model: Interest,
                 }]
                 });
+				
         res.send(users);
-        //console.log("All users:", JSON.stringify(interests, null, 2));
+        
     } catch (err) {
     }
 };
