@@ -10,6 +10,15 @@ const add_interest = require('../routes/add_interest');
 const nearby = require('../routes/nearby');
 const update_location = require('../routes/update_location');
 
+const Pusher = require("pusher");
+const pusher = new Pusher({
+  appId: "1195366",
+  key: "a3321ae30692703e9fe0",
+  secret: "0dd63090445ae7b2def5",
+  cluster: "eu",
+  useTLS: true,
+});
+
 const router = {
     initialize: (app, passport) => {
         const authenticate = passport.authenticate('jwt', { session: false });
@@ -25,6 +34,12 @@ const router = {
         app.post('/add_therapist', add_therapist);
         app.get('/nearby', nearby);
         app.post('/update_location', update_location);
+        app.post("/pusher/auth", (req, res) => {
+            const socketId = req.body.socket_id;
+            const channel = req.body.channel_name;
+            const auth = pusher.authenticate(socketId, channel);
+            res.send(auth);
+        });
 
     }
 };
