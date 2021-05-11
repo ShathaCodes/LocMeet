@@ -24,9 +24,10 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
   List<User> liste;
 
   Future _getNearby() async {
-    print("nearby------" + latitudepos);
-    print("nearby------" + longitudepos);
-    liste = await apiProvider.nearby(ApiProvider.addr, 36.7438, 10.3098, 5);
+    //print("nearby------" + latitudepos);
+    //print("nearby------" + longitudepos);
+    liste = await apiProvider.nearby(
+        ApiProvider.addr, latitudepos, longitudepos, 5);
     print("nearby------" + liste.length.toString());
     setState(() {
       liste = liste;
@@ -45,7 +46,6 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
           ));
         }
     });
-    
   }
 
   Future<void> _getCurrentUserLocation() async {
@@ -77,7 +77,7 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
         ),
       ));
     });
-  
+
     _getNearby();
   }
 
@@ -123,7 +123,7 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
               onMapCreated: _onMapCreated,
               markers: _markers,
               initialCameraPosition: CameraPosition(
-                target: LatLng(latitudepos,longitudepos), //_center,
+                target: LatLng(latitudepos, longitudepos), //_center,
                 zoom: 12,
               ),
             ),
@@ -136,6 +136,7 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
             FloatingActionButton(
               onPressed: () async {
                 var test = await Location().getLocation();
+                print("test----" + test.toString());
               },
               child: Container(
                 width: 60,
