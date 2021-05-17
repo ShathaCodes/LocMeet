@@ -33,8 +33,7 @@ dependencies:
   shared_preferences: ^0.5.2
   jose: ^0.1.2
 
-  flutter_pusher: ^1.0.2
-
+  flutter_pusher: ^1.0.2 
 
   google_maps_flutter: ^2.0.3
   #geolocator: ^7.0.3
@@ -70,6 +69,7 @@ flutter:
     - assets/images/
     - assets/images/login.png
     - assets/icons/
+    - assets/markers/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:async';
-import 'package:LoginFlutter/constants.dart';
 import 'package:LoginFlutter/models/user.dart';
 import 'package:LoginFlutter/models/location.dart';
 import 'package:LoginFlutter/api_provider.dart';
@@ -24,44 +24,55 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
   List<User> liste;
 
   Future _getNearby() async {
-    //print("nearby------" + latitudepos);
-    //print("nearby------" + longitudepos);
     liste = await apiProvider.nearby(
         ApiProvider.addr, latitudepos, longitudepos, 5);
     print("nearby------" + liste.length.toString());
+    var lol = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(size: Size(20, 22)),
+        'assets/markers/darkbluemarker2.png');
     setState(() {
       liste = liste;
       if (liste != null)
         for (int i = 0; i < liste.length; i++) {
-          var item = liste[i];
-          print("nearby------" + item.location.lat.toString());
-          _markers.add(new Marker(
-            markerId: MarkerId('id-' + (i + 2).toString()),
-            position: LatLng(item.location.lat, item.location.lng),
-            //icon: Icons.home,
-            infoWindow: InfoWindow(
-              title: 'JArMaissa' + i.toString(),
-              snippet: 'A historical fvejdsbj ',
-            ),
-          ));
+          var userr = liste[i];
+          if (userr.id != user.id) {
+            String interests = "";
+            for (var interest in userr.interests) interests += interest.name;
+            print("nearby------" + userr.location.lat.toString());
+
+            _markers.add(new Marker(
+              markerId: MarkerId('id-' + (i + 2).toString()),
+              icon: lol,
+              position: LatLng(userr.location.lat, userr.location.lng),
+              infoWindow: InfoWindow(
+                title: user.nickname,
+                snippet: interests,
+              ),
+            ));
+          }
         }
     });
   }
 
+  BitmapDescriptor mapMarker;
+
   Future<void> _getCurrentUserLocation() async {
     print("CurrentUserLocation-------localization");
+    //var locdata = LatLng(36.7433, 10.3081);
     var locdata = await Location().getLocation();
     print("CurrentUserLocation-------recuperation des donnees ");
     latitudepos = locdata.latitude;
     longitudepos = locdata.longitude;
     print("CurrentUserLocation-------" + latitudepos.toString());
     print("CurrentUserLocation-------" + longitudepos.toString());
-    print("CurrentUserLocation-------update location");
     user = await user.getTokenData();
     location = user.location;
     location.lat = latitudepos;
     location.lng = longitudepos;
     apiProvider.updateLocation(location, ApiProvider.addr);
+    mapMarker = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(size: Size(0.0005, 0.0007)),
+        'assets/markers/redmarker2.png');
 
     setState(() {
       latitudepos = latitudepos;
@@ -70,14 +81,14 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
       _markers.add(Marker(
         markerId: MarkerId('id-1'),
         position: LatLng(latitudepos, longitudepos), //_center,
-        //icon: mapMarker,
+        icon: mapMarker,
+
         infoWindow: InfoWindow(
-          title: 'darMaissa',
-          snippet: 'A historical fvejdsbj ',
+          title: 'Me',
+          snippet: 'My current location',
         ),
       ));
     });
-
     _getNearby();
   }
 
@@ -86,21 +97,12 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
     apiProvider = new ApiProvider();
     liste = [];
     _getCurrentUserLocation();
-    //_getNearby();
-    print("doooooooooneeee");
     super.initState();
   }
 
   Completer<GoogleMapController> _controller = Completer();
-  //static const LatLng _center = const LatLng(36.7438, 10.3099);
 
   Set<Marker> _markers = {};
-  BitmapDescriptor mapMarker;
-
-  void setCustomMarker() async {
-    mapMarker = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(), 'assets/jfdn.png');
-  }
 
   void _onMapCreated(GoogleMapController controller) {
     _controller.complete(controller);
@@ -135,6 +137,7 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
                 child: Image.asset("assets/images/logoPalette.png")),
             FloatingActionButton(
               onPressed: () async {
+                print("test----");
                 var test = await Location().getLocation();
                 print("test----" + test.toString());
               },
