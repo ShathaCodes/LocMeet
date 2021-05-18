@@ -1,5 +1,7 @@
+import 'package:LoginFlutter/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:LoginFlutter/Screens/Signup/components/multi_select_dialog.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:async';
@@ -14,6 +16,7 @@ class ViewMapGoogle extends StatefulWidget {
 }
 
 class _ViewMapGoogleState extends State<ViewMapGoogle> {
+  var x;
   User user = new User();
   ApiProvider apiProvider;
 
@@ -37,21 +40,84 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
           var userr = liste[i];
           if (userr.id != user.id) {
             String interests = "";
-            for (var interest in userr.interests) interests += interest.name;
+            for (var interest in userr.interests)
+              interests += "    " + interest.name;
             print("nearby------" + userr.location.lat.toString());
 
             _markers.add(new Marker(
-              markerId: MarkerId('id-' + (i + 2).toString()),
-              icon: lol,
-              position: LatLng(userr.location.lat, userr.location.lng),
-              infoWindow: InfoWindow(
-                title: user.nickname,
-                snippet: interests,
-              ),
-            ));
+                markerId: MarkerId('id-' + (i + 2).toString()),
+                icon: lol,
+                position: LatLng(userr.location.lat, userr.location.lng),
+                infoWindow: InfoWindow(
+                  title: user.nickname,
+                  snippet: interests,
+                ),
+                onTap: () async {
+                  print("Clicked: ${user.nickname}");
+                  print("hiiiiiiiiiiiiiiiiiiiiiiiiiii");
+                  showDialog(
+                      context: context,
+                      builder: (_) => new AlertDialog(
+                            backgroundColor: jaunepastel,
+                            //contentTextStyle: Color,
+                            title: new Text("Let's connect",
+                                style: TextStyle(color: blue_base)),
+                            // content: Text("Hey   ${user.nickname}"),
+                            content: Container(
+                                width: 70,
+                                height: 90,
+                                child: Column(
+                                  children: [
+                                    Row(children: [
+                                      Text("user:   ${user.nickname}"),
+                                    ]),
+                                    Row(children: [
+                                      Text(""),
+                                    ]),
+                                    Row(children: [
+                                      Text("interests:"),
+                                    ]),
+                                    Row(children: [
+                                      Text("${interests}"),
+                                    ]),
+                                  ],
+                                )),
+                            actions: <Widget>[
+                              /*FlatButton(
+                                child: Text('Close me!'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),*/
+                              FlatButton(
+                                  onPressed: () {},
+                                  child: Text("connect !",
+                                      style: TextStyle(
+                                          color: blue_dark, fontSize: 20))),
+                            ],
+                          ));
+                  print("alerte faite");
+                }));
           }
         }
     });
+  }
+
+  _showMaterialDialog() {
+    showDialog(
+        context: context,
+        builder: (_) => new AlertDialog(
+              title: new Text("Material Dialog"),
+              content: new Text("Hey! I'm Coflutter!"),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Close me!'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
+            ));
   }
 
   BitmapDescriptor mapMarker;

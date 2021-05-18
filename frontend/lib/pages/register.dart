@@ -54,6 +54,7 @@ class BodyWidgetState extends State<BodyWidget> {
           var res = await apiProvider.doRegistration(
               _crtlNickname.text, _crtlPassword.text, ind, sth);
           if (res.statusCode == 200) {
+            print("sahhhhhit");
             ScaffoldMessenger.of(context).showSnackBar(success);
             //Scaffold.of(context).showSnackBar(success);
             Navigator.of(context).pushReplacement(
@@ -216,7 +217,7 @@ class BodyWidgetState extends State<BodyWidget> {
                               ),
                             ),
                           ),
-                          Padding(
+                          /* Padding(
                             padding: const EdgeInsets.only(left: 8.0, top: 20),
                             child: Align(
                               alignment: Alignment.centerLeft,
@@ -234,7 +235,7 @@ class BodyWidgetState extends State<BodyWidget> {
                                 ],
                               )),
                             ),
-                          ),
+                          ),*/
                           Padding(
                             padding:
                                 EdgeInsets.only(left: 10, right: 10, top: 20),
@@ -260,10 +261,6 @@ class BodyWidgetState extends State<BodyWidget> {
                                           fontFamily: 'calibre',
                                           letterSpacing: 1.5,
                                           fontSize: 20)),
-                                  /* color: blue,
-                                    shape: new RoundedRectangleBorder(
-                                        borderRadius:
-                                            new BorderRadius.circular(10.0))*/
                                 ),
                               ),
                             ),
