@@ -42,7 +42,7 @@ dependencies:
   flutter_map: 0.10.1+1
   location: ^2.3.5
   motion_tab_bar: ^0.0.1
-  table_calendar: ^2.1.0
+  table_calendar: ^3.0.0
   cupertino_icons: ^1.0.2
 
   #neumorphic: ^0.4.0

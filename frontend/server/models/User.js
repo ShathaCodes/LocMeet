@@ -18,7 +18,7 @@ User.belongsToMany(Interest, { through: "user_interest" });
 
 Interest.belongsToMany(User, { through: "user_interest" });
 
-User.hasOne(Location);
+User.hasOne(Location,{onDelete: 'CASCADE',});
 Location.belongsTo(User);
 
 User.beforeCreate((user, options) => {

@@ -10,6 +10,13 @@ const add_interest = require('../routes/add_interest');
 const nearby = require('../routes/nearby');
 const update_location = require('../routes/update_location');
 
+const meetings = require('../routes/meetings');
+const add_meeting = require('../routes/add_meeting');
+const join_meeting = require('../routes/join_meeting');
+const abandon_meeting = require('../routes/abandon_meeting');
+const delete_meeting = require('../routes/delete_meeting');
+const update_meeting = require('../routes/update_meeting');
+
 const Pusher = require("pusher");
 const pusher = new Pusher({
   appId: "1195366",
@@ -40,6 +47,12 @@ const router = {
             const auth = pusher.authenticate(socketId, channel);
             res.send(auth);
         });
+        app.get('/meetings', meetings);
+        app.post('/add_meeting', add_meeting);
+        app.post('/join_meeting', join_meeting);
+        app.post('/abandon_meeting', abandon_meeting);
+        app.post('/delete_meeting', delete_meeting);
+        app.post('/update_meeting', update_meeting);
 
     }
 };

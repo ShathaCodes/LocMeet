@@ -1,0 +1,209 @@
+import 'package:LoginFlutter/api_provider.dart';
+import 'package:LoginFlutter/models/meeting.dart';
+import 'package:LoginFlutter/models/user.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:table_calendar/table_calendar.dart';
+import 'package:LoginFlutter/constants.dart';
+
+class CalendarPage extends StatefulWidget {
+  @override
+  CalendarPageState createState() => CalendarPageState();
+}
+
+class CalendarPageState extends State<CalendarPage> {
+  CalendarFormat _calendarFormat = CalendarFormat.month;
+  DateTime _focusedDay = DateTime.now();
+  DateTime _selectedDay;
+  List<bool> isLiked = List<bool>.filled(4, false, growable: true);
+  User user = new User();
+  ApiProvider apiProvider;
+  List meetings;
+
+  @override
+  void initState() {
+    testtt();
+    super.initState();
+  }
+
+  testtt() async {
+    user = await user.getTokenData();
+    print(user.nickname);
+    apiProvider = ApiProvider();
+    final ind = ApiProvider.addr;
+    meetings = user.meetings;
+    setState(() {
+      user = user;
+      meetings = meetings;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
+    final kNow = DateTime.now();
+    final kFirstDay = DateTime(kNow.year, kNow.month - 3, kNow.day);
+    final kLastDay = DateTime(kNow.year, kNow.month + 3, kNow.day);
+    return Scaffold(
+        body: Padding(
+            padding: EdgeInsets.symmetric(horizontal: width / 15),
+            child: Column(children: [
+              Stack(
+                children: [
+                  Positioned(
+                      top: 57,
+                      child: Container(
+                        width: width - (width / 7.5),
+                        height: height * 0.3,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 2,
+                                blurRadius: 7,
+                                offset:
+                                    Offset(0, 3), // changes position of shadow
+                              ),
+                            ],
+                            borderRadius: BorderRadius.circular(5.5)),
+                      )),
+                  TableCalendar(
+                    sixWeekMonthsEnforced: true,
+                    calendarStyle: CalendarStyle(
+                        todayDecoration: BoxDecoration(
+                          color: blue_base,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        selectedDecoration: BoxDecoration(
+                            color: jaunepastel,
+                            borderRadius: BorderRadius.circular(4)),
+                        markerDecoration: BoxDecoration(
+                            color: blue_dark, shape: BoxShape.circle),
+                        markersAnchor: 6),
+
+                    firstDay: kFirstDay,
+                    headerStyle: HeaderStyle(
+                      leftChevronIcon:
+                          Icon(Icons.chevron_left, color: blue_base),
+                      rightChevronIcon:
+                          Icon(Icons.chevron_right, color: blue_base),
+                      headerPadding: EdgeInsets.symmetric(vertical: 5.0),
+                      formatButtonVisible: false,
+                      titleCentered: true,
+                    ),
+                    rowHeight: height / 20,
+                    lastDay: kLastDay,
+                    focusedDay: _focusedDay,
+                    calendarFormat: _calendarFormat,
+                    daysOfWeekVisible: false,
+                    startingDayOfWeek: StartingDayOfWeek.monday,
+                    selectedDayPredicate: (day) {
+                      return isSameDay(_selectedDay, day);
+                    },
+                    onDaySelected: (selectedDay, focusedDay) {
+                      if (!isSameDay(_selectedDay, selectedDay)) {
+                        setState(() {
+                          _selectedDay = selectedDay;
+                          _focusedDay = focusedDay;
+                        });
+                      }
+                    },
+                    onFormatChanged: (format) {
+                      if (_calendarFormat != format) {
+                        setState(() {
+                          _calendarFormat = format;
+                        });
+                      }
+                    },
+                    onPageChanged: (focusedDay) {
+                      setState(() {
+                        _focusedDay = focusedDay;
+                      });
+                    },
+                    //just to test the events ui
+                    eventLoader: (day) {
+                      if (isSameDay(DateTime(2012, 1, 12), day))
+                        return ["event1", "lol"];
+                      return [];
+                    },
+                  ),
+                ],
+              ),
+              Expanded(
+                  child: Column(children: [
+                SizedBox(height: height / 40),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(DateFormat('MMMM').format(_focusedDay) + "'s Events",
+                        style: TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.bold)),
+                  ],
+                ),
+                SizedBox(height: height / 40),
+                Expanded(
+                    child: ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        itemCount: 4,
+                        itemBuilder: (contexti, index) {
+                          return Padding(
+                            padding: EdgeInsets.only(bottom: height / 50),
+                            child: Row(
+                              children: [
+                                Column(
+                                  children: [
+                                    Text(DateFormat('MMMM').format(_focusedDay),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black54)),
+                                    SizedBox(
+                                      height: height / 100,
+                                    ),
+                                    Text("8",
+                                        style: TextStyle(
+                                            color: blue_base,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18))
+                                  ],
+                                ),
+                                SizedBox(
+                                  width: width / 50,
+                                ),
+                                Container(
+                                    width: 5.5,
+                                    height: 37,
+                                    decoration: BoxDecoration(
+                                      color: blue_base,
+                                      borderRadius: BorderRadius.only(
+                                          topRight: Radius.circular(2.5),
+                                          bottomRight: Radius.circular(2.5)),
+                                    )),
+                                SizedBox(
+                                  width: width / 30,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('TED x INSAT',
+                                        style: TextStyle(
+                                            color: Colors.black54,
+                                            fontWeight: FontWeight.bold)),
+                                    SizedBox(
+                                      height: height / 100,
+                                    ),
+                                    Text('11:30 AM',
+                                        style: TextStyle(
+                                            color: Colors.grey, fontSize: 10)),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          );
+                        })),
+                SizedBox(height: height / 9)
+              ])),
+            ])));
+  }
+}

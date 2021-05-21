@@ -1,16 +1,11 @@
-import 'package:LoginFlutter/Calender/HomeCalendarPage.dart';
+import 'package:LoginFlutter/Calender/calendarPage.dart';
 import 'package:LoginFlutter/Therapist/therapist_list.dart';
-import 'package:LoginFlutter/Therapist/therapistSwipe.dart';
-import 'package:LoginFlutter/ViewMap/HomePageMap.dart';
 import 'package:LoginFlutter/ViewMap/ViewMapGoogle.dart';
 import 'package:LoginFlutter/constants.dart';
-import 'package:LoginFlutter/models/therapist.dart';
-import 'package:LoginFlutter/Profil/profilPage.dart';
 import 'package:LoginFlutter/profil.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
-//import './colors/colors.dart';
 import 'constants.dart';
 
 class Home extends StatefulWidget {
@@ -31,7 +26,7 @@ class _HomeState extends State<Home> {
   List<GButton> buttons = [];
   List<String> list = ["Calendar", "Meeting", "Call", "Profile"];
   List<Widget> text = [
-    HomeCalendarPage(),
+    CalendarPage(),
     //HomePageMap(),
     ViewMapGoogle(),
     TherapistList(),
