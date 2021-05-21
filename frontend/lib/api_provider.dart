@@ -1,4 +1,5 @@
 import 'package:LoginFlutter/models/location.dart';
+import 'package:LoginFlutter/models/meeting.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io';
 import 'dart:convert';
@@ -8,9 +9,26 @@ import 'models/therapist.dart';
 import 'models/user.dart';
 
 class ApiProvider {
-  static const addr = "";
+  static const addr = "192.168.1.6";
 
   ApiProvider();
+
+  //----------------------------------------------------------------Get methods
+  Future<List> getMeetings(ip) async {
+    String _url = 'http://$ip:3000/meetings';
+
+    http.Response result = await http.get(_url);
+    if (result.statusCode == HttpStatus.ok) {
+      final jsonResponse = json.decode(result.body);
+      final meetingsmap = jsonResponse;
+      print(result.body);
+      List meetings = meetingsmap.map((i) => Meeting.fromJson(i)).toList();
+      return meetings;
+    } else {
+      return null;
+    }
+  }
+
   Future<List> getInterests(ip) async {
     String _url = 'http://$ip:3000/interests';
 
@@ -52,6 +70,7 @@ class ApiProvider {
       return null;
     }
   }
+  //----------------------------------------------------------------Location
 
   Future<List> nearby(ip, lat, lng, dist) async {
     var queryParameters = {
@@ -86,6 +105,7 @@ class ApiProvider {
 
     return http.post(_url, body: body);
   }
+  //----------------------------------------------------------------User
 
   Future<http.Response> doLogin(
       String nickname, String password, String ip) async {
@@ -133,8 +153,59 @@ class ApiProvider {
   Future<http.Response> deleteUser(int id, String ip) async {
     String _url = 'http://$ip:3000/delete_user';
     var body = {
-      "id": id,
+      "id": id.toString(),
     };
+    return http.post(_url, body: body);
+  }
+
+  //----------------------------------------------------------------Meeting
+  Future<http.Response> addMeeting(
+      String date, LocationUser location, int creatorid, String ip) async {
+    String _url = 'http://$ip:3000/add_meeting';
+    var body = {
+      "date": date,
+      "creator": creatorid.toString(),
+      "Location": {
+        "id": location.id.toString(),
+        "lat": location.lat.toString(),
+        "lng": location.lng.toString(),
+      }
+    };
+
+    return http.post(_url, body: body);
+  }
+
+  Future<http.Response> updateMeeting(int id, String date, String ip) async {
+    String _url = 'http://$ip:3000/add_meeting';
+    var body = {
+      "id": id.toString(),
+      "date": date,
+    };
+
+    return http.post(_url, body: body);
+  }
+
+  Future<http.Response> deleteMeeting(int id, String ip) async {
+    String _url = 'http://$ip:3000/delete_meeting';
+    var body = {
+      "id": id.toString(),
+    };
+    return http.post(_url, body: body);
+  }
+
+  Future<http.Response> joinMeeting(
+      int meetingId, int userId, String ip) async {
+    String _url = 'http://$ip:3000/join_meeting';
+    var body = {"meeting": meetingId.toString(), "user": userId.toString()};
+
+    return http.post(_url, body: body);
+  }
+
+  Future<http.Response> abandonMeeting(
+      int meetingId, int userId, String ip) async {
+    String _url = 'http://$ip:3000/abandon_meeting';
+    var body = {"meeting": meetingId.toString(), "user": userId.toString()};
+
     return http.post(_url, body: body);
   }
 }
