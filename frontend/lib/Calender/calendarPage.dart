@@ -18,7 +18,7 @@ class CalendarPageState extends State<CalendarPage> {
   List<bool> isLiked = List<bool>.filled(4, false, growable: true);
   User user = new User();
   ApiProvider apiProvider;
-  List meetings;
+  List meetings = new List();
 
   @override
   void initState() {
@@ -31,7 +31,11 @@ class CalendarPageState extends State<CalendarPage> {
     print(user.nickname);
     apiProvider = ApiProvider();
     final ind = ApiProvider.addr;
-    meetings = user.meetings;
+
+    meetings = user.myMeetings;
+    for (var meeting in meetings) {
+      print(meeting.id);
+    }
     setState(() {
       user = user;
       meetings = meetings;
