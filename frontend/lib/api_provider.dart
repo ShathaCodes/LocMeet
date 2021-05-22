@@ -169,14 +169,20 @@ class ApiProvider {
         "id": location.id.toString(),
         "lat": location.lat.toString(),
         "lng": location.lng.toString(),
+        "show": "true"
       }
     };
+    var bb = jsonEncode(body);
 
-    return http.post(_url, body: body);
+    return http.post(
+      _url,
+      body: bb,
+      headers: {"Content-Type": "application/json"},
+    );
   }
 
   Future<http.Response> updateMeeting(int id, String date, String ip) async {
-    String _url = 'http://$ip:3000/add_meeting';
+    String _url = 'http://$ip:3000/update_meeting';
     var body = {
       "id": id.toString(),
       "date": date,

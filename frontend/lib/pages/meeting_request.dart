@@ -18,9 +18,8 @@ class _MeetingRequestState extends State<MeetingRequest> {
   String lastConnectionState;
   Channel channel;
   Channel channel2;
-  User user;
-  var user1 = "Maissona";
-  var user2 = "ShathaRocks";
+  User user = new User();
+  var user2 = "Maissona";
 
   @override
   void initState() {
@@ -35,8 +34,9 @@ class _MeetingRequestState extends State<MeetingRequest> {
   }
 
   Future<void> initPusher() async {
+    user = await user.getTokenData();
     try {
-      user = await user.getTokenData();
+      // user = await user.getTokenData();
       //initialize Pusher
       await Pusher.init(
           "a3321ae30692703e9fe0",
@@ -57,27 +57,27 @@ class _MeetingRequestState extends State<MeetingRequest> {
       debugPrint("Error: ${x.message}");
     });
     //Subscibe to private channel of user identified by their nickname
-    channel = await Pusher.subscribe("private-" + user1);
+    channel = await Pusher.subscribe("private-" + user.nickname);
     //bind to events request, accept, refuse and success
-    await channel.bind("client-request", (x) {
+    await channel.bind("request", (x) {
       if (mounted)
         setState(() {
           lastEventRequest = x;
         });
     });
-    await channel.bind("client-accept", (x) {
+    await channel.bind("accept", (x) {
       if (mounted)
         setState(() {
           lastEventAccept = x;
         });
     });
-    await channel.bind("client-refuse", (x) {
+    await channel.bind("refuse", (x) {
       if (mounted)
         setState(() {
           lastEventRefuse = x;
         });
     });
-    await channel.bind("client-success", (x) {
+    await channel.bind("success", (x) {
       if (mounted)
         setState(() {
           lastEventSuccess = x;
@@ -107,11 +107,11 @@ class _MeetingRequestState extends State<MeetingRequest> {
                 textColor: jaunepastel,
                 press: () async {
                   channel2 = await Pusher.subscribe("private-" + user2);
-                  await channel2.trigger("request", data: user1);
+                  await channel2.trigger("request", data: user.nickname);
                 },
               ),
               SizedBox(height: size.height * 0.03),
-              if (lastEventRequest.data != null)
+              if (lastEventRequest != null)
                 Container(
                   child: Column(
                     children: [
@@ -124,7 +124,7 @@ class _MeetingRequestState extends State<MeetingRequest> {
                         press: () async {
                           channel2 = await Pusher.subscribe(
                               "private-" + lastEventRequest.data);
-                          await channel2.trigger("accept", data: user2);
+                          await channel2.trigger("accept", data: user.nickname);
                         },
                       ),
                       SizedBox(height: size.height * 0.03),
@@ -135,17 +135,17 @@ class _MeetingRequestState extends State<MeetingRequest> {
                         press: () async {
                           channel2 = await Pusher.subscribe(
                               "private-" + lastEventRequest.data);
-                          await channel2.trigger("refuse", data: user2);
+                          await channel2.trigger("refuse", data: user.nickname);
                         },
                       ),
                     ],
                   ),
                 ),
-              if (lastEventAccept.data != null)
+              if (lastEventAccept != null)
                 Container(
                     child:
                         Center(child: Text("Your request have been accepted"))),
-              if (lastEventRefuse.data != null)
+              if (lastEventRefuse != null)
                 Container(
                     child:
                         Center(child: Text("Your request have been refused")))
