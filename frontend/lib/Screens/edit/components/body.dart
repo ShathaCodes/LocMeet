@@ -114,6 +114,8 @@ class BodyState extends State<Body> {
     if (_formKey.currentState.validate()) {
       if (ind != "") {
         try {
+          if (nickname.isEmpty) nickname = nickname1;
+          print(nickname);
           var res = await apiProvider.updateUser(
               user.id, nickname, password, ind, myInterests);
 
@@ -143,8 +145,10 @@ class BodyState extends State<Body> {
 
   @override
   List<String> flavours = [];
+
   Widget build(BuildContext context) {
     myInterests = [];
+
     for (int i = 0; i < user.interests.length; i++) {
       myInterests.add(user.interests[i].name);
     }
@@ -156,6 +160,7 @@ class BodyState extends State<Body> {
     }
 
     Size size = MediaQuery.of(context).size;
+
     return Background(
       child: Form(
         key: _formKey,
