@@ -1,7 +1,8 @@
 import 'package:LoginFlutter/constants.dart';
+import 'package:LoginFlutter/pages/meeting_request.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:LoginFlutter/Screens/Signup/components/multi_select_dialog.dart';
+
+import 'package:intl/intl.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:async';
@@ -49,27 +50,25 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
                 icon: lol,
                 position: LatLng(userr.location.lat, userr.location.lng),
                 infoWindow: InfoWindow(
-                  title: user.nickname,
+                  title: userr.nickname,
                   snippet: interests,
                 ),
                 onTap: () async {
-                  print("Clicked: ${user.nickname}");
+                  print("Clicked: ${userr.nickname}");
                   print("hiiiiiiiiiiiiiiiiiiiiiiiiiii");
                   showDialog(
                       context: context,
                       builder: (_) => new AlertDialog(
                             backgroundColor: jaunepastel,
-                            //contentTextStyle: Color,
                             title: new Text("Let's connect",
                                 style: TextStyle(color: blue_base)),
-                            // content: Text("Hey   ${user.nickname}"),
                             content: Container(
                                 width: 70,
                                 height: 90,
                                 child: Column(
                                   children: [
                                     Row(children: [
-                                      Text("user:   ${user.nickname}"),
+                                      Text("user:   ${userr.nickname}"),
                                     ]),
                                     Row(children: [
                                       Text(""),
@@ -83,14 +82,17 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
                                   ],
                                 )),
                             actions: <Widget>[
-                              /*FlatButton(
-                                child: Text('Close me!'),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),*/
                               FlatButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) {
+                                          return MeetingRequest();
+                                        },
+                                      ),
+                                    );
+                                  },
                                   child: Text("connect !",
                                       style: TextStyle(
                                           color: blue_dark, fontSize: 20))),
@@ -103,29 +105,75 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
     });
   }
 
-  _showMaterialDialog() {
-    showDialog(
-        context: context,
-        builder: (_) => new AlertDialog(
-              title: new Text("Material Dialog"),
-              content: new Text("Hey! I'm Coflutter!"),
-              actions: <Widget>[
-                FlatButton(
-                  child: Text('Close me!'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                )
-              ],
-            ));
+  Future getMeetings() async {
+    var meetings = await apiProvider.getMeetings(ApiProvider.addr);
+    var lol = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(size: Size(20, 22)),
+        'assets/markers/purplemarker2.png');
+    setState(() {
+      for (int i = 0; i < meetings.length; i++) {
+        var k = i + liste.length + 1;
+        var meeting = meetings[i];
+        print(meeting.location.lat.toString() + "---" + k.toString());
+        _markers.add(Marker(
+            markerId: MarkerId('id-' + k.toString()),
+            position:
+                LatLng(meeting.location.lat, meeting.location.lng), //_center,
+            icon: lol,
+            infoWindow: InfoWindow(
+              title: 'Meeting event',
+              snippet: DateFormat('EEE, d/M/y').format(meeting.date),
+            ),
+            onTap: () async {
+              showDialog(
+                  context: context,
+                  builder: (_) => new AlertDialog(
+                        backgroundColor: jaunepastel,
+                        title: new Text("Meeting Event!",
+                            style: TextStyle(color: blue_base)),
+                        content: Container(
+                            width: 70,
+                            height: 90,
+                            child: Column(
+                              children: [
+                                Row(children: [
+                                  Text(
+                                      "Creator:   ${meeting.creator.nickname}"),
+                                ]),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                Row(children: [
+                                  Text("Date: " +
+                                      DateFormat('EEE, d/M/y')
+                                          .format(meeting.date)),
+                                ]),
+                              ],
+                            )),
+                        actions: <Widget>[
+                          FlatButton(
+                              onPressed: () async {
+                                await apiProvider.joinMeeting(
+                                    meeting.id, user.id, ApiProvider.addr);
+                                Navigator.of(context, rootNavigator: true)
+                                    .pop();
+                              },
+                              child: Text("Join !",
+                                  style: TextStyle(
+                                      color: blue_dark, fontSize: 20))),
+                        ],
+                      ));
+            }));
+      }
+    });
   }
 
   BitmapDescriptor mapMarker;
 
   Future<void> _getCurrentUserLocation() async {
     print("CurrentUserLocation-------localization");
-    //var locdata = LatLng(36.7433, 10.3081);
-    var locdata = await Location().getLocation();
+    var locdata = LatLng(36.7433, 10.3081);
+    //var locdata = await Location().getLocation();
     print("CurrentUserLocation-------recuperation des donnees ");
     latitudepos = locdata.latitude;
     longitudepos = locdata.longitude;
@@ -137,7 +185,7 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
     location.lng = longitudepos;
     apiProvider.updateLocation(location, ApiProvider.addr);
     mapMarker = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(size: Size(0.0005, 0.0007)),
+        ImageConfiguration(size: Size(20, 22)),
         'assets/markers/redmarker2.png');
 
     setState(() {
@@ -156,6 +204,7 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
       ));
     });
     _getNearby();
+    getMeetings();
   }
 
   @override

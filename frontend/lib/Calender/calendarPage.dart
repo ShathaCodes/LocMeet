@@ -1,4 +1,5 @@
 import 'package:LoginFlutter/api_provider.dart';
+import 'package:LoginFlutter/models/location.dart';
 import 'package:LoginFlutter/models/meeting.dart';
 import 'package:LoginFlutter/models/user.dart';
 import 'package:flutter/material.dart';
@@ -15,10 +16,11 @@ class CalendarPageState extends State<CalendarPage> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime _selectedDay;
-  List<bool> isLiked = List<bool>.filled(4, false, growable: true);
   User user = new User();
   ApiProvider apiProvider;
-  List meetings = new List();
+  List joinedMeetings = new List();
+  List myMeetings = new List();
+  List showMeetings = new List();
 
   @override
   void initState() {
@@ -28,17 +30,25 @@ class CalendarPageState extends State<CalendarPage> {
 
   testtt() async {
     user = await user.getTokenData();
-    print(user.nickname);
     apiProvider = ApiProvider();
-    final ind = ApiProvider.addr;
 
-    meetings = user.myMeetings;
-    for (var meeting in meetings) {
-      print(meeting.id);
+    List meetings = await apiProvider.getMeetings(ApiProvider.addr);
+    for (Meeting m in meetings) {
+      if (m.creator.id == user.id)
+        myMeetings.add(m);
+      else
+        for (User u in m.guests) if (u.id == user.id) joinedMeetings.add(m);
+    }
+    for (Meeting m in myMeetings)
+      if (m.date.month == _focusedDay.month) showMeetings.add(m);
+    for (Meeting m in joinedMeetings) {
+      if (m.date.month == _focusedDay.month) showMeetings.add(m);
     }
     setState(() {
       user = user;
-      meetings = meetings;
+      myMeetings = myMeetings;
+      joinedMeetings = joinedMeetings;
+      showMeetings = showMeetings;
     });
   }
 
@@ -114,23 +124,27 @@ class CalendarPageState extends State<CalendarPage> {
                         });
                       }
                     },
-                    onFormatChanged: (format) {
-                      if (_calendarFormat != format) {
-                        setState(() {
-                          _calendarFormat = format;
-                        });
-                      }
-                    },
                     onPageChanged: (focusedDay) {
+                      showMeetings = new List();
+                      for (Meeting m in myMeetings)
+                        if (m.date.month == focusedDay.month)
+                          showMeetings.add(m);
+                      for (Meeting m in joinedMeetings)
+                        if (m.date.month == focusedDay.month)
+                          showMeetings.add(m);
                       setState(() {
                         _focusedDay = focusedDay;
+                        showMeetings = showMeetings;
                       });
                     },
                     //just to test the events ui
                     eventLoader: (day) {
-                      if (isSameDay(DateTime(2012, 1, 12), day))
-                        return ["event1", "lol"];
-                      return [];
+                      List l = [];
+                      for (Meeting meeting in myMeetings)
+                        if (isSameDay(meeting.date, day)) l.add(meeting);
+                      for (Meeting meeting in joinedMeetings)
+                        if (isSameDay(meeting.date, day)) l.add(meeting);
+                      return l;
                     },
                   ),
                 ],
@@ -147,65 +161,142 @@ class CalendarPageState extends State<CalendarPage> {
                   ],
                 ),
                 SizedBox(height: height / 40),
-                Expanded(
-                    child: ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        itemCount: 4,
-                        itemBuilder: (contexti, index) {
-                          return Padding(
-                            padding: EdgeInsets.only(bottom: height / 50),
-                            child: Row(
-                              children: [
-                                Column(
-                                  children: [
-                                    Text(DateFormat('MMMM').format(_focusedDay),
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black54)),
-                                    SizedBox(
-                                      height: height / 100,
-                                    ),
-                                    Text("8",
-                                        style: TextStyle(
+                if (showMeetings.length > 0)
+                  Expanded(
+                      child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          itemCount: showMeetings.length,
+                          itemBuilder: (contexti, index) {
+                            return Padding(
+                                padding: EdgeInsets.only(bottom: height / 50),
+                                child: Stack(children: [
+                                  Row(
+                                    children: [
+                                      Column(
+                                        children: [
+                                          Text(
+                                              DateFormat('MMMM')
+                                                  .format(_focusedDay),
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black54)),
+                                          SizedBox(
+                                            height: height / 100,
+                                          ),
+                                          Text(
+                                              DateFormat('d').format(
+                                                  showMeetings[index].date),
+                                              style: TextStyle(
+                                                  color: blue_base,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 18))
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        width: width / 50,
+                                      ),
+                                      Container(
+                                          width: 5.5,
+                                          height: 37,
+                                          decoration: BoxDecoration(
                                             color: blue_base,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18))
-                                  ],
-                                ),
-                                SizedBox(
-                                  width: width / 50,
-                                ),
-                                Container(
-                                    width: 5.5,
-                                    height: 37,
-                                    decoration: BoxDecoration(
-                                      color: blue_base,
-                                      borderRadius: BorderRadius.only(
-                                          topRight: Radius.circular(2.5),
-                                          bottomRight: Radius.circular(2.5)),
-                                    )),
-                                SizedBox(
-                                  width: width / 30,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('TED x INSAT',
-                                        style: TextStyle(
-                                            color: Colors.black54,
-                                            fontWeight: FontWeight.bold)),
-                                    SizedBox(
-                                      height: height / 100,
-                                    ),
-                                    Text('11:30 AM',
-                                        style: TextStyle(
-                                            color: Colors.grey, fontSize: 10)),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          );
-                        })),
+                                            borderRadius: BorderRadius.only(
+                                                topRight: Radius.circular(2.5),
+                                                bottomRight:
+                                                    Radius.circular(2.5)),
+                                          )),
+                                      SizedBox(
+                                        width: width / 30,
+                                      ),
+                                      if (!myMeetings
+                                          .contains(showMeetings[index]))
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                                showMeetings[index]
+                                                        .creator
+                                                        .nickname +
+                                                    "'s event",
+                                                style: TextStyle(
+                                                    color: Colors.black54,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                            SizedBox(
+                                              height: height / 100,
+                                            ),
+                                            Text(
+                                                DateFormat('jm').format(
+                                                    showMeetings[index].date),
+                                                style: TextStyle(
+                                                    color: Colors.grey,
+                                                    fontSize: 10)),
+                                          ],
+                                        ),
+                                      if (myMeetings
+                                          .contains(showMeetings[index]))
+                                        GestureDetector(
+                                          onTap: () {
+                                            print("hahahahahaha");
+                                          },
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text("My Event",
+                                                  style: TextStyle(
+                                                      color: blue_base,
+                                                      fontWeight:
+                                                          FontWeight.bold)),
+                                              SizedBox(
+                                                height: height / 100,
+                                              ),
+                                              Text(
+                                                  DateFormat('jm').format(
+                                                      showMeetings[index].date),
+                                                  style: TextStyle(
+                                                      color: Colors.grey,
+                                                      fontSize: 10)),
+                                            ],
+                                          ),
+                                        ),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      IconButton(
+                                          icon: Icon(Icons.close,
+                                              color: blue_base),
+                                          onPressed: () async {
+                                            if (!myMeetings.contains(
+                                                showMeetings[index])) {
+                                              await apiProvider.abandonMeeting(
+                                                  showMeetings[index].id,
+                                                  user.id,
+                                                  ApiProvider.addr);
+                                              joinedMeetings
+                                                  .remove(showMeetings[index]);
+                                            } else {
+                                              await apiProvider.deleteMeeting(
+                                                  showMeetings[index].id,
+                                                  ApiProvider.addr);
+                                              myMeetings
+                                                  .remove(showMeetings[index]);
+                                            }
+
+                                            showMeetings.removeAt(index);
+                                            setState(() {
+                                              joinedMeetings = joinedMeetings;
+                                              showMeetings = showMeetings;
+                                              myMeetings = myMeetings;
+                                            });
+                                          })
+                                    ],
+                                  )
+                                ]));
+                          })),
                 SizedBox(height: height / 9)
               ])),
             ])));

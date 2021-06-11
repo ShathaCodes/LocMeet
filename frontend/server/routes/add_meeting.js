@@ -8,11 +8,8 @@ const add_meeting = async (req, res) => {
     const meeting = req.body;
     const creator = req.body.creator;
     delete meeting.creator;
-    //const location = JSON.parse(req.body.location);
-    //delete meeting.location;
 
     const user = await User.findOne({ where: { id:creator } });
-    console.log(user);
     try {
         const dbInstance = await Meeting.create(meeting);
         var loc = await  Location.create({
@@ -23,10 +20,6 @@ const add_meeting = async (req, res) => {
           console.log(dbInstance);
           dbInstance.setCreator(user);
           user.setMeeting(dbInstance);
-          await user.save();   
-          
-       /* var loc = await  Location.create(location);
-        loc.setMeeting(dbInstance);*/
 
         res.send(dbInstance);
     } catch (err) {
