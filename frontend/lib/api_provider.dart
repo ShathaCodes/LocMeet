@@ -9,7 +9,7 @@ import 'models/therapist.dart';
 import 'models/user.dart';
 
 class ApiProvider {
-  static const addr = "192.168.1.6";
+  static const addr = "172.23.144.1";
 
   ApiProvider();
 
@@ -166,7 +166,6 @@ class ApiProvider {
       "date": date,
       "creator": creatorid.toString(),
       "Location": {
-        "id": location.id.toString(),
         "lat": location.lat.toString(),
         "lng": location.lng.toString(),
         "show": "true"

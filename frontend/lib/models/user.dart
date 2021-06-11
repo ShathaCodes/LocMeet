@@ -12,7 +12,6 @@ class User {
   bool isAdmin;
   List interests = new List();
   LocationUser location;
-  List myMeetings = new List();
   List meetings = new List();
   User();
 
@@ -30,9 +29,6 @@ class User {
     if (parsedJson['meetings'] != null)
       this.meetings =
           parsedJson['meetings'].map((i) => Meeting.fromJson(i)).toList();
-    if (parsedJson['meeting'] != null)
-      this.myMeetings =
-          parsedJson['meeting'].map((i) => Meeting.fromJson(i)).toList();
   }
 
   Future<User> getTokenData() async {
