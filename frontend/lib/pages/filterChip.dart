@@ -106,10 +106,11 @@ Widget _titleContainer(String myTitle) {
 
 class filterChipWidget extends StatefulWidget {
   final String chipName;
+  bool selected;
   final int id;
   List sth = [];
 
-  filterChipWidget({Key key, this.chipName, this.id, this.sth})
+  filterChipWidget({Key key, this.chipName, this.id, this.sth, this.selected})
       : super(key: key);
 
   @override
@@ -123,21 +124,38 @@ class _filterChipWidgetState extends State<filterChipWidget> {
   Widget build(BuildContext context) {
     return FilterChip(
       label: Text(widget.chipName),
+      selected: widget.selected,
       labelStyle: TextStyle(
-          color: blue_base, fontSize: 16.0, fontWeight: FontWeight.bold),
-      selected: _isSelected,
+          color: blue_dark, fontSize: 23, fontWeight: FontWeight.bold),
+      disabledColor: jaunepastel,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(30.0),
+        borderRadius: BorderRadius.circular(30),
       ),
-      backgroundColor: jaunepastel.withOpacity(0.3),
+      avatar: CircleAvatar(
+        backgroundImage:
+            AssetImage('assets/images/' + widget.chipName.trim() + '.png'),
+        backgroundColor: Colors.white,
+      ),
       onSelected: (isSelected) {
         setState(() {
           _isSelected = isSelected;
-          if (_isSelected == true) widget.sth.add(widget.id);
-          if (_isSelected == false) widget.sth.remove(widget.id);
+          if (widget.selected == false) {
+            widget.sth.add(widget.chipName);
+            print(widget.sth);
+
+            widget.selected = true;
+          } else {
+            widget.selected = false;
+            widget.sth.remove(widget.chipName);
+            print(widget.sth);
+          }
         });
       },
-      selectedColor: jaunepastel,
+      //selectedShadowColor: blue_base,
+      selectedColor: blue_base,
+      checkmarkColor: jaunepastel,
+      //  selectedShadowColor: blue_base,
+      backgroundColor: jaunepastel,
     );
   }
 }
