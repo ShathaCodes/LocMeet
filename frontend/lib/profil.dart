@@ -1,9 +1,23 @@
 import 'dart:async';
+import 'dart:ffi';
+import 'package:LoginFlutter/components/rounded_button.dart';
 
+import 'package:LoginFlutter/home.dart';
+import 'package:LoginFlutter/pages/home.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:LoginFlutter/Therapist/therapist_list.dart';
+import 'package:LoginFlutter/Therapist/therapistSwipe.dart';
 import 'package:LoginFlutter/api_provider.dart';
+import 'package:LoginFlutter/constants.dart';
 import 'package:LoginFlutter/models/location.dart';
 import 'package:LoginFlutter/models/user.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:line_icons/line_icon.dart';
+import 'package:liquid_swipe/liquid_swipe.dart';
+import './pages/filterChip.dart';
+import 'Screens/Signup/signup_screen.dart';
+import 'Screens/edit/edit_screen.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -39,211 +53,364 @@ class _ProfileState extends State<Profile> {
   }
 
   @override
-  @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
+    print(user.interests);
+    //  print("password" + user.password);
     return Scaffold(
-      body: Container(
-        child: Stack(
-          children: [
-            Column(
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
+        body: SingleChildScrollView(
+            child: Container(
+      color: Colors.transparent,
+      child: Stack(
+        children: [
+          Container(
+              color: blue_base,
+
+              // color: Theme.of(context).cardColor,
+              height: height * 0.4,
+              width: width),
+          Container(
+              height: height,
+              padding: EdgeInsets.only(top: height / 6),
+              color: Colors.transparent,
+              child: Container(
+                child: Stack(
+                  children: [
+                    Container(
+                      padding:
+                          EdgeInsets.only(top: height / 13, left: width / 3),
+                      child: Text(
+                        user.nickname,
+                        style: TextStyle(
+                            fontSize: width / 20, fontWeight: FontWeight.bold),
+                      ),
                     ),
-                    child: Column(children: [
-                      SizedBox(
-                        height: 40.0,
+                    Container(
+                      padding:
+                          EdgeInsets.only(top: height / 7, left: width / 20),
+                      child: Text(
+                        "Interests :",
+                        style: TextStyle(
+                            fontSize: width / 20,
+                            fontWeight: FontWeight.bold,
+                            color: blue_light),
                       ),
-                      CircleAvatar(
-                        radius: 50.0,
-                        backgroundImage:
-                            AssetImage('assets/images/logoPalette.png'),
-                        backgroundColor: Colors.white,
+                    ),
+                    Container(
+                      child: Card(
+                        color: jaunepastel,
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: <Widget>[
+                            Container(
+                                //color: blue_light.withOpacity(0.2),
+                                // width: width / 1.2,
+                                padding: EdgeInsets.only(left: width / 20),
+                                child: Row(
+                                  //crossAxisAlignment: CrossAxisAlignment.center,
+                                  //mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    for (int i = 0;
+                                        i < user.interests.length;
+                                        i++)
+                                      Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          CircleAvatar(
+                                            backgroundColor: Colors.white,
+                                            backgroundImage: AssetImage(
+                                                'assets/images/' +
+                                                    user.interests[i].name +
+                                                    '.png'),
+                                            radius: width / 10,
+                                          ),
+                                          SizedBox(
+                                            width: width / 7,
+                                          ),
+                                          Container(
+                                            child: Text(
+                                              user.interests[i].name
+                                                  .toUpperCase(),
+                                              style: TextStyle(
+                                                  fontSize: width / 23,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: blue_dark),
+                                            ),
+                                            padding: EdgeInsets.only(
+                                                top: height / 50),
+                                          ),
+                                          SizedBox(
+                                            width: width / 3.5,
+                                          ),
+                                        ],
+                                      )
+                                  ],
+                                )),
+                            /* Container(
+                                width: width / 1.2,
+                                padding: EdgeInsets.only(left: width / 20),
+                                child: Row(
+                                  //crossAxisAlignment: CrossAxisAlignment.center,
+                                  //mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      width: width / 20,
+                                    ),
+                                    CircleAvatar(
+                                      backgroundColor: Colors.white,
+                                      backgroundImage: AssetImage(
+                                          'assets/images/baking.png'),
+                                      radius: width / 10,
+                                    ),
+                                    SizedBox(
+                                      width: width / 10,
+                                    ),
+                                    Container(
+                                      child: Text(
+                                        "BAKING",
+                                        style: TextStyle(
+                                            fontSize: width / 23,
+                                            fontWeight: FontWeight.bold,
+                                            color: blue_dark),
+                                      ),
+                                      padding:
+                                          EdgeInsets.only(top: height / 32),
+                                    )
+                                  ],
+                                )),
+                            Container(
+                                width: width / 1.2,
+                                padding: EdgeInsets.only(left: width / 20),
+                                child: Row(
+                                  //crossAxisAlignment: CrossAxisAlignment.center,
+                                  //mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      width: width / 20,
+                                    ),
+                                    CircleAvatar(
+                                      backgroundColor: Colors.white,
+                                      backgroundImage: AssetImage(
+                                          'assets/images/baking.png'),
+                                      radius: width / 10,
+                                    ),
+                                    SizedBox(
+                                      width: width / 10,
+                                    ),
+                                    Container(
+                                      child: Text(
+                                        "BAKING",
+                                        style: TextStyle(
+                                            fontSize: width / 23,
+                                            fontWeight: FontWeight.bold,
+                                            color: blue_dark),
+                                      ),
+                                      padding:
+                                          EdgeInsets.only(top: height / 32),
+                                    )
+                                  ],
+                                )),*/
+                          ],
+                        ),
                       ),
-                    ]),
+                      height: height / 2.5,
+                      padding: EdgeInsets.only(top: height / 5),
+                    ),
+                  ],
+                ),
+                width: width,
+                decoration: new BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: new BorderRadius.only(
+                    topLeft: const Radius.circular(40.0),
+                    topRight: const Radius.circular(40.0),
                   ),
                 ),
-                Expanded(
-                  flex: 5,
-                  child: Container(
-                    color: Colors.grey[200],
-                    child: Center(
-                        child: Card(
-                            child: Container(
-                                width: 260.0,
-                                height: 310.0,
-                                child: Padding(
-                                  padding: EdgeInsets.all(10.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Information",
-                                        style: TextStyle(
-                                          //color: dark,
-                                          fontSize: 17.0,
-                                          fontWeight: FontWeight.w800,
-                                        ),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Icon(
-                                            Icons.book_sharp,
-                                            color: Colors.blueAccent[400],
-                                            size: 35,
-                                          ),
-                                          SizedBox(
-                                            width: 20.0,
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 20.0,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Icon(
-                                            Icons.auto_awesome,
-                                            color: Colors.yellowAccent[400],
-                                            size: 35,
-                                          ),
-                                          SizedBox(
-                                            width: 20.0,
-                                          ),
-                                          Column(
-                                            children: [
-                                              Text(
-                                                "Magic",
-                                                style: TextStyle(
-                                                  fontSize: 15.0,
-                                                ),
-                                              ),
-                                              Text(
-                                                "Spatial & Sword Magic, Telekinesis",
-                                                style: TextStyle(
-                                                  fontSize: 12.0,
-                                                  color: Colors.grey[400],
-                                                ),
-                                              )
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 20.0,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Icon(
-                                            Icons.music_video,
-                                            color: Colors.pinkAccent[400],
-                                            size: 35,
-                                          ),
-                                          SizedBox(
-                                            width: 20.0,
-                                          ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "Loves",
-                                                style: TextStyle(
-                                                  fontSize: 15.0,
-                                                ),
-                                              ),
-                                              Text(
-                                                "Eating cakes",
-                                                style: TextStyle(
-                                                  fontSize: 12.0,
-                                                  color: Colors.grey[400],
-                                                ),
-                                              )
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 20.0,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Icon(
-                                            Icons.people,
-                                            color: Colors.lightGreen[400],
-                                            size: 35,
-                                          ),
-                                          SizedBox(
-                                            width: 20.0,
-                                          ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "Team",
-                                                style: TextStyle(
-                                                  fontSize: 15.0,
-                                                ),
-                                              ),
-                                              Text(
-                                                "Team Natsu",
-                                                style: TextStyle(
-                                                  fontSize: 12.0,
-                                                  color: Colors.grey[400],
-                                                ),
-                                              )
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                )))),
-                  ),
+                padding: EdgeInsets.only(
+                  bottom: height / 8,
+                  left: width / 20,
+                  right: width / 20,
+                ),
+              )),
+          Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: jaunepastel.withOpacity(0.8),
+                  spreadRadius: 1,
+                  blurRadius: 1,
+                  offset: Offset(
+                      width / 5.8, height / 35), // changes position of shadow
                 ),
               ],
             ),
-            Positioned(
-              top: MediaQuery.of(context).size.height * 0.21,
-              left: 20.0,
-              right: 20.0,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                    child: Column(children: [
-                      SizedBox(
-                        height: 6.0,
-                      ),
-                      Text(
-                        'April 7th',
-                        style: TextStyle(
-                          // color: dark,
-                          fontSize: 20.0,
-                        ),
-                      )
-                    ]),
+            child: CircleAvatar(
+              backgroundImage: AssetImage('assets/images/avatar.jpg'),
+              radius: width / 8,
+            ),
+            padding: EdgeInsets.only(top: height / 20, left: width / 3),
+          ),
+          Positioned(
+            top: height / 25,
+            right: width / 20,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return EditScreen();
+                    },
                   ),
-                ],
+                );
+              },
+              child: Container(
+                child: Icon(Icons.settings, color: blue_base, size: width / 15),
+                padding: EdgeInsets.all(height / 80),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(100),
+                  color: jaunepastel,
+                ),
               ),
-            )
-          ],
-        ),
+            ),
+          ),
+          Positioned(
+            bottom: height / 3.7,
+            left: width / 15,
+            child: GestureDetector(
+              onTap: () {
+                print("Organize meating");
+              },
+              child: Container(
+                padding: EdgeInsets.all(height / 80),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(100),
+                ),
+                child: Container(
+                  margin: EdgeInsets.symmetric(vertical: 9),
+                  width: width * 0.4,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(29),
+                    child: FlatButton(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+                      color: blue_base,
+                      onPressed: () => print("Organize meating!!"),
+                      child: Icon(
+                        Icons.add_alert,
+                        color: jaunepastel,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: height / 3.7,
+            right: width / 15,
+            child: GestureDetector(
+              onTap: () {
+                print("View meetings");
+              },
+              child: Container(
+                padding: EdgeInsets.all(height / 80),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(100),
+                ),
+                child: Container(
+                  margin: EdgeInsets.symmetric(vertical: 9),
+                  width: width * 0.4,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(29),
+                    child: FlatButton(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+                      color: blue_base,
+                      onPressed: () => print("new meeting!!"),
+                      child: Icon(
+                        Icons.event_available_rounded,
+                        color: jaunepastel,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          /* Container(
+            padding: EdgeInsets.only(
+              left: 0,
+              top: height / 2,
+            ),
+            //margin: EdgeInsets.only(left: 0, top: height / 30),
+            width: double.infinity,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(29),
+              child: FlatButton(
+                  padding: EdgeInsets.symmetric(
+                      vertical: height / 40, horizontal: width / 20),
+                  color: blue_dark.withOpacity(0.7),
+                  onPressed: () {
+                    print("New meeting");
+                  },
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Icon(Icons.group_add_outlined,
+                            color: Colors.white, size: width / 15),
+                        SizedBox(
+                          width: width / 9,
+                        ),
+                        Text(
+                          "Schedule a new meeting",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: width / 20),
+                        ),
+                      ])),
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.only(
+              left: 0,
+              top: height / 1.65,
+            ),
+            //margin: EdgeInsets.only(left: 0, top: height / 30),
+            width: double.infinity,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(29),
+              child: FlatButton(
+                  padding: EdgeInsets.symmetric(
+                      vertical: height / 40, horizontal: width / 20),
+                  color: blue_dark.withOpacity(0.7),
+                  onPressed: () {
+                    print("View my meetings");
+                  },
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Icon(Icons.schedule,
+                            color: Colors.white, size: width / 15),
+                        SizedBox(
+                          width: width / 12,
+                        ),
+                        Text(
+                          "View my scheduled meetings",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: width / 20),
+                        ),
+                      ])),
+            ),
+          ),*/
+        ],
       ),
-    );
+    )));
   }
 }
