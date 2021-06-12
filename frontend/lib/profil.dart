@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:LoginFlutter/components/rounded_button.dart';
 
 import 'package:LoginFlutter/home.dart';
+import 'package:LoginFlutter/main.dart';
 import 'package:LoginFlutter/pages/home.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:LoginFlutter/Therapist/therapist_list.dart';
@@ -41,7 +42,9 @@ void callbackDispatcher() {
     var android = AndroidInitializationSettings('@mipmap/ic_launcher');
     var iOS = IOSInitializationSettings();
     var initSetttings = InitializationSettings(android, iOS);
+    print('yeesssssssssssssssss');
     flp.initialize(initSetttings);
+    print('Iniiiiiiiiiiiiiiiiiiiiiiiiiiit');
 
     /*var response= await http.post('https://seeviswork.000webhostapp.com/api/testapi.php');
    print("here================");
@@ -52,6 +55,9 @@ void callbackDispatcher() {
       } else {
       print("no messgae");
       }*/
+
+    showNotification("Notification done", flp);
+    print('donnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnne');
 
     return Future.value(true);
   });
@@ -91,9 +97,10 @@ class _ProfileState extends State<Profile> {
 
   @override
   void initState() {
+    print("faire iniiiiiiiiiiiiiiiiiiiit dans initstate");
+    initNotification();
     testtt();
     super.initState();
-    initNotification();
   }
 
   testtt() async {
@@ -133,7 +140,7 @@ class _ProfileState extends State<Profile> {
                   children: [
                     Container(
                       padding:
-                          EdgeInsets.only(top: height / 13, left: width / 3),
+                          EdgeInsets.only(top: height / 13, left: width / 2.5),
                       child: Text(
                         user.nickname,
                         style: TextStyle(
@@ -202,70 +209,6 @@ class _ProfileState extends State<Profile> {
                                       )
                                   ],
                                 )),
-                            /* Container(
-                                width: width / 1.2,
-                                padding: EdgeInsets.only(left: width / 20),
-                                child: Row(
-                                  //crossAxisAlignment: CrossAxisAlignment.center,
-                                  //mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SizedBox(
-                                      width: width / 20,
-                                    ),
-                                    CircleAvatar(
-                                      backgroundColor: Colors.white,
-                                      backgroundImage: AssetImage(
-                                          'assets/images/baking.png'),
-                                      radius: width / 10,
-                                    ),
-                                    SizedBox(
-                                      width: width / 10,
-                                    ),
-                                    Container(
-                                      child: Text(
-                                        "BAKING",
-                                        style: TextStyle(
-                                            fontSize: width / 23,
-                                            fontWeight: FontWeight.bold,
-                                            color: blue_dark),
-                                      ),
-                                      padding:
-                                          EdgeInsets.only(top: height / 32),
-                                    )
-                                  ],
-                                )),
-                            Container(
-                                width: width / 1.2,
-                                padding: EdgeInsets.only(left: width / 20),
-                                child: Row(
-                                  //crossAxisAlignment: CrossAxisAlignment.center,
-                                  //mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SizedBox(
-                                      width: width / 20,
-                                    ),
-                                    CircleAvatar(
-                                      backgroundColor: Colors.white,
-                                      backgroundImage: AssetImage(
-                                          'assets/images/baking.png'),
-                                      radius: width / 10,
-                                    ),
-                                    SizedBox(
-                                      width: width / 10,
-                                    ),
-                                    Container(
-                                      child: Text(
-                                        "BAKING",
-                                        style: TextStyle(
-                                            fontSize: width / 23,
-                                            fontWeight: FontWeight.bold,
-                                            color: blue_dark),
-                                      ),
-                                      padding:
-                                          EdgeInsets.only(top: height / 32),
-                                    )
-                                  ],
-                                )),*/
                           ],
                         ),
                       ),
@@ -297,7 +240,7 @@ class _ProfileState extends State<Profile> {
                   spreadRadius: 1,
                   blurRadius: 1,
                   offset: Offset(
-                      width / 5.8, height / 35), // changes position of shadow
+                      width / 5.3, height / 35), // changes position of shadow
                 ),
               ],
             ),
@@ -305,7 +248,7 @@ class _ProfileState extends State<Profile> {
               backgroundImage: AssetImage('assets/images/avatar.jpg'),
               radius: width / 8,
             ),
-            padding: EdgeInsets.only(top: height / 20, left: width / 3),
+            padding: EdgeInsets.only(top: height / 20, left: width / 2.6),
           ),
           Positioned(
             top: height / 25,
@@ -395,74 +338,6 @@ class _ProfileState extends State<Profile> {
               ),
             ),
           ),
-          /* Container(
-            padding: EdgeInsets.only(
-              left: 0,
-              top: height / 2,
-            ),
-            //margin: EdgeInsets.only(left: 0, top: height / 30),
-            width: double.infinity,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(29),
-              child: FlatButton(
-                  padding: EdgeInsets.symmetric(
-                      vertical: height / 40, horizontal: width / 20),
-                  color: blue_dark.withOpacity(0.7),
-                  onPressed: () {
-                    print("New meeting");
-                  },
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Icon(Icons.group_add_outlined,
-                            color: Colors.white, size: width / 15),
-                        SizedBox(
-                          width: width / 9,
-                        ),
-                        Text(
-                          "Schedule a new meeting",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: width / 20),
-                        ),
-                      ])),
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.only(
-              left: 0,
-              top: height / 1.65,
-            ),
-            //margin: EdgeInsets.only(left: 0, top: height / 30),
-            width: double.infinity,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(29),
-              child: FlatButton(
-                  padding: EdgeInsets.symmetric(
-                      vertical: height / 40, horizontal: width / 20),
-                  color: blue_dark.withOpacity(0.7),
-                  onPressed: () {
-                    print("View my meetings");
-                  },
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Icon(Icons.schedule,
-                            color: Colors.white, size: width / 15),
-                        SizedBox(
-                          width: width / 12,
-                        ),
-                        Text(
-                          "View my scheduled meetings",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: width / 20),
-                        ),
-                      ])),
-            ),
-          ),*/
         ],
       ),
     )));
