@@ -19,7 +19,6 @@ const add_meeting = async (req, res) => {
         loc.setMeeting(dbInstance);
           console.log(dbInstance);
           dbInstance.setCreator(user);
-          user.setMeeting(dbInstance);
 
         res.send(dbInstance);
     } catch (err) {
