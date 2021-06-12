@@ -64,12 +64,11 @@ class _HomeState extends State<Home> {
     ];
 
     return Scaffold(
-      extendBody: true,
+      extendBody: false,
       appBar: AppBar(
         backgroundColor: blue_base,
         shadowColor: jaunepastel,
-        foregroundColor: jaunepastel,
-        // title: Text("haja", style: TextStyle(color: jaunepastel)),
+        foregroundColor: blue_base,
       ),
       body: PageView(
         controller: controller,
