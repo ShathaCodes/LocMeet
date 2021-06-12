@@ -172,8 +172,8 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
 
   Future<void> _getCurrentUserLocation() async {
     print("CurrentUserLocation-------localization");
-    var locdata = LatLng(36.7433, 10.3081);
-    //var locdata = await Location().getLocation();
+    //var locdata = LatLng(36.7433, 10.3081);
+    var locdata = await Location().getLocation();
     print("CurrentUserLocation-------recuperation des donnees ");
     latitudepos = locdata.latitude;
     longitudepos = locdata.longitude;
@@ -250,22 +250,6 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
                 width: 1000,
                 height: 120,
                 child: Image.asset("assets/images/logoPalette.png")),
-            FloatingActionButton(
-              onPressed: () async {
-                print("test----");
-                var test = await Location().getLocation();
-                print("test----" + test.toString());
-              },
-              child: Container(
-                width: 60,
-                height: 60,
-                child: Icon(Icons.search),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                ),
-              ),
-              heroTag: null,
-            )
           ],
         )))));
   }
