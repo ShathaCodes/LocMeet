@@ -20,71 +20,6 @@ import './pages/filterChip.dart';
 import 'Screens/Signup/signup_screen.dart';
 import 'Screens/edit/edit_screen.dart';
 
-import 'package:workmanager/workmanager.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-
-//this is the name given to the background fetch
-const simplePeriodicTask = "simplePeriodicTask";
-// flutter local notification setup
-void showNotification(v, flp) async {
-  var android = AndroidNotificationDetails(
-      'channel id', 'channel NAME', 'CHANNEL DESCRIPTION',
-      priority: Priority.High, importance: Importance.Max);
-  var iOS = IOSNotificationDetails();
-  var platform = NotificationDetails(android, iOS);
-  await flp.show(0, 'Virtual intelligent solution', '$v', platform,
-      payload: 'VIS \n $v');
-}
-
-void callbackDispatcher() {
-  Workmanager.executeTask((task, inputData) async {
-    FlutterLocalNotificationsPlugin flp = FlutterLocalNotificationsPlugin();
-    var android = AndroidInitializationSettings('@mipmap/ic_launcher');
-    var iOS = IOSInitializationSettings();
-    var initSetttings = InitializationSettings(android, iOS);
-    print('yeesssssssssssssssss');
-    flp.initialize(initSetttings);
-    print('Iniiiiiiiiiiiiiiiiiiiiiiiiiiit');
-
-    /*var response= await http.post('https://seeviswork.000webhostapp.com/api/testapi.php');
-   print("here================");
-   print(response);
-    var convert = json.decode(response.body);
-      if (convert['status']  == true) {
-        showNotification(convert['msg'], flp);
-      } else {
-      print("no messgae");
-      }*/
-
-    showNotification("Notification done", flp);
-    print('donnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnne');
-
-    return Future.value(true);
-  });
-}
-
-Future<void> initNotification() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Workmanager.initialize(callbackDispatcher,
-      isInDebugMode:
-          true); //to true if still in testing lev turn it to false whenever you are launching the app
-  await Workmanager.registerPeriodicTask("5", simplePeriodicTask,
-      existingWorkPolicy: ExistingWorkPolicy.replace,
-      frequency: Duration(minutes: 15), //when should it check the link
-      initialDelay:
-          Duration(seconds: 5), //duration before showing the notification
-      constraints: Constraints(
-        networkType: NetworkType.connected,
-      ));
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: Profile(),
-    theme: ThemeData(fontFamily: 'Poppins'),
-  ));
-}
-
 class Profile extends StatefulWidget {
   @override
   _ProfileState createState() => _ProfileState();
@@ -98,8 +33,8 @@ class _ProfileState extends State<Profile> {
   @override
   void initState() {
     print("faire iniiiiiiiiiiiiiiiiiiiit dans initstate");
-    initNotification();
     testtt();
+
     super.initState();
   }
 
