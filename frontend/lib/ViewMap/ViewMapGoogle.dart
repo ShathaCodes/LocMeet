@@ -1,4 +1,6 @@
+import 'package:LoginFlutter/ViewMap/Datepicker.dart';
 import 'package:LoginFlutter/constants.dart';
+import 'package:LoginFlutter/models/meeting.dart';
 import 'package:LoginFlutter/pages/meeting_request.dart';
 import 'package:flutter/material.dart';
 
@@ -9,7 +11,11 @@ import 'dart:async';
 import 'package:LoginFlutter/models/user.dart';
 import 'package:LoginFlutter/models/location.dart';
 import 'package:LoginFlutter/api_provider.dart';
+
 import 'package:location/location.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'DatepickerEdit.dart';
 
 class ViewMapGoogle extends StatefulWidget {
   @override
@@ -105,15 +111,43 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
     });
   }
 
+  List joinedMeetings = new List();
+  List myMeetings = new List();
+  List otherMeetings = new List();
+  bool test;
+
   Future getMeetings() async {
-    var meetings = await apiProvider.getMeetings(ApiProvider.addr);
+    List meetings = new List();
+    meetings = await apiProvider.getMeetings(ApiProvider.addr);
+
+    print("hnaaaa =" + meetings.length.toString());
+    for (var m in meetings) {
+      if (m.creator.id == user.id) {
+        // put this in users created events --> myMeetings
+        myMeetings.add(m);
+        //   meetings.remove(m);
+      } else {
+        test = false;
+        for (User u in m.guests)
+          if (u.id == user.id) {
+            test = true;
+            // put this in users joined events --> joinedMeetings
+            joinedMeetings.add(m);
+
+            // meetings.remove(m);
+          }
+        if (test == false) otherMeetings.add(m);
+      }
+    } // the rest of events shall remain in the original list --> meetings
+
     var lol = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(size: Size(20, 22)),
-        'assets/markers/purplemarker2.png');
+        'assets/markers/purplemarker.png');
+    var meeting;
+    var k;
     setState(() {
-      for (int i = 0; i < meetings.length; i++) {
-        var k = i + liste.length + 1;
-        var meeting = meetings[i];
+      for (Meeting meeting in otherMeetings) {
+        k = meeting.id;
         print(meeting.location.lat.toString() + "---" + k.toString());
         _markers.add(Marker(
             markerId: MarkerId('id-' + k.toString()),
@@ -165,6 +199,46 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
                       ));
             }));
       }
+      for (Meeting meeting in myMeetings) {
+        k = meeting.id;
+        print(meeting.location.lat.toString() + "---" + k.toString());
+        _markers.add(Marker(
+          markerId: MarkerId('id-' + k.toString()),
+          position: LatLng(meeting.location.lat, meeting.location.lng),
+          icon: lol,
+          infoWindow: InfoWindow(
+              title: 'Click to edit your meeting',
+              snippet: DateFormat('EEE, d/M/y').format(meeting.date),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return MyDatepickerEdit(
+                        id: user.id,
+                      );
+                    },
+                  ),
+                );
+              }),
+        ));
+      }
+      for (int i = 0; i < joinedMeetings.length; i++) {
+        k = i + liste.length + otherMeetings.length + myMeetings.length + 1;
+        meeting = joinedMeetings[i];
+        print(meeting.location.lat.toString() + "---" + k.toString());
+        _markers.add(Marker(
+            markerId: MarkerId('id-' + k.toString()),
+            position: LatLng(meeting.location.lat, meeting.location.lng),
+            icon: lol,
+            infoWindow: InfoWindow(
+              title: 'Joined meeting!',
+              snippet: DateFormat('EEE, d/M/y').format(meeting.date),
+            ),
+            onTap: () async {
+              print('logiquement fema shai lenna?');
+            }));
+      }
     });
   }
 
@@ -172,8 +246,8 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
 
   Future<void> _getCurrentUserLocation() async {
     print("CurrentUserLocation-------localization");
-    var locdata = LatLng(36.7433, 10.3081);
-    //var locdata = await Location().getLocation();
+    //var locdata = LatLng(36.7433, 10.3081);
+    var locdata = await Location().getLocation();
     print("CurrentUserLocation-------recuperation des donnees ");
     latitudepos = locdata.latitude;
     longitudepos = locdata.longitude;
@@ -238,6 +312,7 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
           children: <Widget>[
             GoogleMap(
               onMapCreated: _onMapCreated,
+              onTap: _handleTap,
               markers: _markers,
               initialCameraPosition: CameraPosition(
                 target: LatLng(latitudepos, longitudepos), //_center,
@@ -268,5 +343,43 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
             )
           ],
         )))));
+  }
+
+  Future _handleTap(LatLng tappedPoint) async {
+    //  var meetings = await apiProvider.getMeetings(ApiProvider.addr);
+
+    var eventMarker = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(size: Size(20, 22)),
+        'assets/markers/purplemarker2.png');
+
+    setState(() {
+      _markers.add(Marker(
+        markerId: MarkerId(tappedPoint.toString()),
+        position: tappedPoint,
+        icon: eventMarker,
+        draggable: true,
+        onDragEnd: (details) {
+          setState(() {
+            tappedPoint = details;
+          });
+        },
+        infoWindow: InfoWindow(
+          title: 'Click here to create your event',
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return MyDatepicker(
+                    id: user.id,
+                    location: tappedPoint,
+                  );
+                },
+              ),
+            );
+          },
+        ),
+      ));
+    });
   }
 }

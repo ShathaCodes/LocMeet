@@ -1,15 +1,16 @@
 import 'package:LoginFlutter/models/location.dart';
 import 'package:LoginFlutter/models/meeting.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io';
 import 'dart:convert';
 import 'dart:async';
-import 'models/Interest.dart';
+import 'models/interest.dart';
 import 'models/therapist.dart';
 import 'models/user.dart';
 
 class ApiProvider {
-  static const addr = "172.23.144.1";
+  static const addr = "192.168.43.250";
 
   ApiProvider();
 
@@ -160,14 +161,14 @@ class ApiProvider {
 
   //----------------------------------------------------------------Meeting
   Future<http.Response> addMeeting(
-      String date, LocationUser location, int creatorid, String ip) async {
+      String date, LatLng location, int creatorid, String ip) async {
     String _url = 'http://$ip:3000/add_meeting';
     var body = {
       "date": date,
       "creator": creatorid.toString(),
       "Location": {
-        "lat": location.lat.toString(),
-        "lng": location.lng.toString(),
+        "lat": location.latitude.toString(),
+        "lng": location.longitude.toString(),
         "show": "true"
       }
     };
