@@ -4,6 +4,8 @@ import 'package:LoginFlutter/models/user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'Screens/edit/edit_screen.dart';
+import 'home.dart';
+import 'package:flutter/src/material/snack_bar.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -33,6 +35,9 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
+    final messsge =
+        SnackBar(content: Text('Tap anywhere to create a new meeting!'));
+
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     print(user.interests);
@@ -204,7 +209,17 @@ class _ProfileState extends State<Profile> {
                       padding:
                           EdgeInsets.symmetric(vertical: 20, horizontal: 40),
                       color: blue_base,
-                      onPressed: () => print("Organize meating!!"),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return Home(indexx: 1);
+                            },
+                          ),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(messsge);
+                      },
                       child: Icon(
                         Icons.add_alert,
                         color: jaunepastel,
@@ -220,7 +235,15 @@ class _ProfileState extends State<Profile> {
             right: width / 15,
             child: GestureDetector(
               onTap: () {
-                print("View meetings");
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return EditScreen();
+                    },
+                  ),
+                );
+                ;
               },
               child: Container(
                 padding: EdgeInsets.all(height / 80),
@@ -236,7 +259,16 @@ class _ProfileState extends State<Profile> {
                       padding:
                           EdgeInsets.symmetric(vertical: 20, horizontal: 40),
                       color: blue_base,
-                      onPressed: () => print("new meeting!!"),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return Home(indexx: 3);
+                            },
+                          ),
+                        );
+                      },
                       child: Icon(
                         Icons.event_available_rounded,
                         color: jaunepastel,
