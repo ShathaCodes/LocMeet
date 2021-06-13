@@ -1,23 +1,8 @@
-import 'dart:async';
-import 'dart:ffi';
-import 'package:LoginFlutter/components/rounded_button.dart';
-
-import 'package:LoginFlutter/home.dart';
-import 'package:LoginFlutter/main.dart';
-import 'package:LoginFlutter/pages/home.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:LoginFlutter/Therapist/therapist_list.dart';
-import 'package:LoginFlutter/Therapist/therapistSwipe.dart';
 import 'package:LoginFlutter/api_provider.dart';
 import 'package:LoginFlutter/constants.dart';
-import 'package:LoginFlutter/models/location.dart';
 import 'package:LoginFlutter/models/user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:line_icons/line_icon.dart';
-import 'package:liquid_swipe/liquid_swipe.dart';
-import './pages/filterChip.dart';
-import 'Screens/Signup/signup_screen.dart';
 import 'Screens/edit/edit_screen.dart';
 
 class Profile extends StatefulWidget {
@@ -32,7 +17,6 @@ class _ProfileState extends State<Profile> {
 
   @override
   void initState() {
-    print("faire iniiiiiiiiiiiiiiiiiiiit dans initstate");
     testtt();
 
     super.initState();
@@ -41,8 +25,7 @@ class _ProfileState extends State<Profile> {
   testtt() async {
     user = await user.getTokenData();
     apiProvider = ApiProvider();
-    //final ind = ApiProvider.addr;
-    //u = await apiProvider.nearby(ind, 30, 30, 20);
+
     setState(() {
       user = user;
     });
@@ -53,19 +36,14 @@ class _ProfileState extends State<Profile> {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     print(user.interests);
-    //  print("password" + user.password);
+
     return Scaffold(
         body: SingleChildScrollView(
             child: Container(
       color: Colors.transparent,
       child: Stack(
         children: [
-          Container(
-              color: blue_base,
-
-              // color: Theme.of(context).cardColor,
-              height: height * 0.4,
-              width: width),
+          Container(color: blue_base, height: height * 0.4, width: width),
           Container(
               height: height,
               padding: EdgeInsets.only(top: height / 6),
@@ -100,12 +78,8 @@ class _ProfileState extends State<Profile> {
                           scrollDirection: Axis.horizontal,
                           children: <Widget>[
                             Container(
-                                //color: blue_light.withOpacity(0.2),
-                                // width: width / 1.2,
                                 padding: EdgeInsets.only(left: width / 20),
                                 child: Row(
-                                  //crossAxisAlignment: CrossAxisAlignment.center,
-                                  //mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     for (int i = 0;
                                         i < user.interests.length;

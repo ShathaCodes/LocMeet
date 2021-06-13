@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'package:LoginFlutter/models/interest.dart';
 import 'package:LoginFlutter/models/location.dart';
 import 'package:LoginFlutter/models/meeting.dart';

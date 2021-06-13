@@ -21,7 +21,6 @@ class SocalIcon extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border.all(
             width: 2,
-            //color: yellow_base,
             color: jaunepastel,
           ),
           shape: BoxShape.circle,

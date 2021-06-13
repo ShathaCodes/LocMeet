@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:intl/intl.dart';
 
-import 'package:LoginFlutter/colors/colors.dart';
 import 'package:LoginFlutter/home.dart';
 import 'package:LoginFlutter/models/location.dart';
 import 'package:LoginFlutter/models/user.dart';
@@ -11,6 +10,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api_provider.dart';
+import '../constants.dart';
 
 void main() {
   runApp(Datepicker());

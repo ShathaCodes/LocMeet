@@ -19,11 +19,11 @@ const update_meeting = require('../routes/update_meeting');
 
 const Pusher = require("pusher");
 const pusher = new Pusher({
-  appId: "1195366",
-  key: "a3321ae30692703e9fe0",
-  secret: "0dd63090445ae7b2def5",
-  cluster: "eu",
-  useTLS: true,
+    appId : "1218585",
+    key : "0e149bbe91658d657887",
+    secret : "910b661f463ea8969b88",
+    cluster : "eu",
+    useTLS: true,
 });
 
 const router = {

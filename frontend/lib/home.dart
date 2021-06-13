@@ -29,23 +29,120 @@ class _HomeState extends State<Home> {
   User user = new User();
   ApiProvider apiProvider;
   Event lastEventRequest;
-  Event lastEventAccept;
+  static Event lastEventAccept;
   Event lastEventRefuse;
   Event lastEventSuccess;
   String lastConnectionState;
   Channel channel;
+  Channel channel2;
+  var i = 0;
+
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
   Future onSelectNotification(String payload) async {
-    showDialog(
-      context: context,
-      builder: (_) {
-        return new AlertDialog(
-          title: Text("PayLoad"),
-          content: Text("Payload : $payload"),
-        );
-      },
-    );
+    if (payload == 'request') {
+      showDialog(
+        context: context,
+        builder: (_) {
+          return new AlertDialog(
+              title: Text(
+                "Accept !",
+                style: TextStyle(fontWeight: FontWeight.bold, color: blue_base),
+              ),
+              content: Container(
+                  width: 350,
+                  height: 100,
+                  child: Row(
+                    children: [
+                      Column(
+                        children: [
+                          IconButton(
+                              icon: const Icon(
+                                Icons.check_circle_rounded,
+                                size: 40,
+                                color: blue_dark,
+                              ),
+                              tooltip: 'accept',
+                              onPressed: () async {
+                                channel2 = await Pusher.subscribe(
+                                    "private-" + lastEventRequest.data);
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ViewMapGoogle(
+                                          userSent: lastEventAccept),
+                                    ));
+                                Navigator.of(context, rootNavigator: true)
+                                    .pop();
+                                await channel2.trigger("accept",
+                                    data: user.nickname);
+                              }),
+                          Text(
+                            "let's meet ",
+                            style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                                color: blue_dark),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        width: 100,
+                      ),
+                      Column(
+                        children: [
+                          IconButton(
+                              icon: const Icon(
+                                Icons.delete_forever_rounded,
+                                size: 40,
+                                color: blue_dark,
+                              ),
+                              tooltip: 'refuse',
+                              onPressed: () async {
+                                channel2 = await Pusher.subscribe(
+                                    "private-" + lastEventRequest.data);
+                                Navigator.of(context, rootNavigator: true)
+                                    .pop();
+                                await channel2.trigger("refuse",
+                                    data: user.nickname);
+                              }),
+                          Text(
+                            "not now",
+                            style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                                color: blue_dark),
+                          ),
+                        ],
+                      ),
+                    ],
+                  )));
+        },
+      );
+    } else if (payload == "accept") {
+      showDialog(
+          context: context,
+          builder: (_) {
+            return new AlertDialog(
+                title: Text(
+                  "Your request has been accepted",
+                  style:
+                      TextStyle(fontWeight: FontWeight.bold, color: blue_base),
+                ),
+                content: Container(
+                    width: 350,
+                    height: 100,
+                    child: FlatButton(
+                        child: Text('proceed ...'),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    ViewMapGoogle(userSent: lastEventAccept)),
+                          );
+                          Navigator.of(context, rootNavigator: true).pop();
+                        })));
+          });
+    }
   }
 
   void showNotification(String title, String body) async {
@@ -53,6 +150,18 @@ class _HomeState extends State<Home> {
   }
 
   Future<void> _demoNotification(String title, String body) async {
+    setState(() {
+      k++;
+      if (k == 1) {
+        var initializationSettingsAndroid =
+            new AndroidInitializationSettings('@mipmap/ic_launcher');
+        var initializationSettingsIOS = new IOSInitializationSettings();
+        var initializationSettings = new InitializationSettings(
+            initializationSettingsAndroid, initializationSettingsIOS);
+        flutterLocalNotificationsPlugin.initialize(initializationSettings,
+            onSelectNotification: onSelectNotification);
+      }
+    });
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
         'channel_ID', 'channel name', 'channel description',
         importance: Importance.Max,
@@ -65,18 +174,17 @@ class _HomeState extends State<Home> {
     var platformChannelSpecifics = NotificationDetails(
         androidPlatformChannelSpecifics, iOSChannelSpecifics);
     await flutterLocalNotificationsPlugin
-        .show(0, title, body, platformChannelSpecifics, payload: 'test');
+        .show(0, title, body, platformChannelSpecifics, payload: title);
   }
 
   Future<void> initPusher() async {
     try {
-      // user = await user.getTokenData();
       //initialize Pusher
       await Pusher.init(
-          "a3321ae30692703e9fe0",
+          "0e149bbe91658d657887",
           PusherOptions(
               cluster: "eu",
-              auth: PusherAuth("http://192.168.43.247:3000/pusher/auth")),
+              auth: PusherAuth("http://192.168.1.6:3000/pusher/auth")),
           enableLogging: true);
     } on PlatformException catch (e) {
       print(e.message);
@@ -103,10 +211,12 @@ class _HomeState extends State<Home> {
       }
     });
     await channel.bind("accept", (x) {
-      if (mounted)
+      if (mounted) {
         setState(() {
           lastEventAccept = x;
         });
+        showNotification("accept", lastEventAccept.data);
+      }
     });
     await channel.bind("refuse", (x) {
       if (mounted)
@@ -127,33 +237,30 @@ class _HomeState extends State<Home> {
     e = widget.indexx;
   }
 
+  static int k = 0;
   @override
   void initState() {
-    print("faire iniiiiiiiiiiiiiiiiiiiit dans initstate");
+    //k = 0;
     testtt();
-    var initializationSettingsAndroid =
-        new AndroidInitializationSettings('@mipmap/ic_launcher');
-    var initializationSettingsIOS = new IOSInitializationSettings();
-    var initializationSettings = new InitializationSettings(
-        initializationSettingsAndroid, initializationSettingsIOS);
-    flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: onSelectNotification);
-    //initPusher();
+    initPusher();
     controller = PageController(initialPage: widget.indexx);
+
     super.initState();
   }
 
   @override
   void dispose() {
     Pusher.disconnect();
+    lastEventAccept = null;
+    setState(() {
+      lastEventAccept = null;
+    });
     super.dispose();
   }
 
   testtt() async {
     user = await user.getTokenData();
     apiProvider = ApiProvider();
-    //final ind = ApiProvider.addr;
-    //u = await apiProvider.nearby(ind, 30, 30, 20);
     setState(() {
       user = user;
     });
@@ -162,26 +269,28 @@ class _HomeState extends State<Home> {
   var padding = EdgeInsets.symmetric(horizontal: 12, vertical: 5);
   double gap = 5;
   List<GButton> buttons = [];
-  List<String> list = ["Calendar", "Meeting", "Call", "Profile"];
+
+  List<String> list = ["Profile", "Meeting", "Call", "Calendar"];
   List<Widget> text = [
-    CalendarPage(),
-    ViewMapGoogle(),
-    TherapistList(),
     Profile(),
+    ViewMapGoogle(userSent: lastEventAccept),
+    TherapistList(),
+    CalendarPage(),
   ];
 
   List<Color> colors = [
-    Color(0xFF3788BE),
+    Colors.teal,
     Colors.teal,
     Colors.grey[600],
-    Colors.teal
+    Color(0xFF3788BE),
   ];
   List icons = [
-    LineIcons.calendar,
+    LineIcons.user,
     LineIcons.alternateMapMarker,
     LineIcons.phone,
-    LineIcons.user
+    LineIcons.calendar,
   ];
+
   PageController controller;
   @override
   Widget build(BuildContext context) {
@@ -203,6 +312,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       extendBody: true,
       appBar: AppBar(
+        elevation: 0.0,
         backgroundColor: blue_base,
         shadowColor: jaunepastel,
         foregroundColor: blue_base,
@@ -235,7 +345,6 @@ class _HomeState extends State<Home> {
           padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 3),
           child: GNav(
             curve: Curves.fastOutSlowIn,
-            //tabShadow: [BoxShadow(blurRadius: 8, color: colors[_index])],
             duration: Duration(microseconds: 900),
             tabs: buttons,
             selectedIndex: widget.indexx,

@@ -1,5 +1,4 @@
 import 'package:LoginFlutter/api_provider.dart';
-import 'package:LoginFlutter/models/location.dart';
 import 'package:LoginFlutter/models/meeting.dart';
 import 'package:LoginFlutter/models/user.dart';
 import 'package:flutter/material.dart';

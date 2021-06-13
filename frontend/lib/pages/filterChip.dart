@@ -1,7 +1,5 @@
 import 'package:LoginFlutter/constants.dart';
 import 'package:flutter/material.dart';
-//import './../colors/colors.dart';
-import 'package:LoginFlutter/constants.dart';
 
 class FilterChipDisplay extends StatefulWidget {
   @override
@@ -151,10 +149,8 @@ class _filterChipWidgetState extends State<filterChipWidget> {
           }
         });
       },
-      //selectedShadowColor: blue_base,
       selectedColor: blue_base,
       checkmarkColor: jaunepastel,
-      //  selectedShadowColor: blue_base,
       backgroundColor: jaunepastel,
     );
   }

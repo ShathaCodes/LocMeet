@@ -1,15 +1,6 @@
-//import 'package:LoginFlutter/colors/colors.dart';
 import 'package:LoginFlutter/constants.dart';
-import 'package:LoginFlutter/models/therapist.dart';
 import 'package:flutter/material.dart';
-
 import '../api_provider.dart';
-
-import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
-
-//import 'package:url_launcher/url_launcher.dart';
-
-const _url = 'https://flutter.dev';
 
 class TherapistList extends StatefulWidget {
   @override
@@ -18,7 +9,7 @@ class TherapistList extends StatefulWidget {
 
 class _TherapistListState extends State<TherapistList> {
   TextEditingController _numberCtrl = new TextEditingController();
-  Future<void> _launched;
+
   ApiProvider apiProvider = ApiProvider();
   final ind = ApiProvider.addr;
 
@@ -30,18 +21,6 @@ class _TherapistListState extends State<TherapistList> {
       therapists = therapists;
     });
   }
-
-  /*launchUrl(url) {
-    launch(url);
-  }
-
-  Future<void> _makePhoneCall(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }*/
 
   @override
   initState() {
@@ -118,8 +97,6 @@ class _TherapistListState extends State<TherapistList> {
                                         top: height / 3.9, left: width / 20),
                                     child: Center(
                                         child: Card(
-                                            //color: Colors.grey[100],
-                                            //margin: EdgeInsets.fromLTRB( 0.0, 45.0, 0.0, 0.0),
                                             child: Container(
                                                 width: width / 1.2,
                                                 height: height / 2,
@@ -142,7 +119,7 @@ class _TherapistListState extends State<TherapistList> {
                                                             size: height / 22,
                                                           ),
                                                           SizedBox(
-                                                            width: 20.0,
+                                                            width: width / 20,
                                                           ),
                                                           SizedBox(
                                                             height: height / 50,
@@ -154,12 +131,10 @@ class _TherapistListState extends State<TherapistList> {
                                                             children: [
                                                               Text(
                                                                 "Phone",
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontSize:
-                                                                      15.0,
-                                                                  //color: blue_dark,
-                                                                ),
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        width /
+                                                                            28),
                                                               ),
                                                               Text(
                                                                 therapists[
@@ -169,7 +144,8 @@ class _TherapistListState extends State<TherapistList> {
                                                                 style:
                                                                     TextStyle(
                                                                   fontSize:
-                                                                      12.0,
+                                                                      width /
+                                                                          30,
                                                                   color: Colors
                                                                           .grey[
                                                                       400],
@@ -180,7 +156,7 @@ class _TherapistListState extends State<TherapistList> {
                                                         ],
                                                       ),
                                                       SizedBox(
-                                                        height: height / 40,
+                                                        height: height / 45,
                                                       ),
                                                       Row(
                                                         mainAxisAlignment:
@@ -193,7 +169,7 @@ class _TherapistListState extends State<TherapistList> {
                                                             size: height / 22,
                                                           ),
                                                           SizedBox(
-                                                            width: 20.0,
+                                                            width: width / 20,
                                                           ),
                                                           SizedBox(
                                                             height: height / 50,
@@ -208,7 +184,8 @@ class _TherapistListState extends State<TherapistList> {
                                                                 style:
                                                                     TextStyle(
                                                                   fontSize:
-                                                                      15.0,
+                                                                      width /
+                                                                          28,
                                                                 ),
                                                               ),
                                                               Text(
@@ -218,7 +195,8 @@ class _TherapistListState extends State<TherapistList> {
                                                                 style:
                                                                     TextStyle(
                                                                   fontSize:
-                                                                      12.0,
+                                                                      width /
+                                                                          30,
                                                                   color: Colors
                                                                           .grey[
                                                                       400],
@@ -229,7 +207,7 @@ class _TherapistListState extends State<TherapistList> {
                                                         ],
                                                       ),
                                                       SizedBox(
-                                                        height: height / 40,
+                                                        height: height / 45,
                                                       ),
                                                       Row(
                                                         mainAxisAlignment:
@@ -242,10 +220,10 @@ class _TherapistListState extends State<TherapistList> {
                                                             size: height / 22,
                                                           ),
                                                           SizedBox(
-                                                            width: 20.0,
+                                                            width: width / 20,
                                                           ),
                                                           SizedBox(
-                                                            height: height / 50,
+                                                            height: height / 45,
                                                           ),
                                                           Column(
                                                             crossAxisAlignment:
@@ -257,7 +235,8 @@ class _TherapistListState extends State<TherapistList> {
                                                                 style:
                                                                     TextStyle(
                                                                   fontSize:
-                                                                      15.0,
+                                                                      width /
+                                                                          28,
                                                                 ),
                                                               ),
                                                               Text(
@@ -267,7 +246,8 @@ class _TherapistListState extends State<TherapistList> {
                                                                 style:
                                                                     TextStyle(
                                                                   fontSize:
-                                                                      12.0,
+                                                                      width /
+                                                                          30,
                                                                   color: Colors
                                                                           .grey[
                                                                       400],

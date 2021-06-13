@@ -1,6 +1,4 @@
 import 'package:LoginFlutter/Screens/Signup/components/multi_select_dialog.dart';
-import 'package:LoginFlutter/models/interest.dart';
-
 import 'package:flutter/material.dart';
 import 'package:LoginFlutter/Screens/Login/login_screen.dart';
 import 'package:LoginFlutter/Screens/Signup/components/background.dart';
@@ -10,10 +8,8 @@ import 'package:LoginFlutter/components/rounded_button.dart';
 import 'package:LoginFlutter/components/rounded_input_field.dart';
 import 'package:LoginFlutter/components/rounded_password_field.dart';
 import 'package:LoginFlutter/constants.dart';
-
 import '/api_provider.dart';
 import 'dart:async';
-import '/pages/filterChip.dart';
 
 class Body extends StatefulWidget {
   @override
@@ -34,8 +30,6 @@ class BodyState extends State<Body> {
   ApiProvider apiProvider = ApiProvider();
 
   Future doRegistration() async {
-    //final prefs = await SharedPreferences.getInstance();
-
 // Try reading data from the counter key. If it does not exist, return 0.
     final ind = ApiProvider.addr;
     if (_formKey.currentState.validate()) {
@@ -140,7 +134,6 @@ class BodyState extends State<Body> {
 
               RoundedButton(
                   text: "SIGNUP",
-                  //press: () => doRegistration(),
                   press: () async {
                     flavours = await showDialog<List<String>>(
                             context: context,

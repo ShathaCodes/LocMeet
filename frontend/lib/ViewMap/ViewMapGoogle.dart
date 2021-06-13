@@ -1,9 +1,6 @@
-import 'package:LoginFlutter/ViewMap/Datepicker.dart';
 import 'package:LoginFlutter/constants.dart';
 import 'package:LoginFlutter/models/meeting.dart';
-import 'package:LoginFlutter/pages/meeting_request.dart';
 import 'package:flutter/material.dart';
-
 import 'package:intl/intl.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -11,14 +8,16 @@ import 'dart:async';
 import 'package:LoginFlutter/models/user.dart';
 import 'package:LoginFlutter/models/location.dart';
 import 'package:LoginFlutter/api_provider.dart';
-
 import 'package:location/location.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:flutter_pusher/pusher.dart';
 import '../home.dart';
+import 'Datepicker.dart';
 import 'DatepickerEdit.dart';
 
 class ViewMapGoogle extends StatefulWidget {
+  final Event userSent;
+  const ViewMapGoogle({Key key, this.userSent}) : super(key: key);
+
   @override
   _ViewMapGoogleState createState() => _ViewMapGoogleState();
 }
@@ -33,16 +32,21 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
   static var latitudepos;
   static var longitudepos;
   List<User> liste;
+  Channel channel2;
 
   Future _getNearby() async {
     liste = await apiProvider.nearby(
         ApiProvider.addr, latitudepos, longitudepos, 5);
-    print("nearby------" + liste.length.toString());
     var lol = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(size: Size(20, 22)),
         'assets/markers/darkbluemarker2.png');
+
+    var lol1 = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(size: Size(20, 22)),
+        'assets/markers/redmarker2.png');
     setState(() {
       liste = liste;
+
       if (liste != null)
         for (int i = 0; i < liste.length; i++) {
           var userr = liste[i];
@@ -50,7 +54,6 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
             String interests = "";
             for (var interest in userr.interests)
               interests += "    " + interest.name;
-            print("nearby------" + userr.location.lat.toString());
 
             _markers.add(new Marker(
                 markerId: MarkerId('id-' + (i + 2).toString()),
@@ -62,7 +65,6 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
                 ),
                 onTap: () async {
                   print("Clicked: ${userr.nickname}");
-                  print("hiiiiiiiiiiiiiiiiiiiiiiiiiii");
                   showDialog(
                       context: context,
                       builder: (_) => new AlertDialog(
@@ -90,15 +92,13 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
                                 )),
                             actions: <Widget>[
                               FlatButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) {
-                                          return MeetingRequest();
-                                        },
-                                      ),
-                                    );
+                                  onPressed: () async {
+                                    channel2 = await Pusher.subscribe(
+                                        "private-" + userr.nickname);
+                                    Navigator.of(context, rootNavigator: true)
+                                        .pop();
+                                    await channel2.trigger("request",
+                                        data: user.nickname);
                                   },
                                   child: Text("connect !",
                                       style: TextStyle(
@@ -107,6 +107,27 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
                           ));
                   print("alerte faite");
                 }));
+          }
+        }
+      if ((liste != null) && (widget.userSent != null))
+        for (int j = 0; j < liste.length; j++) {
+          var listeMarkers = _markers.toList();
+          var k = listeMarkers[j];
+          if (liste[j].nickname == widget.userSent.data) {
+            Marker m1 = new Marker(
+              markerId: MarkerId('id-' + (j + 2).toString()),
+              icon: lol1,
+              position: LatLng(liste[j].location.lat, liste[j].location.lng),
+              infoWindow: InfoWindow(
+                title: liste[j].nickname,
+                snippet: 'Your companion',
+              ),
+            );
+
+            _markers.remove(k);
+            _markers.add(m1);
+
+            break;
           }
         }
     });
@@ -125,7 +146,6 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
       if (m.creator.id == user.id) {
         // put this in users created events --> myMeetings
         myMeetings.add(m);
-        //   meetings.remove(m);
       } else {
         test = false;
         for (User u in m.guests)
@@ -133,8 +153,6 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
             test = true;
             // put this in users joined events --> joinedMeetings
             joinedMeetings.add(m);
-
-            // meetings.remove(m);
           }
         if (test == false) otherMeetings.add(m);
       }
@@ -199,7 +217,7 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) {
-                                      return Home(indexx: 0);
+                                      return Home(indexx: 3);
                                     },
                                   ),
                                 );
@@ -249,9 +267,7 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
               title: 'Joined meeting!',
               snippet: DateFormat('EEE, d/M/y').format(meeting.date),
             ),
-            onTap: () async {
-              print('logiquement fema shai lenna?');
-            }));
+            onTap: () async {}));
       }
     });
   }
@@ -260,7 +276,6 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
 
   Future<void> _getCurrentUserLocation() async {
     print("CurrentUserLocation-------localization");
-    //var locdata = LatLng(36.7433, 10.3081);
     var locdata = await Location().getLocation();
     print("CurrentUserLocation-------recuperation des donnees ");
     latitudepos = locdata.latitude;
@@ -300,6 +315,7 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
     apiProvider = new ApiProvider();
     liste = [];
     _getCurrentUserLocation();
+
     super.initState();
   }
 

@@ -1,4 +1,3 @@
-//import 'package:LoginFlutter/colors/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:LoginFlutter/constants.dart';
 
@@ -65,10 +64,6 @@ class MultiSelectDialog extends StatelessWidget {
             alignment: Alignment.center,
             child: ElevatedButton(
                 style: raisedButtonStyle,
-                /*style: ButtonStyle(
-                  visualDensity: VisualDensity.comfortable,
-                  backgroundColor: MaterialStateProperty.all<Color>(blue_base),
-                ),*/
                 child: Text(
                   'Submit',
                 ),

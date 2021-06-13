@@ -3,18 +3,12 @@ import 'dart:convert';
 import 'package:LoginFlutter/Screens/Signup/components/multi_select_dialog.dart';
 import 'package:LoginFlutter/components/rounded_input_fieldedit.dart';
 import 'package:LoginFlutter/components/rounded_password_fieldedit.dart';
-import 'package:LoginFlutter/models/interest.dart';
 import 'package:LoginFlutter/models/user.dart';
 import 'package:LoginFlutter/pages/index.dart';
-
 import 'package:flutter/material.dart';
-import 'package:LoginFlutter/Screens/Login/login_screen.dart';
 import 'package:LoginFlutter/Screens/Signup/components/background.dart';
-import 'package:LoginFlutter/Screens/Signup/components/or_divider.dart';
-import 'package:LoginFlutter/components/already_have_an_account_acheck.dart';
 import 'package:LoginFlutter/components/rounded_button.dart';
 import 'package:LoginFlutter/constants.dart';
-
 import 'package:LoginFlutter/api_provider.dart';
 import 'dart:async';
 import 'package:LoginFlutter/pages/filterChip.dart';
@@ -229,21 +223,6 @@ class BodyState extends State<Body> {
               RoundedButton(
                 text: "PROCEED",
                 press: () => {updateUser()},
-                /* press: () async {
-                    flavours = await showDialog<List<String>>(
-                            context: context,
-                            builder: (_) => MultiSelectDialog(
-                                question: Text('Select Your Interests',
-                                    style: TextStyle(color: blue_dark)),
-                                answers: interest)) ??
-                        [];
-                    print(flavours);
-                    setState(() {
-                      sth = flavours;
-                    });
-                    doRegistration();
-                    // Logic to save selected flavours in the database
-                  }*/
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

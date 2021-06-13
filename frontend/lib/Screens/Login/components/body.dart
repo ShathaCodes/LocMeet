@@ -43,9 +43,6 @@ class BodyState extends State<Body> {
             var jsonRes = json.decode(res.body);
             var token = jsonRes['token'];
             prefs.setString("token", token);
-
-            /* Navigator.push(
-                context, MaterialPageRoute(builder: (context) => HomePage()));*/
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => Home(
                       indexx: 0,

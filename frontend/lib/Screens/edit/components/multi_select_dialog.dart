@@ -1,12 +1,9 @@
-//import 'package:LoginFlutter/colors/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:LoginFlutter/constants.dart';
 
-/// A Custom Dialog that displays a single question & list of answers.
 class MultiSelectDialog extends StatelessWidget {
   final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
     onPrimary: jaunepastel,
-    //primary: blue_base,
     minimumSize: Size(88, 36),
     padding: EdgeInsets.symmetric(horizontal: 16),
     shape: const RoundedRectangleBorder(
@@ -54,7 +51,6 @@ class MultiSelectDialog extends StatelessWidget {
           return StatefulBuilder(
             builder: (_, StateSetter setState) => CheckboxListTile(
                 selectedTileColor: blue_dark,
-                //checkColor: Colors.black54,
                 title: Text(key), // Displays the option
                 value: mappedItem[key], // Displays checked or unchecked value
                 controlAffinity: ListTileControlAffinity.platform,
@@ -65,10 +61,6 @@ class MultiSelectDialog extends StatelessWidget {
             alignment: Alignment.center,
             child: ElevatedButton(
                 style: raisedButtonStyle,
-                /*style: ButtonStyle(
-                  visualDensity: VisualDensity.comfortable,
-                  backgroundColor: MaterialStateProperty.all<Color>(blue_base),
-                ),*/
                 child: Text(
                   'Submit',
                 ),
