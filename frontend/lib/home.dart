@@ -14,7 +14,8 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter/services.dart';
 
 class Home extends StatefulWidget {
-  Home({Key key, this.title}) : super(key: key);
+  int indexx;
+  Home({Key key, this.title, this.indexx}) : super(key: key);
 
   final String title;
 
@@ -121,6 +122,11 @@ class _HomeState extends State<Home> {
     });
   }
 
+  static int e;
+  Future<void> initIndex() async {
+    e = widget.indexx;
+  }
+
   @override
   void initState() {
     print("faire iniiiiiiiiiiiiiiiiiiiit dans initstate");
@@ -132,7 +138,8 @@ class _HomeState extends State<Home> {
         initializationSettingsAndroid, initializationSettingsIOS);
     flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onSelectNotification: onSelectNotification);
-    initPusher();
+    //initPusher();
+    controller = PageController(initialPage: widget.indexx);
     super.initState();
   }
 
@@ -152,7 +159,6 @@ class _HomeState extends State<Home> {
     });
   }
 
-  int _index = 0;
   var padding = EdgeInsets.symmetric(horizontal: 12, vertical: 5);
   double gap = 5;
   List<GButton> buttons = [];
@@ -176,8 +182,7 @@ class _HomeState extends State<Home> {
     LineIcons.phone,
     LineIcons.user
   ];
-
-  PageController controller = PageController(initialPage: 0);
+  PageController controller;
   @override
   Widget build(BuildContext context) {
     buttons = [
@@ -196,7 +201,7 @@ class _HomeState extends State<Home> {
     ];
 
     return Scaffold(
-      extendBody: false,
+      extendBody: true,
       appBar: AppBar(
         backgroundColor: blue_base,
         shadowColor: jaunepastel,
@@ -209,7 +214,7 @@ class _HomeState extends State<Home> {
         ],
         onPageChanged: (page) {
           setState(() {
-            _index = page;
+            widget.indexx = page;
           });
         },
       ),
@@ -233,10 +238,10 @@ class _HomeState extends State<Home> {
             //tabShadow: [BoxShadow(blurRadius: 8, color: colors[_index])],
             duration: Duration(microseconds: 900),
             tabs: buttons,
-            selectedIndex: _index,
+            selectedIndex: widget.indexx,
             onTabChange: (index) {
               setState(() {
-                _index = index;
+                widget.indexx = index;
               });
               controller.jumpToPage(index);
             },

@@ -15,6 +15,7 @@ import 'package:LoginFlutter/api_provider.dart';
 import 'package:location/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../home.dart';
 import 'DatepickerEdit.dart';
 
 class ViewMapGoogle extends StatefulWidget {
@@ -120,7 +121,6 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
     List meetings = new List();
     meetings = await apiProvider.getMeetings(ApiProvider.addr);
 
-    print("hnaaaa =" + meetings.length.toString());
     for (var m in meetings) {
       if (m.creator.id == user.id) {
         // put this in users created events --> myMeetings
@@ -142,7 +142,13 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
 
     var lol = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(size: Size(20, 22)),
-        'assets/markers/purplemarker.png');
+        'assets/markers/joinMeeting.png');
+    var joinedMeeting = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(size: Size(20, 22)),
+        'assets/markers/joinedMeeting.png');
+    var editMeeting = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(size: Size(20, 22)),
+        'assets/markers/editMeeting1.png');
     var meeting;
     var k;
     setState(() {
@@ -189,8 +195,16 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
                               onPressed: () async {
                                 await apiProvider.joinMeeting(
                                     meeting.id, user.id, ApiProvider.addr);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return Home(indexx: 0);
+                                    },
+                                  ),
+                                );
                                 Navigator.of(context, rootNavigator: true)
-                                    .pop();
+                                    .pop('dialog');
                               },
                               child: Text("Join !",
                                   style: TextStyle(
@@ -205,7 +219,7 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
         _markers.add(Marker(
           markerId: MarkerId('id-' + k.toString()),
           position: LatLng(meeting.location.lat, meeting.location.lng),
-          icon: lol,
+          icon: editMeeting,
           infoWindow: InfoWindow(
               title: 'Click to edit your meeting',
               snippet: DateFormat('EEE, d/M/y').format(meeting.date),
@@ -215,7 +229,7 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
                   MaterialPageRoute(
                     builder: (context) {
                       return MyDatepickerEdit(
-                        id: user.id,
+                        id: meeting.id,
                       );
                     },
                   ),
@@ -230,7 +244,7 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
         _markers.add(Marker(
             markerId: MarkerId('id-' + k.toString()),
             position: LatLng(meeting.location.lat, meeting.location.lng),
-            icon: lol,
+            icon: joinedMeeting,
             infoWindow: InfoWindow(
               title: 'Joined meeting!',
               snippet: DateFormat('EEE, d/M/y').format(meeting.date),

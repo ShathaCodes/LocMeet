@@ -37,7 +37,7 @@ class MyDatepickerEdit extends StatefulWidget {
 class _MyDatepickerEditState extends State<MyDatepickerEdit> {
   ApiProvider apiProvider = new ApiProvider();
 
-  final success = SnackBar(content: Text('Your event was created!'));
+  final success = SnackBar(content: Text('Your event was edited!'));
 
   final error = SnackBar(content: Text('Your meeting was not created!'));
   final serverError = SnackBar(content: Text('Can\'t connect to the server!'));
@@ -56,15 +56,14 @@ class _MyDatepickerEditState extends State<MyDatepickerEdit> {
 
     if (ind != "") {
       try {
-        print(
-            "shoooooooooooooouf l hnaaaaaaaaaaaaaaaaaa" + widget.id.toString());
         var res = await apiProvider.updateMeeting(widget.id,
             DateFormat('yyyy-MM-dd HH:mm:ss').format(_chosenDateTime), ind);
-        print("msheeeettttttttttttttttt");
         if (res.statusCode == 200) {
           ScaffoldMessenger.of(context).showSnackBar(success);
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => Home()));
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => Home(
+                    indexx: 1,
+                  )));
         } else {
           print(res.statusCode);
           ScaffoldMessenger.of(context).showSnackBar(error);

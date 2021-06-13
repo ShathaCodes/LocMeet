@@ -65,8 +65,10 @@ class _MyDatepickerState extends State<MyDatepicker> {
 
         if (res.statusCode == 200) {
           ScaffoldMessenger.of(context).showSnackBar(success);
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => Home()));
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => Home(
+                    indexx: 1,
+                  )));
         } else {
           print(res.statusCode);
           ScaffoldMessenger.of(context).showSnackBar(error);
