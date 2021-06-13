@@ -46,8 +46,10 @@ class BodyState extends State<Body> {
 
             /* Navigator.push(
                 context, MaterialPageRoute(builder: (context) => HomePage()));*/
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => Home()));
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => Home(
+                      indexx: 0,
+                    )));
           } else {
             ScaffoldMessenger.of(context).showSnackBar(error);
           }
