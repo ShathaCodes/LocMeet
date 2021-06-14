@@ -184,7 +184,7 @@ class _HomeState extends State<Home> {
           "0e149bbe91658d657887",
           PusherOptions(
               cluster: "eu",
-              auth: PusherAuth("http://192.168.1.6:3000/pusher/auth")),
+              auth: PusherAuth("http://192.168.43.250:3000/pusher/auth")),
           enableLogging: true);
     } on PlatformException catch (e) {
       print(e.message);
@@ -240,7 +240,7 @@ class _HomeState extends State<Home> {
   static int k = 0;
   @override
   void initState() {
-    //k = 0;
+    k = 0;
     testtt();
     initPusher();
     controller = PageController(initialPage: widget.indexx);
