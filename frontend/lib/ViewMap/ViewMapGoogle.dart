@@ -56,7 +56,7 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
               interests += "    " + interest.name;
 
             _markers.add(new Marker(
-                markerId: MarkerId('id-' + (i + 2).toString()),
+                markerId: MarkerId('iduser-' + (i + 2).toString()),
                 icon: lol,
                 position: LatLng(userr.location.lat, userr.location.lng),
                 infoWindow: InfoWindow(
@@ -115,7 +115,7 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
           var k = listeMarkers[j];
           if (liste[j].nickname == widget.userSent.data) {
             Marker m1 = new Marker(
-              markerId: MarkerId('id-' + (j + 2).toString()),
+              markerId: MarkerId('iduser-' + (j + 2).toString()),
               icon: lol1,
               position: LatLng(liste[j].location.lat, liste[j].location.lng),
               infoWindow: InfoWindow(
@@ -296,7 +296,7 @@ class _ViewMapGoogleState extends State<ViewMapGoogle> {
       longitudepos = longitudepos;
       user = user;
       _markers.add(Marker(
-        markerId: MarkerId('id-1'),
+        markerId: MarkerId('iduser'),
         position: LatLng(latitudepos, longitudepos), //_center,
         icon: mapMarker,
 
