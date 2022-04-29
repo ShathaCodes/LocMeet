@@ -6,11 +6,11 @@ It encourages people to step out of their comfort zone, make new friends and hav
 
 <img src="https://raw.githubusercontent.com/ShathaCodes/LocMeet/main/start.png" width="180" height="320" />
 
-![login](https://raw.githubusercontent.com/ShathaCodes/LocMeet/main/login.png =180x320)
+<img src="https://raw.githubusercontent.com/ShathaCodes/LocMeet/main/login.png" width="180" height="320" />
 
-![map](https://raw.githubusercontent.com/ShathaCodes/LocMeet/main/map.png =180x320)
+<img src="https://raw.githubusercontent.com/ShathaCodes/LocMeet/main/map.png" width="180" height="320" />
 
-![calendar](https://raw.githubusercontent.com/ShathaCodes/LocMeet/main/calendar.png =180x320)
+<img src="https://raw.githubusercontent.com/ShathaCodes/LocMeet/main/calendar.png" width="180" height="320" />
 
 
 ### Features :
