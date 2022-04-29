@@ -4,7 +4,16 @@ LocMeet is a cross plateform mobile application that helps you meet up with othe
 
 It encourages people to step out of their comfort zone, make new friends and have real life interactions.
 
-Features :
+![start](https://raw.githubusercontent.com/ShathaCodes/LocMeet/main/start.png)
+
+![login](https://raw.githubusercontent.com/ShathaCodes/LocMeet/main/login.png)
+
+![map](https://raw.githubusercontent.com/ShathaCodes/LocMeet/main/map.png)
+
+![calendar](https://raw.githubusercontent.com/ShathaCodes/LocMeet/main/calendar.png)
+
+
+### Features :
 1. Meet up with other people near you just by tapping a button.
 2. Localize people in the same area.
 3. Receive a notification whenever someone close by wants to connect with you.
@@ -14,4 +23,9 @@ Features :
 7. Choose between meeting up with one person, or with a group!
 8. Search for others heading in the same destination as you.
 
-Technologies used: Nodejs, Flutter, MySQL.
+### Technologies used: 
+Nodejs 
+
+Flutter 
+
+MySQL
