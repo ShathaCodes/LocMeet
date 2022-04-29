@@ -4,13 +4,13 @@ LocMeet is a cross plateform mobile application that helps you meet up with othe
 
 It encourages people to step out of their comfort zone, make new friends and have real life interactions.
 
-![start](https://raw.githubusercontent.com/ShathaCodes/LocMeet/main/start.png)
+![start](https://raw.githubusercontent.com/ShathaCodes/LocMeet/main/start.png =180x320)
 
-![login](https://raw.githubusercontent.com/ShathaCodes/LocMeet/main/login.png)
+![login](https://raw.githubusercontent.com/ShathaCodes/LocMeet/main/login.png =180x320)
 
-![map](https://raw.githubusercontent.com/ShathaCodes/LocMeet/main/map.png)
+![map](https://raw.githubusercontent.com/ShathaCodes/LocMeet/main/map.png =180x320)
 
-![calendar](https://raw.githubusercontent.com/ShathaCodes/LocMeet/main/calendar.png)
+![calendar](https://raw.githubusercontent.com/ShathaCodes/LocMeet/main/calendar.png =180x320)
 
 
 ### Features :
