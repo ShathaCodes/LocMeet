@@ -4,6 +4,7 @@ LocMeet is a cross plateform mobile application that helps you meet up with othe
 
 It encourages people to step out of their comfort zone, make new friends and have real life interactions.
 
+<p align="center">
 <img src="https://raw.githubusercontent.com/ShathaCodes/LocMeet/main/start.png" width="180" height="320" />
 
 <img src="https://raw.githubusercontent.com/ShathaCodes/LocMeet/main/login.png" width="180" height="320" />
@@ -11,7 +12,7 @@ It encourages people to step out of their comfort zone, make new friends and hav
 <img src="https://raw.githubusercontent.com/ShathaCodes/LocMeet/main/map.png" width="180" height="320" />
 
 <img src="https://raw.githubusercontent.com/ShathaCodes/LocMeet/main/calendar.png" width="180" height="320" />
-
+</p>
 
 ### Features :
 1. Meet up with other people near you just by tapping a button.
